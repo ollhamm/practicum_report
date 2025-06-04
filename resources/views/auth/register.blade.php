@@ -38,6 +38,15 @@
                 </div>
 
                 <div class="mb-4">
+                    <label for="nip" class="block text-gray-700 text-sm font-bold mb-2">NIP/NIM</label>
+                    <input type="text" name="nip" id="nip" value="{{ old('nip') }}" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nip') border-red-500 @enderror">
+                    @error('nip')
+                    <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-4">
                     <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
                     <input type="password" name="password" id="password" required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('password') border-red-500 @enderror">

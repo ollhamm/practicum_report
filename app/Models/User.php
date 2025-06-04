@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Models\User
@@ -21,6 +22,16 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    // Status constants for approved_by_admin
+    public const APPROVAL_PENDING = 0;
+    public const APPROVAL_REJECTED = 1;
+    public const APPROVAL_APPROVED = 2;
+
+    // Legacy status constants (keeping for backward compatibility if needed)
+    public const STATUS_PENDING = 0;
+    public const STATUS_REJECTED = 1;
+    public const STATUS_APPROVED = 2;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,7 +43,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'status',
-        'approved_by_admin', // Tambahkan ini jika belum ada
+        'nip',
+        'approved_by_admin',
     ];
 
     /**
@@ -55,7 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'approved_by_admin' => 'boolean', // Tambahkan cast untuk boolean
+            'approved_by_admin' => 'integer',
         ];
     }
 
@@ -64,14 +76,31 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function kelas()
+    public function kelasAsDosen()
     {
-        return $this->hasMany(Kelas::class, 'dosen_id');
+        return $this->belongsToMany(Kelas::class, 'kelas_dosen', 'user_id', 'kelas_id');
     }
 
-    public function kelas_mahasiswa()
+    public function kelasAsMahasiswa()
     {
-        return $this->belongsToMany(Kelas::class, 'kelas_mahasiswa', 'mahasiswa_id', 'kelas_id');
+        return $this->belongsToMany(Kelas::class, 'kelas_mahasiswa', 'user_id', 'kelas_id');
+    }
+
+    public function praktikumAsDosen()
+    {
+        return $this->hasManyThrough(
+            Praktikum::class,
+            Kelas::class,
+            'id', // Local key on kelas table
+            'kelas_id', // Local key on praktikum table
+            'id', // Local key on users table
+            'id' // Local key on kelas table
+        )->whereExists(function ($query) {
+            $query->select(DB::raw(1))
+                ->from('kelas_dosen')
+                ->whereColumn('kelas_dosen.kelas_id', 'kelas.id')
+                ->where('kelas_dosen.user_id', $this->id);
+        });
     }
 
     public function laporan_praktikum()
@@ -112,5 +141,55 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isMahasiswa(): bool
     {
         return $this->role === 'mahasiswa';
+    }
+
+    /**
+     * Check if user is pending approval
+     */
+    public function isPending(): bool
+    {
+        return $this->approved_by_admin === self::APPROVAL_PENDING;
+    }
+
+    /**
+     * Check if user is rejected
+     */
+    public function isRejected(): bool
+    {
+        return $this->approved_by_admin === self::APPROVAL_REJECTED;
+    }
+
+    /**
+     * Check if user is approved
+     */
+    public function isApproved(): bool
+    {
+        return $this->approved_by_admin === self::APPROVAL_APPROVED;
+    }
+
+    /**
+     * Get approval status text
+     */
+    public function getApprovalStatusText(): string
+    {
+        return match ($this->approved_by_admin) {
+            self::APPROVAL_PENDING => 'pending',
+            self::APPROVAL_REJECTED => 'rejected',
+            self::APPROVAL_APPROVED => 'approved',
+            default => 'unknown'
+        };
+    }
+
+    /**
+     * Set approval status using text
+     */
+    public function setApprovalStatus(string $status): void
+    {
+        $this->approved_by_admin = match (strtolower($status)) {
+            'pending' => self::APPROVAL_PENDING,
+            'rejected' => self::APPROVAL_REJECTED,
+            'approved' => self::APPROVAL_APPROVED,
+            default => self::APPROVAL_PENDING
+        };
     }
 }

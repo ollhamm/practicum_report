@@ -59,6 +59,7 @@
                                 <tr>
                                     <th>Nama</th>
                                     <th>Email</th>
+                                    <th>NIP/NIM</th>
                                     <th>Role</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
@@ -69,25 +70,27 @@
                                 <tr>
                                     <td class="py-4 whitespace-nowrap">{{ $user->name }}</td>
                                     <td class="py-4 whitespace-nowrap">{{ $user->email }}</td>
+                                    <td class="py-4 whitespace-nowrap">{{ $user->nip ?? '-' }}</td>
                                     <td class="py-4 whitespace-nowrap">
                                         {{ $user->role === 'admin' ? 'Admin' : ($user->role === 'dosen' ? 'Dosen' : 'Mahasiswa') }}
                                     </td>
                                     <td class="py-4 whitespace-nowrap">
-                                        <span class="inline-flex text-[11px] rounded-sm p-1
-                                                {{ $user->approved_by_admin ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
-                                            {{ $user->approved_by_admin ? 'Approved' : 'Pending' }}
+                                        @php
+                                        $currentStatus = match($user->approved_by_admin) {
+                                        $statusData['approved']['value'] => 'approved',
+                                        $statusData['rejected']['value'] => 'rejected',
+                                        default => 'pending'
+                                        };
+                                        @endphp
+
+                                        <span class="inline-flex text-[11px] rounded-sm p-1 {{ $statusData[$currentStatus]['class'] }}">
+                                            {{ $statusData[$currentStatus]['text'] }}
                                         </span>
                                     </td>
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
-
-                                            @if($user->approved_by_admin)
-                                            {{-- Tampilkan tombol Edit & Delete jika sudah disetujui --}}
-                                            <a href="{{ route('admin.users.edit', $user) }}"
-                                                class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
-                                                <i class="fas fa-edit fa-md"></i>
-                                            </a>
-
+                                            @if($user->isApproved())
+                                            {{-- Tampilkan hanya tombol Delete jika sudah disetujui --}}
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
@@ -97,8 +100,19 @@
                                                     <i class="fas fa-trash-alt fa-md"></i>
                                                 </button>
                                             </form>
-                                            @else
-                                            {{-- Jika belum disetujui (Pending), tampilkan Approve & Reject saja --}}
+                                            @elseif($user->isRejected())
+                                            {{-- Tampilkan hanya tombol Delete jika ditolak --}}
+                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="text-red-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-red-500 border rounded-sm p-2 cursor-pointer hover:bg-red-500 hover:text-white delete-btn"
+                                                    data-name="{{ $user->name }}">
+                                                    <i class="fas fa-trash-alt fa-md"></i>
+                                                </button>
+                                            </form>
+                                            @elseif($user->isPending())
+                                            {{-- Tampilkan Approve & Reject untuk status pending --}}
                                             <form action="{{ route('admin.users.approve', $user) }}" method="POST" class="inline">
                                                 @csrf
                                                 <button type="submit" class="text-green-500 transition-all duration-300 flex items-center justify-center w-8 h-8 border-green-500 border rounded-sm p-2 cursor-pointer hover:bg-green-500 hover:text-white">

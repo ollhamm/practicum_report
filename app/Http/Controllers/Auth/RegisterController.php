@@ -22,6 +22,7 @@ class RegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:dosen,mahasiswa'],
+            'nip' => ['required', 'string', 'max:50', 'unique:users'],
         ]);
 
         if ($validator->fails()) {
@@ -35,6 +36,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'nip' => $request->nip,
             'approved_by_admin' => false,
         ]);
 

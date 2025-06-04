@@ -34,6 +34,15 @@
                         </div>
 
                         <div>
+                            <label for="nip" class="block text-sm font-medium text-gray-700">NIP/NIM</label>
+                            <input type="text" name="nip" id="nip" value="{{ old('nip', $user->nip) }}" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nip') border-red-500 @enderror">
+                            @error('nip')
+                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
                             <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                             <select name="role" id="role" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('role') border-red-500 @enderror">

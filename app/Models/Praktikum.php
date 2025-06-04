@@ -16,10 +16,8 @@ class Praktikum extends Model
     protected $fillable = [
         'judul',
         'deskripsi',
-        'deadline',
         'kelas_id',
-        'panduan_path',
-        'template_path',
+        'deadline',
     ];
 
     protected $casts = [

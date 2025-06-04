@@ -1,15 +1,20 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminPraktikumController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\DosenManagementController;
+use App\Http\Controllers\Admin\MahasiswaManagementController;
 use App\Http\Controllers\Dosen\KelasController;
 use App\Http\Controllers\Dosen\PraktikumController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\HasilNormalController;
+use App\Http\Controllers\Admin\KelasManagementController;
+use App\Http\Controllers\Admin\PraktikumManagementController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -40,6 +45,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserManagementController::class);
         Route::post('/users/{user}/approve', [UserManagementController::class, 'approve'])->name('users.approve');
         Route::post('/users/{user}/reject', [UserManagementController::class, 'reject'])->name('users.reject');
+        Route::resource('dosen', DosenManagementController::class)->except(['create', 'store']);
+        Route::resource('mahasiswa', MahasiswaManagementController::class)->except(['create', 'store']);
+        Route::resource('kelas', KelasManagementController::class);
+        Route::get('kelas/{kelas}/dosen', [PraktikumManagementController::class, 'getDosenByKelas'])->name('kelas.dosen');
+        Route::resource('praktikum', PraktikumManagementController::class);
     });
 
     // Dosen routes

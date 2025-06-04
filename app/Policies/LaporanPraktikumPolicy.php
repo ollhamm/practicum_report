@@ -4,9 +4,13 @@ namespace App\Policies;
 
 use App\Models\LaporanPraktikum;
 use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\DB;
 
 class LaporanPraktikumPolicy
 {
+    use HandlesAuthorization;
+
     public function viewAny(User $user): bool
     {
         return $user->role === 'mahasiswa';
@@ -14,8 +18,12 @@ class LaporanPraktikumPolicy
 
     public function view(User $user, LaporanPraktikum $laporan): bool
     {
-        return $user->id === $laporan->mahasiswa_id ||
-            $user->id === $laporan->praktikum->kelas->dosen_id;
+        if ($user->role === 'admin') return true;
+
+        return DB::table('kelas_dosen')
+            ->where('kelas_id', $laporan->praktikum->kelas_id)
+            ->where('user_id', $user->id)
+            ->exists();
     }
 
     public function create(User $user): bool
@@ -25,6 +33,8 @@ class LaporanPraktikumPolicy
 
     public function update(User $user, LaporanPraktikum $laporan): bool
     {
+        if ($user->role === 'admin') return true;
+
         if ($user->role !== 'mahasiswa') {
             return false;
         }
@@ -33,11 +43,16 @@ class LaporanPraktikumPolicy
             return false;
         }
 
-        return $user->id === $laporan->mahasiswa_id;
+        return DB::table('kelas_dosen')
+            ->where('kelas_id', $laporan->praktikum->kelas_id)
+            ->where('user_id', $user->id)
+            ->exists();
     }
 
     public function delete(User $user, LaporanPraktikum $laporan): bool
     {
+        if ($user->role === 'admin') return true;
+
         if ($user->role !== 'mahasiswa') {
             return false;
         }
@@ -46,6 +61,9 @@ class LaporanPraktikumPolicy
             return false;
         }
 
-        return $user->id === $laporan->mahasiswa_id;
+        return DB::table('kelas_dosen')
+            ->where('kelas_id', $laporan->praktikum->kelas_id)
+            ->where('user_id', $user->id)
+            ->exists();
     }
 } 

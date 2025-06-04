@@ -43,8 +43,8 @@
         <div class="flex flex-row items-center gap-2">
             <div class="flex items-center">
                 <div class="flex items-center justify-center">
-                    <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white fa-sm"></i>
                     </div>
                 </div>
                 <div class="ml-3 flex flex-row items-center">
@@ -74,6 +74,13 @@
                         <i class="fas fa-users {{ request()->is('users*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
                         <span class="mx-2 text-xs">Pengguna</span>
                     </a>
+
+                    <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
+                        {{ request()->is('admin/dosen*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
+                        href="{{ route('admin.dosen.index') }}">
+                        <i class="fas fa-chalkboard-teacher {{ request()->is('dosen*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
+                        <span class="mx-2 text-xs">Dosen</span>
+                    </a>
                 </div>
 
                 <!-- Academic Section -->
@@ -81,30 +88,23 @@
                     <label class="px-3 text-xs text-gray-500 uppercase">Akademik</label>
 
                     <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('dosen*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                        href="#">
-                        <i class="fas fa-chalkboard-teacher {{ request()->is('dosen*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
-                        <span class="mx-2 text-xs">Dosen</span>
-                    </a>
-
-                    <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('mahasiswa*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                        href="#">
+                        {{ request()->is('admin/mahasiswa*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
+                        href="{{ route('admin.mahasiswa.index') }}">
                         <i class="fas fa-user-graduate {{ request()->is('mahasiswa*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
                         <span class="mx-2 text-xs">Mahasiswa</span>
                     </a>
 
                     <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('kelas*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                        href="#">
-                        <i class="fas fa-door-open {{ request()->is('kelas*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
+                        {{ request()->is('admin/kelas*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
+                        href="{{ route('admin.kelas.index') }}">
+                        <i class="fas fa-door-open {{ request()->is('admin/kelas*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
                         <span class="mx-2 text-xs">Kelas</span>
                     </a>
 
                     <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('praktikum*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                        href="#">
-                        <i class="fas fa-flask {{ request()->is('praktikum*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
+                        {{ request()->is('admin/praktikum*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
+                        href="{{ route('admin.praktikum.index') }}">
+                        <i class="fas fa-flask {{ request()->is('admin/praktikum*') ? 'text-gray-600' : 'text-gray-600 hover:text-gray-600' }} font-medium w-5"></i>
                         <span class="mx-2 text-xs">Praktikum</span>
                     </a>
                 </div>

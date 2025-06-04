@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('nip');
             $table->enum('role', ['admin', 'dosen', 'mahasiswa']);
-            $table->boolean('approved_by_admin')->default(false);
+            $table->tinyInteger('approved_by_admin')->default(0)->comment('0=pending, 1=rejected, 2=approved');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -31,4 +32,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
     }
-}; 
+};
