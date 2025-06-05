@@ -1,5 +1,30 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Pengguna</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/users">Manajemen Pengguna</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Detail Pengguna</span>
+                </li>
+            </ol>
+        </div>
         <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">

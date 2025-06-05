@@ -29,12 +29,22 @@ class DosenManagementController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('users')->ignore($dosen->id)],
+            'tempat_lahir' => ['required', 'string', 'max:255'],
+            'tanggal_lahir' => ['required', 'date'],
+            'jenis_kelamin' => ['required', 'in:L,P'],
+            'agama' => ['required', 'string', 'max:255'],
+            'nomor_telepon' => ['required', 'string', 'max:20'],
+            'alamat_ktp' => ['required', 'string'],
         ]);
 
         $dosen->update([
             'name' => $request->name,
-            'email' => $request->email,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'nomor_telepon' => $request->nomor_telepon,
+            'alamat_ktp' => $request->alamat_ktp,
         ]);
 
         if ($request->has('password') && $request->password) {

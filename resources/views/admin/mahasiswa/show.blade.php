@@ -1,5 +1,30 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Mahasiswa</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/mahasiswa">Manajemen Mahasiswa</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Edit Data Mahasiswa</span>
+                </li>
+            </ol>
+        </div>
         <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
@@ -77,7 +102,7 @@
                                     <i class="fas fa-id-card text-gray-400 mt-1 w-4"></i>
                                     <div class="flex-1">
                                         <label class="text-sm font-medium text-gray-500">NIP/NIM</label>
-                                        <p class="mt-1 text-gray-900 text-sm font-mono">{{ $mahasiswa->nip }}</p>
+                                        <p class="mt-1 text-gray-900 text-sm">{{ $mahasiswa->nip }}</p>
                                     </div>
                                 </div>
                             </div>

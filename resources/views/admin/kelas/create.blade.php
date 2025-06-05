@@ -1,5 +1,30 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Kelas</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/kelas">Manajemen Kelas</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Tambah Kelas</span>
+                </li>
+            </ol>
+        </div>
         <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
@@ -152,14 +177,9 @@
                         </div>
 
                         <div class="flex flex-row items-center justify-end gap-3 pt-6 border-t border-gray-200">
-                            <a href="{{ route('admin.kelas.index') }}"
-                                class="flex items-center justify-center transition-all text-sm duration-300 border border-red-500 px-4 py-2 rounded-sm text-red-500 hover:bg-red-500 hover:text-white min-w-[120px]">
-                                <i class="fas fa-times mr-2 fa-xs"></i>
-                                Batal
-                            </a>
                             <button type="submit"
                                 class="flex items-center justify-center transition-all text-sm cursor-pointer duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white min-w-[120px]">
-                                <i class="fas fa-save mr-2 fa-xs"></i>
+                                <i class="fas fa-save mr-2 fa-lg"></i>
                                 Simpan
                             </button>
                         </div>

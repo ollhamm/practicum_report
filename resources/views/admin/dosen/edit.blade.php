@@ -1,5 +1,30 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Dosen</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dosen">Manajemen Dosen</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Edit Data Dosen</span>
+                </li>
+            </ol>
+        </div>
         <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
@@ -11,101 +36,145 @@
                         </a>
                     </div>
 
-                    <form action="{{ route('admin.dosen.update', $dosen) }}" method="POST" class="space-y-6">
+                    <form action="{{ route('admin.dosen.update', $dosen) }}" method="POST">
                         @csrf
                         @method('PUT')
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Nama Lengkap <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="name" id="name" value="{{ old('name', $dosen->name) }}" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('name') border-red-500 focus:ring-red-500 @enderror"
-                                    placeholder="Masukkan nama lengkap">
-                                @error('name')
-                                <p class="mt-1 text-sm text-red-500 flex items-center">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    {{ $message }}
-                                </p>
-                                @enderror
-                            </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <!-- Basic Information -->
+                            <div class=" border border-gray-200 rounded-sm p-6">
+                                <div class="flex items-center mb-4 pb-2 border-b border-b-gray-300">
+                                    <i class="fas fa-chalkboard-teacher text-gray-500 mr-2"></i>
+                                    <h3 class="text-sm font-semibold text-gray-800">Informasi Dasar</h3>
+                                </div>
 
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Email <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" name="email" id="email" value="{{ old('email', $dosen->email) }}" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('email') border-red-500 focus:ring-red-500 @enderror"
-                                    placeholder="contoh@email.com">
-                                @error('email')
-                                <p class="mt-1 text-sm text-red-500 flex items-center">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    {{ $message }}
-                                </p>
-                                @enderror
-                            </div>
+                                <div class="space-y-4">
+                                    <!-- Name -->
+                                    <div>
+                                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                            Nama Lengkap <span class="text-red-500">*</span>
+                                            <input type="text" name="name" id="name" value="{{ old('name', $dosen->name) }}" required
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                            @error('name')
+                                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                            @enderror
+                                    </div>
 
-                            <div>
-                                <label for="nip" class="block text-sm font-medium text-gray-700 mb-2">
-                                    NIP <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="nip" id="nip" value="{{ old('nip', $dosen->nip) }}"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:ring-blue-500 focus:border-transparent @error('nip') border-red-500 focus:ring-red-500 @enderror"
-                                    placeholder="Nomor Induk Pegawai" readonly>
-                                @error('nip')
-                                <p class="mt-1 text-sm text-red-500 flex items-center">
-                                    <i class="fas fa-exclamation-circle mr-1"></i>
-                                    {{ $message }}
-                                </p>
-                                @enderror
-                            </div>
-                        </div>
+                                    <!-- Email (Readonly) -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+                                        <input type="text" value="{{ $dosen->email }}" disabled readonly
+                                            class="w-full px-3 py-2 border bg-gray-100 border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                    </div>
 
-                        <div class="border-t border-gray-200 pt-6">
-                            <h3 class="text-sm font-medium text-gray-500 mb-4">Ubah Password (Opsional)</h3>
+                                    <!-- NIP (Readonly) -->
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">NIP <span class="text-red-500">*</span></label>
+                                        <input type="text" value="{{ $dosen->nip }}" disabled readonly
+                                            class="w-full px-3 py-2 border bg-gray-100 border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                    </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Password Baru
-                                    </label>
-                                    <div class="relative">
+                                    <!-- Password -->
+                                    <div>
+                                        <label for="password" class="block text-sm font-medium text-gray-700">Password Baru </label>
                                         <input type="password" name="password" id="password"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('password') border-red-500 focus:ring-red-500 @enderror"
-                                            placeholder="Masukkan password baru">
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        <p class="mt-1 text-xs text-orange-600">Kosongkan jika tidak ingin mengubah password</p>
+                                        @error('password')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('password')
-                                    <p class="mt-1 text-sm text-red-500 flex items-center">
-                                        <i class="fas fa-exclamation-circle mr-1"></i>
-                                        {{ $message }}
-                                    </p>
-                                    @enderror
+
+                                    <!-- Password Confirmation -->
+                                    <div>
+                                        <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password Baru</label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        <p class="mt-1 text-xs text-orange-600">Kosongkan jika tidak ingin mengubah password</p>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Personal Information -->
+                            <div class="border border-gray-200 rounded-sm p-6">
+                                <div class="flex items-center mb-4 pb-2 border-b border-b-gray-300">
+                                    <i class="fas fa-address-card text-gray-500 mr-2"></i>
+                                    <h3 class="text-sm font-semibold text-gray-800">Informasi Pribadi</h3>
                                 </div>
 
-                                <div>
-                                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-2">
-                                        Konfirmasi Password Baru
-                                    </label>
-                                    <div class="relative">
-                                        <input type="password" name="password_confirmation" id="password_confirmation"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent"
-                                            placeholder="Konfirmasi password baru">
+                                <div class="space-y-4">
+                                    <!-- Tempat Lahir -->
+                                    <div>
+                                        <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir <span class="text-red-500">*</span></label>
+                                        <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ old('tempat_lahir', $dosen->tempat_lahir) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('tempat_lahir')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Tanggal Lahir -->
+                                    <div>
+                                        <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir <span class="text-red-500">*</span></label>
+                                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir', $dosen->tanggal_lahir) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('tanggal_lahir')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Jenis Kelamin -->
+                                    <div>
+                                        <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin <span class="text-red-500">*</span></label>
+                                        <select name="jenis_kelamin" id="jenis_kelamin" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                            <option value="L" {{ old('jenis_kelamin', $dosen->jenis_kelamin) === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                            <option value="P" {{ old('jenis_kelamin', $dosen->jenis_kelamin) === 'P' ? 'selected' : '' }}>Perempuan</option>
+                                        </select>
+                                        @error('jenis_kelamin')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Agama -->
+                                    <div>
+                                        <label for="agama" class="block text-sm font-medium text-gray-700">Agama <span class="text-red-500">*</span></label>
+                                        <input type="text" name="agama" id="agama" value="{{ old('agama', $dosen->agama) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('agama')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Nomor Telepon -->
+                                    <div>
+                                        <label for="nomor_telepon" class="block text-sm font-medium text-gray-700">Nomor Telepon <span class="text-red-500">*</span></label>
+                                        <input type="text" name="nomor_telepon" id="nomor_telepon" value="{{ old('nomor_telepon', $dosen->nomor_telepon) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('nomor_telepon')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Alamat KTP -->
+                                    <div>
+                                        <label for="alamat_ktp" class="block text-sm font-medium text-gray-700">Alamat <span class="text-red-500">*</span></label>
+                                        <textarea name="alamat_ktp" id="alamat_ktp" rows="3" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">{{ old('alamat_ktp', $dosen->alamat_ktp) }}</textarea>
+                                        @error('alamat_ktp')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex flex-row items-center justify-end gap-3 pt-6 border-t border-gray-200">
-                            <a href="{{ route('admin.dosen.index') }}"
-                                class="flex items-center justify-center transition-all text-sm duration-300 border border-red-500 px-4 py-2 rounded-sm text-red-500 hover:bg-red-500 hover:text-white min-w-[120px]">
-                                <i class="fas fa-times mr-2 fa-xs"></i>
-                                Batal
-                            </a>
-                            <button type="submit"
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" id="submitBtn"
                                 class="flex items-center justify-center transition-all text-sm cursor-pointer duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white min-w-[120px]">
-                                <i class="fas fa-save mr-2 fa-xs"></i>
-                                Simpan
+                                <i class="fas fa-save mr-2 fa-lg"></i>
+                                Simpan Perubahan
                             </button>
                         </div>
                     </form>

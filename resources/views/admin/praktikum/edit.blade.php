@@ -1,10 +1,35 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Praktikum</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/admin/praktikum">Manajemen Praktikum</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Edit Data Praktikum</span>
+                </li>
+            </ol>
+        </div>
         <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Edit Praktikum</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">Edit Data Praktikum</h2>
                         <a href="{{ route('admin.praktikum.index') }}"
                             class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm">
                             Kembali

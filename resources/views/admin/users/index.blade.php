@@ -9,13 +9,13 @@
                     </span>
                 </li>
                 <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
-                    <span>Manajemen Pengguna</span>
+                    <span>Pengguna</span>
                     <span class="pointer-events-none mx-2 text-gray-600">
                         /
                     </span>
                 </li>
                 <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
-                    <span>Pengguna</span>
+                    <span>Manajemen Pengguna</span>
                 </li>
             </ol>
         </div>
