@@ -140,10 +140,18 @@
                                     <!-- Agama -->
                                     <div>
                                         <label for="agama" class="block text-sm font-medium text-gray-700">Agama <span class="text-red-500">*</span></label>
-                                        <input type="text" name="agama" id="agama" value="{{ old('agama', $dosen->agama) }}" required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        <select name="agama" id="agama" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('agama') border-red-500 @enderror">
+                                            <option value="">Pilih Agama</option>
+                                            <option value="Islam" {{ old('agama', $dosen->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                            <option value="Kristen" {{ old('agama', $dosen->agama) == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                            <option value="Katolik" {{ old('agama', $dosen->agama) == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                            <option value="Hindu" {{ old('agama', $dosen->agama) == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                            <option value="Buddha" {{ old('agama', $dosen->agama) == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                            <option value="Konghucu" {{ old('agama', $dosen->agama) == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                        </select>
                                         @error('agama')
-                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                                         @enderror
                                     </div>
 
