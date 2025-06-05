@@ -75,7 +75,6 @@
                                 placeholder="Search..." autocomplete="off" />
                         </div>
 
-
                         <table id="usersTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-200">
                                 <tr>
@@ -115,6 +114,13 @@
                                     </td>
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
+                                            <form action="{{ route('admin.users.show', $user) }}" method="GET">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="text-purple-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-purple-500 border rounded-sm p-2 cursor-pointer hover:bg-purple-500 hover:text-white">
+                                                    <i class="fas fa-eye fa-md"></i>
+                                                </button>
+                                            </form>
                                             @if($user->isApproved())
                                             {{-- Tampilkan hanya tombol Delete jika sudah disetujui --}}
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
@@ -145,6 +151,7 @@
                                                     <i class="fas fa-check fa-md"></i>
                                                 </button>
                                             </form>
+
 
                                             <form action="{{ route('admin.users.reject', $user) }}" method="POST" class="inline">
                                                 @csrf
@@ -188,7 +195,6 @@
 </script>
 @endif
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         $("#customSearch").on("keyup", function() {
@@ -200,8 +206,9 @@
             dom: "trip",
             stripeClasses: [],
             order: [
-                [0, "dsc"]
-            ],
+                [4, 'desc'],
+                [1, 'asc']
+            ]
         });
     });
 </script>

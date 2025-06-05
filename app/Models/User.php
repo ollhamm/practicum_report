@@ -45,6 +45,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'nip',
         'approved_by_admin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'jenis_kelamin',
+        'agama',
+        'nomor_telepon',
+        'alamat_ktp',
     ];
 
     /**

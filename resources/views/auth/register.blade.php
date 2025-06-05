@@ -84,11 +84,70 @@
                         @enderror
                     </div>
 
-                    <!-- Additional fields can be added here -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <input type="text" name="tempat_lahir" id="tempat_lahir" value="{{ old('tempat_lahir') }}" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('tempat_lahir') border-red-500 @enderror"
+                                placeholder="Tempat Lahir">
+                            @error('tempat_lahir')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir') }}" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('tanggal_lahir') border-red-500 @enderror"
+                                placeholder="Tanggal Lahir">
+                            @error('tanggal_lahir')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <select name="jenis_kelamin" id="jenis_kelamin" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('jenis_kelamin') border-red-500 @enderror">
+                                <option value="">Pilih Jenis Kelamin</option>
+                                <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki-laki</option>
+                                <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                            @error('jenis_kelamin')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <select name="agama" id="agama" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('agama') border-red-500 @enderror">
+                                <option value="">Pilih Agama</option>
+                                <option value="Islam" {{ old('agama') == 'Islam' ? 'selected' : '' }}>Islam</option>
+                                <option value="Kristen" {{ old('agama') == 'Kristen' ? 'selected' : '' }}>Kristen</option>
+                                <option value="Katolik" {{ old('agama') == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                <option value="Hindu" {{ old('agama') == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                <option value="Buddha" {{ old('agama') == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                                <option value="Konghucu" {{ old('agama') == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                            </select>
+                            @error('agama')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <input type="tel" name="nomor_telepon" id="nomor_telepon" value="{{ old('nomor_telepon') }}" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('nomor_telepon') border-red-500 @enderror"
+                            placeholder="Nomor Telepon / HP">
+                        @error('nomor_telepon')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="mb-6">
-                        <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline"
-                            placeholder="Phone Number (Optional)">
+                        <textarea name="alamat_ktp" id="alamat_ktp" required rows="3"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('alamat_ktp') border-red-500 @enderror"
+                            placeholder="Alamat Sesuai KTP">{{ old('alamat_ktp') }}</textarea>
+                        @error('alamat_ktp')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <div class="flex space-x-3">

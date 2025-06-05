@@ -137,4 +137,9 @@ class UserManagementController extends Controller
             return back()->with('error', 'Gagal mengubah status user: ' . $e->getMessage());
         }
     }
+
+    public function show(User $user)
+    {
+        return view('admin.users.show', compact('user'));
+    }
 }

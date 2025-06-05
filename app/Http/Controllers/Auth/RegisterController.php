@@ -23,6 +23,12 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:dosen,mahasiswa'],
             'nip' => ['required', 'string', 'max:50', 'unique:users'],
+            'tempat_lahir' => ['required', 'string', 'max:255'],
+            'tanggal_lahir' => ['required', 'date'],
+            'jenis_kelamin' => ['required', 'in:L,P'],
+            'agama' => ['required', 'string', 'max:50'],
+            'nomor_telepon' => ['required', 'string', 'max:20'],
+            'alamat_ktp' => ['required', 'string'],
         ]);
 
         if ($validator->fails()) {
@@ -37,6 +43,12 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'nip' => $request->nip,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'nomor_telepon' => $request->nomor_telepon,
+            'alamat_ktp' => $request->alamat_ktp,
             'approved_by_admin' => false,
         ]);
 
