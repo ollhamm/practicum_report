@@ -133,6 +133,8 @@
                                             <th class="uppercase tracking-wider">Nama</th>
                                             <th class="uppercase tracking-wider">NIM</th>
                                             <th class="uppercase tracking-wider">Status</th>
+                                            <th class="uppercase tracking-wider">Nilai</th>
+                                            <th class="uppercase tracking-wider">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -154,8 +156,8 @@
                                                 $laporan = $praktikum->laporan_praktikum->where('mahasiswa_id', $mahasiswa->id)->first();
                                                 @endphp
                                                 @if($laporan)
-                                                <span class="px-2 inline-flex text-sm leading-5 font-semibold rounded-full 
-                                                            {{ $laporan->status === 'reviewed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
+                                                <span class="p-1 inline-flex text-xs leading-5 rounded-sm 
+                                                            {{ $laporan->status === 'reviewed' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white' }}">
                                                     {{ $laporan->status === 'reviewed' ? 'Sudah Dinilai' : 'Belum Dinilai' }}
                                                 </span>
                                                 @else
@@ -164,10 +166,31 @@
                                                 </span>
                                                 @endif
                                             </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-gray-500">
+                                                {{ $laporan && $laporan->nilai ? number_format($laporan->nilai, 2) : '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                @if($laporan)
+                                                <div class="flex items-center space-x-2">
+                                                    <a href="{{ route('dosen.praktikum.penilaian', ['praktikum' => $praktikum->id, 'mahasiswa' => $mahasiswa->id]) }}"
+                                                        class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
+                                                        <i class="fas fa-edit fa-md"></i>
+                                                    </a>
+                                                    @if($laporan->file_koreksi_path)
+                                                    <a href="{{ route('dosen.praktikum.download-koreksi', ['laporan' => $laporan->id]) }}"
+                                                        class="flex items-center justify-center transition-all duration-300 border border-gray-500 p-2 rounded-sm text-gray-500 hover:bg-gray-500 hover:text-white w-8 h-8">
+                                                        <i class="fas fa-download fa-sm"></i>
+                                                    </a>
+                                                    @endif
+                                                </div>
+                                                @else
+                                                -
+                                                @endif
+                                            </td>
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                                 Belum ada mahasiswa yang terdaftar
                                             </td>
                                         </tr>

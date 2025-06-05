@@ -79,13 +79,27 @@ Route::middleware('auth')->group(function () {
         Route::resource('praktikum', App\Http\Controllers\Dosen\PraktikumController::class);
         Route::get('praktikum/{praktikum}/download-panduan', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadPanduan'])->name('praktikum.download-panduan');
         Route::get('praktikum/{praktikum}/download-template', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadTemplate'])->name('praktikum.download-template');
+
+        // Penilaian Routes
+        Route::get('praktikum/{praktikum}/penilaian/{mahasiswa}', [App\Http\Controllers\Dosen\PraktikumController::class, 'penilaian'])->name('praktikum.penilaian');
+        Route::put('praktikum/penilaian/{laporan}', [App\Http\Controllers\Dosen\PraktikumController::class, 'submitPenilaian'])->name('praktikum.submit-penilaian');
+        Route::get('praktikum/laporan/{laporan}/view', [App\Http\Controllers\Dosen\PraktikumController::class, 'viewLaporan'])->name('praktikum.view-laporan');
+        Route::get('praktikum/laporan/{laporan}/download-koreksi', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadKoreksi'])->name('praktikum.download-koreksi');
     });
 
-    // Mahasiswa routes
-    Route::middleware(['role:mahasiswa'])->prefix('mahasiswa')->name('mahasiswa.')->group(function () {
-        Route::get('/dashboard', [LaporanController::class, 'index'])->name('dashboard');
-        Route::resource('laporan', LaporanController::class);
-        Route::get('laporan/{laporan}/download', [LaporanController::class, 'download'])->name('laporan.download');
-        Route::get('/hasil-normal', [HasilNormalController::class, 'index'])->name('hasil-normal.index');
-    });
+    Route::middleware(['role:mahasiswa'])
+        ->prefix('mahasiswa')
+        ->name('mahasiswa.')
+        ->group(function () {
+            Route::scopeBindings()->group(function () {
+                Route::get('/dashboard', [LaporanController::class, 'index'])->name('dashboard');
+                Route::resource('laporan', LaporanController::class);
+                Route::get('laporan/{laporan}/download', [LaporanController::class, 'download'])->name('laporan.download');
+                Route::get('laporan/{laporan}/download-koreksi', [LaporanController::class, 'downloadKoreksi'])->name('laporan.download-koreksi');
+                Route::get('laporan/{laporan}/koreksi', [LaporanController::class, 'viewKoreksi'])->name('laporan.koreksi');
+                Route::get('laporan/{laporan}/view-file', [LaporanController::class, 'viewFile'])->name('laporan.view-file');
+                Route::get('laporan/{laporan}/view-koreksi-file', [LaporanController::class, 'viewKoreksiFile'])->name('laporan.view-koreksi-file');
+                Route::get('/hasil-normal', [HasilNormalController::class, 'index'])->name('hasil-normal.index');
+            });
+        });
 });

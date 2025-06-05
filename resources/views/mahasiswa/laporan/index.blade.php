@@ -25,54 +25,55 @@
                                             $laporan = $praktikum->laporan_praktikum->first();
                                         @endphp
                                         <tr>
-                                            <td class="px-6 py-4">
+                                            <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900">{{ $praktikum->judul }}</div>
-                                                <div class="text-sm text-gray-500 line-clamp-1">{{ $praktikum->deskripsi }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama }}</div>
-                                                <div class="text-sm text-gray-500">{{ $praktikum->kelas->kode }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                    {{ $praktikum->deadline < now() ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                                    {{ $praktikum->deadline->format('d M Y H:i') }}
-                                                </span>
+                                                <div class="text-sm text-gray-900">{{ $praktikum->deadline->format('d M Y H:i') }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                @if($laporan)
-                                                    @if($laporan->status === 'reviewed')
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                            Sudah Dinilai
-                                                        </span>
-                                                    @else
-                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                            Menunggu Penilaian
-                                                        </span>
-                                                    @endif
+                                                @if($praktikum->laporan_praktikum->isEmpty())
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                        Belum Mengumpulkan
+                                                    </span>
                                                 @else
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                        Belum Dikumpulkan
+                                                    @php $laporan = $praktikum->laporan_praktikum->first(); @endphp
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold 
+                                                        {{ $laporan->status === 'reviewed' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                                        {{ ucfirst($laporan->status) }}
                                                     </span>
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                @if($laporan)
-                                                    <a href="{{ route('mahasiswa.laporan.show', $laporan) }}"
-                                                        class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                                    @if($laporan->status !== 'reviewed')
-                                                        <a href="{{ route('mahasiswa.laporan.edit', $laporan) }}"
-                                                            class="text-yellow-600 hover:text-yellow-900 mr-3">Edit</a>
-                                                        <form action="{{ route('mahasiswa.laporan.destroy', $laporan) }}" method="POST" class="inline"
-                                                            onsubmit="return confirm('Are you sure you want to delete this report?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                                                        </form>
-                                                    @endif
+                                                @if($praktikum->laporan_praktikum->isEmpty())
+                                                    <a href="{{ route('mahasiswa.laporan.create', ['praktikum_id' => $praktikum->id]) }}" 
+                                                        class="text-blue-500 hover:text-blue-700">
+                                                        Upload Laporan
+                                                    </a>
                                                 @else
-                                                    <a href="{{ route('mahasiswa.laporan.create', ['praktikum_id' => $praktikum->id]) }}"
-                                                        class="text-green-600 hover:text-green-900">Submit</a>
+                                                    @php $laporan = $praktikum->laporan_praktikum->first(); @endphp
+                                                    <div class="flex space-x-3">
+                                                        @if($laporan->status === 'reviewed')
+                                                            <a href="{{ route('mahasiswa.laporan.koreksi', $laporan) }}" 
+                                                                class="text-green-500 hover:text-green-700">
+                                                                <i class="fas fa-eye mr-1"></i>Lihat Koreksi
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ route('mahasiswa.laporan.show', $laporan) }}" 
+                                                                class="text-blue-500 hover:text-blue-700">
+                                                                <i class="fas fa-eye mr-1"></i>Lihat
+                                                            </a>
+                                                            @if($praktikum->deadline > now())
+                                                                <a href="{{ route('mahasiswa.laporan.edit', $laporan) }}" 
+                                                                    class="text-yellow-500 hover:text-yellow-700">
+                                                                    <i class="fas fa-edit mr-1"></i>Edit
+                                                                </a>
+                                                            @endif
+                                                        @endif
+                                                    </div>
                                                 @endif
                                             </td>
                                         </tr>

@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Dosen;
 use App\Http\Controllers\Controller;
 use App\Models\Praktikum;
 use App\Models\Kelas;
+use App\Models\User;
+use App\Models\LaporanPraktikum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 
 class PraktikumController extends Controller
 {
@@ -222,5 +225,126 @@ class PraktikumController extends Controller
         }
 
         return Storage::download($praktikum->template_path);
+    }
+
+    public function penilaian(Praktikum $praktikum, User $mahasiswa)
+    {
+        // Verify that the dosen owns this praktikum
+        if ($praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Get laporan praktikum
+        $laporan = LaporanPraktikum::where('praktikum_id', $praktikum->id)
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->firstOrFail();
+
+        return view('dosen.praktikum.penilaian', compact('praktikum', 'mahasiswa', 'laporan'));
+    }
+
+    public function submitPenilaian(Request $request, LaporanPraktikum $laporan)
+    {
+        Log::info('Submitting assessment:', [
+            'request_data' => $request->all(),
+            'laporan_id' => $laporan->id,
+            'praktikum_id' => $laporan->praktikum_id,
+            'mahasiswa_id' => $laporan->mahasiswa_id
+        ]);
+
+        // Verify that the dosen owns this praktikum
+        if ($laporan->praktikum->dosen_id !== Auth::id()) {
+            Log::warning('Unauthorized assessment attempt:', [
+                'dosen_id' => Auth::id(),
+                'praktikum_dosen_id' => $laporan->praktikum->dosen_id
+            ]);
+            abort(403, 'Unauthorized action.');
+        }
+
+        try {
+            $validated = $request->validate([
+                'nilai' => ['required', 'numeric', 'min:0', 'max:100'],
+                'catatan' => ['nullable', 'string'],
+                'file_koreksi' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+            ]);
+
+            Log::info('Validated data:', $validated);
+
+            DB::beginTransaction();
+
+            // Handle file upload if provided
+            if ($request->hasFile('file_koreksi')) {
+                Log::info('Processing file upload');
+                // Delete old file if exists
+                if ($laporan->file_koreksi_path) {
+                    Storage::delete($laporan->file_koreksi_path);
+                }
+                
+                $path = $request->file('file_koreksi')->store('koreksi');
+                $laporan->file_koreksi_path = $path;
+                Log::info('File uploaded to: ' . $path);
+            }
+
+            $laporan->nilai = $validated['nilai'];
+            $laporan->catatan = $validated['catatan'];
+            $laporan->status = 'reviewed';
+            $laporan->save();
+
+            Log::info('Laporan updated successfully', [
+                'laporan_id' => $laporan->id,
+                'nilai' => $laporan->nilai,
+                'status' => $laporan->status
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('dosen.praktikum.show', $laporan->praktikum)
+                ->with('success', 'Penilaian berhasil disimpan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error submitting assessment:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat menyimpan penilaian: ' . $e->getMessage());
+        }
+    }
+
+    public function viewLaporan(LaporanPraktikum $laporan)
+    {
+        // Verify that the dosen owns this praktikum
+        if ($laporan->praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        if (!Storage::exists($laporan->file_path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        $file = Storage::get($laporan->file_path);
+        $type = Storage::mimeType($laporan->file_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="laporan.pdf"'
+        ]);
+    }
+
+    public function downloadKoreksi(LaporanPraktikum $laporan)
+    {
+        // Verify that the dosen owns this praktikum
+        if ($laporan->praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        if (!$laporan->file_koreksi_path || !Storage::exists($laporan->file_koreksi_path)) {
+            abort(404, 'File koreksi tidak ditemukan.');
+        }
+
+        return Storage::download($laporan->file_koreksi_path, 'koreksi.pdf');
     }
 }

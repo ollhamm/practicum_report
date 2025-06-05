@@ -13,10 +13,10 @@ class LaporanController extends Controller
 {
     public function index()
     {
-        $praktikums = Praktikum::whereHas('kelas.mahasiswa', function($query) {
-                $query->where('users.id', Auth::id());
-            })
-            ->with(['kelas', 'laporan_praktikum' => function($query) {
+        $praktikums = Praktikum::whereHas('kelas.mahasiswa', function ($query) {
+            $query->where('users.id', Auth::id());
+        })
+            ->with(['kelas', 'laporan_praktikum' => function ($query) {
                 $query->where('mahasiswa_id', Auth::id());
             }])
             ->latest()
@@ -27,9 +27,9 @@ class LaporanController extends Controller
 
     public function create(Request $request)
     {
-        $praktikum = Praktikum::whereHas('kelas.mahasiswa', function($query) {
-                $query->where('users.id', Auth::id());
-            })
+        $praktikum = Praktikum::whereHas('kelas.mahasiswa', function ($query) {
+            $query->where('users.id', Auth::id());
+        })
             ->findOrFail($request->praktikum_id);
 
         return view('mahasiswa.laporan.create', compact('praktikum'));
@@ -44,9 +44,9 @@ class LaporanController extends Controller
         ]);
 
         // Verify mahasiswa is enrolled in the class
-        $praktikum = Praktikum::whereHas('kelas.mahasiswa', function($query) {
-                $query->where('users.id', Auth::id());
-            })
+        $praktikum = Praktikum::whereHas('kelas.mahasiswa', function ($query) {
+            $query->where('users.id', Auth::id());
+        })
             ->findOrFail($request->praktikum_id);
 
         // Check if laporan already exists
@@ -79,9 +79,16 @@ class LaporanController extends Controller
     {
         $this->authorize('view', $laporan);
 
-        $laporan->load(['praktikum.kelas', 'respon_praktikum']);
+        $laporan->load(['praktikum.kelas']);
 
         return view('mahasiswa.laporan.show', compact('laporan'));
+    }
+
+    public function viewKoreksi(LaporanPraktikum $laporan)
+    {
+        $this->authorize('view', $laporan);
+
+        return view('mahasiswa.laporan.koreksi', compact('laporan'));
     }
 
     public function edit(LaporanPraktikum $laporan)
@@ -138,5 +145,48 @@ class LaporanController extends Controller
         }
 
         return Storage::download($laporan->file_path);
+    }
+
+    public function downloadKoreksi(LaporanPraktikum $laporan)
+    {
+        $this->authorize('downloadKoreksi', $laporan);
+
+        if (!$laporan->file_koreksi_path || !Storage::exists($laporan->file_koreksi_path)) {
+            abort(404, 'File koreksi tidak ditemukan.');
+        }
+
+        return Storage::download($laporan->file_koreksi_path, 'koreksi_' . $laporan->id . '.pdf');
+    }
+
+    public function viewFile(LaporanPraktikum $laporan)
+    {
+        // Otomatis aman karena scoped binding (lihat route di bawah)
+        // Tapi tetap cek tambahan untuk jaga-jaga
+        if ($laporan->mahasiswa_id !== Auth::id()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // Pastikan file ada
+        if (!Storage::disk('public')->exists($laporan->file_path)) {
+            abort(404, 'File laporan tidak ditemukan.');
+        }
+
+        $filePath = Storage::disk('public')->path($laporan->file_path);
+
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="laporan.pdf"'
+        ]);
+    }
+
+    public function viewKoreksiFile(LaporanPraktikum $laporan)
+    {
+        $this->authorize('downloadKoreksi', $laporan);
+
+        if (!$laporan->file_koreksi_path || !Storage::exists($laporan->file_koreksi_path)) {
+            abort(404, 'File koreksi tidak ditemukan.');
+        }
+
+        return response()->file(Storage::path($laporan->file_koreksi_path));
     }
 }
