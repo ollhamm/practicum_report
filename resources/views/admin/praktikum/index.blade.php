@@ -1,30 +1,30 @@
 <x-app-layout>
     <div class="py-12">
         <div class="w-full mx-auto px-2">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Manajemen Praktikum</h2>
                         <a href="{{ route('admin.praktikum.create') }}"
-                            class=" hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-xs px-4 py-2 rounded-sm transition-all duration-300">
+                            class=" hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
+                            <i class="fas fa-plus fa-sm mr-1"></i>
                             Tambah Praktikum
                         </a>
                     </div>
 
                     <!-- Praktikum DataTable -->
                     <div class="overflow-x-auto">
-                        <div
-                            class="relative px-4 mb-4 gap-1 mr-4 w-48 bg-white border border-gray-300 flex flex-row py-2 items-center rounded-sm shadow-sm group focus-within:shadow-lg transition-shadow duration-300">
+                        <div class="relative max-w-xs mb-4">
+                            <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
                             <input type="text" id="customSearch"
-                                class="w-full bg-transparent text-gray-900 text-xs transition duration-300 focus:outline-none"
-                                placeholder="Cari Praktikum..." autocomplete="off" />
+                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
+                                placeholder="Search..." autocomplete="off" />
                         </div>
                         <table id="praktikumTable" class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                            <thead class="bg-gray-200">
                                 <tr>
-                                    <th>No</th>
-                                    <th>Kelas</th>
                                     <th>Judul</th>
+                                    <th>Kelas</th>
                                     <th>Dosen</th>
                                     <th>Deadline</th>
                                     <th>Aksi</th>
@@ -33,26 +33,32 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($praktikums as $index => $praktikum)
                                 <tr>
-                                    <td class="py-4 whitespace-nowrap">{{ $praktikums->firstItem() + $index }}</td>
+                                    <td class="py-4 whitespace-nowrap">
+                                        <span class="text-gray-950 font-medium">
+                                            {{ $praktikum->judul }}
+                                        </span>
+                                    </td>
                                     <td class="py-4 whitespace-nowrap">
                                         <div class="flex flex-col">
-                                            <span class="text-gray-900 font-medium">{{ $praktikum->kelas->nama_kelas }}</span>
-                                            <span class="text-gray-500 text-sm">{{ $praktikum->kelas->kode }}</span>
+                                            <span>{{ $praktikum->kelas->nama_kelas }}</span>
+                                            <span>{{ $praktikum->kelas->kode }}</span>
                                         </div>
                                     </td>
-                                    <td class="py-4 whitespace-nowrap">{{ $praktikum->judul }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex flex-col">
                                             @if($praktikum->kelas->dosen->isNotEmpty())
                                             @foreach($praktikum->kelas->dosen as $dosen)
-                                            <span class="text-sm text-gray-900">{{ $dosen->name }}</span>
+                                            <span class="text-gray-900">{{ $dosen->name }}</span>
                                             @endforeach
                                             @else
-                                            <span class="text-sm text-gray-500">Belum ada dosen</span>
+                                            <span class=" text-gray-500">Belum ada dosen</span>
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($praktikum->deadline)->format('d/m/Y H:i') }}</td>
+                                    <td class="py-4 whitespace-nowrap">
+                                        {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('l, d F Y H:i') }}
+                                    </td>
+
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
                                             <a href="{{ route('admin.praktikum.edit', $praktikum) }}"
@@ -90,28 +96,6 @@
             </div>
         </div>
     </div>
-
-    @if(session('success'))
-    <script>
-        window.onload = function() {
-            if (typeof Swal !== 'undefined') {
-                Swal.fire({
-                    title: 'Berhasil!',
-                    icon: 'success',
-                    html: `{{ session('success') }}`,
-                    toast: true,
-                    position: 'top',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                })
-            } else {
-                console.error('SweetAlert2 tidak dimuat');
-                alert(`{{ session('success') }}`);
-            }
-        };
-    </script>
-    @endif
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="w-full mx-auto px-2">
-            <div class="bg-white overflow-hidden shadow-sm rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Detail Kelas</h2>
@@ -16,24 +16,24 @@
                             <h3 class="text-sm font-semibold mb-4 border-b border-b-gray-300 pb-2">Informasi Kelas</h3>
                             <div class="space-y-3">
                                 <div>
-                                    <span class="text-gray-600 font-medium text-xs">Nama Kelas:</span>
-                                    <span class="ml-2 text-xs">{{ $kela->nama_kelas }}</span>
+                                    <span class="text-gray-600 font-medium text-sm">Nama Kelas:</span>
+                                    <span class="ml-2 text-sm">{{ $kela->nama_kelas }}</span>
                                 </div>
                                 <div>
-                                    <span class="text-gray-600 font-medium text-xs">Kode Kelas:</span>
-                                    <span class="ml-2 text-xs">{{ $kela->kode }}</span>
+                                    <span class="text-gray-600 font-medium text-sm">Kode Kelas:</span>
+                                    <span class="ml-2 text-sm">{{ $kela->kode }}</span>
                                 </div>
                                 <div>
-                                    <span class="text-gray-600 font-medium text-xs">Tahun Ajaran:</span>
-                                    <span class="ml-2 text-xs">{{ $kela->tahun_ajaran }}</span>
+                                    <span class="text-gray-600 font-medium text-sm">Tahun Ajaran:</span>
+                                    <span class="ml-2 text-sm">{{ $kela->tahun_ajaran }}</span>
                                 </div>
                                 <div>
-                                    <span class="text-gray-600 font-medium text-xs">Semester:</span>
-                                    <span class="ml-2 text-xs capitalize">{{ $kela->semester }}</span>
+                                    <span class="text-gray-600 font-medium text-sm">Semester:</span>
+                                    <span class="ml-2 text-sm capitalize">{{ $kela->semester }}</span>
                                 </div>
                                 <div>
-                                    <span class="text-gray-600 font-medium text-xs">Angkatan:</span>
-                                    <span class="ml-2 text-xs">{{ $kela->angkatan }}</span>
+                                    <span class="text-gray-600 font-medium text-sm">Angkatan:</span>
+                                    <span class="ml-2 text-sm">{{ $kela->angkatan }}</span>
                                 </div>
                             </div>
                         </div>
@@ -44,8 +44,8 @@
                                 @forelse($kela->dosen as $dosen)
                                 <div class="flex items-center bg-white p-2 rounded">
                                     <div>
-                                        <span class="font-medium text-xs">{{ $dosen->name }}</span>
-                                        <span class="text-xs text-gray-500 block">NIP: {{ $dosen->nip }}</span>
+                                        <span class="font-medium text-sm">{{ $dosen->name }}</span>
+                                        <span class="text-sm text-gray-500 block">NIP: {{ $dosen->nip }}</span>
                                     </div>
                                 </div>
                                 @empty
@@ -58,12 +58,12 @@
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <h3 class="text-sm font-semibold mb-4">Daftar Mahasiswa</h3>
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-100">
+                            <table id="daftar-siswa" class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-200">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">No</th>
-                                        <th class="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">Nama</th>
-                                        <th class="px-6 py-3 text-left text-xs text-gray-600 uppercase tracking-wider">NIM</th>
+                                        <th class="tracking-wider">No</th>
+                                        <th class="tracking-wider">Nama</th>
+                                        <th class="tracking-wider">NIM</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
@@ -71,7 +71,9 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $index + 1 }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $mahasiswa->name }}
+                                            <span class="text-gray-950 font-medium">
+                                                {{ $mahasiswa->name }}
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm ">
                                             {{ $mahasiswa->nip }}
@@ -92,4 +94,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#customSearch").on("keyup", function() {
+                daftarSiswa.search(this.value).draw();
+            });
+            var daftarSiswa = $("#daftar-siswa").DataTable({
+                info: false,
+                responsive: true,
+                dom: "trip",
+                stripeClasses: [],
+                ordering: false
+            });
+        });
+    </script>
 </x-app-layout>

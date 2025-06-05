@@ -1,24 +1,33 @@
 <x-auth-layout>
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
-        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-            <h2 class="text-2xl font-bold text-center mb-8">Login</h2>
+    <div class="min-h-screen flex flex-col justify-center items-center pt-6 sm:pt-0">
+        <div class="w-full sm:max-w-md py-14 px-8 bg-white border border-gray-100 shadow-none md:shadow-sm overflow-hidden rounded-sm">
+            <div class="flex flex-row items-center justify-center mb-8">
+                <div class="flex items-center">
+                    <div class="flex items-center justify-center">
+                        <div class=" flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-gray-600 fa-xl"></i>
+                        </div>
+                    </div>
+                    <div class="ml-1 flex flex-row items-center">
+                        <span class="text-lg font-semibold text-gray-600">Praktikum</span>
+                    </div>
+                </div>
+            </div>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('email') border-red-500 @enderror">
+                <div class="mb-6">
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="off"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-sm  text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('email') border-red-500 @enderror" placeholder="Email">
                     @error('email')
                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                <div class="mb-8">
                     <input type="password" name="password" id="password" required
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('password') border-red-500 @enderror">
+                        class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('password') border-red-500 @enderror" placeholder="Password">
                     @error('password')
                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                     @enderror
@@ -37,7 +46,7 @@
 
                 <div class="flex flex-col space-y-4">
                     <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                        class="bg-blue-500 text-white cursor-pointer hover:bg-blue-600 font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full">
                         Login
                     </button>
 
@@ -49,4 +58,4 @@
             </form>
         </div>
     </div>
-    </x-layout>
+</x-auth-layout>

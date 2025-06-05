@@ -58,10 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebarItems.forEach((item) => item.classList.add("hidden"));
 
             toggleButton.innerHTML = `
-        <svg class="h-4 w-4 text-blue-520" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-            <path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
-            <path fill="currentColor" d="M786.752 512 521.344 246.656a32 32 0 0 1 45.312-45.312l288 288a32 32 0 0 1 0 45.312l-288 288a32 32 0 1 1-45.312-45.312L786.752 512z"></path>
-        </svg>
+                <i class="fas fa-chevron-left text-gray-600 text-sm"></i>
+
     `;
 
             // Reposition toggle button
@@ -91,10 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebarItems.forEach((item) => item.classList.add("hidden"));
 
             toggleButton.innerHTML = `
-        <svg class="h-4 w-4 text-blue-500" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-            <path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
-            <path fill="currentColor" d="M786.752 512 521.344 246.656a32 32 0 0 1 45.312-45.312l288 288a32 32 0 0 1 0 45.312l-288 288a32 32 0 1 1-45.312-45.312L786.752 512z"></path>
-        </svg>
+                <i class="fas fa-chevron-right text-gray-600 text-sm"></i>
+
     `;
 
             // Reposition toggle button
@@ -121,10 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sidebarItems.forEach((item) => item.classList.remove("hidden"));
 
             toggleButton.innerHTML = `
-        <svg class="h-4 w-4 text-blue-500" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-            <path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z"></path>
-            <path fill="currentColor" d="m237.248 512 265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312L237.248 512z"></path>
-        </svg>
+        <i class="fas fa-chevron-left text-gray-600 text-sm"></i>
     `;
 
             // Reposition toggle button

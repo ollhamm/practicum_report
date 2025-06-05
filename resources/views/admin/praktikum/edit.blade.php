@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="w-full mx-auto px-2">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Edit Praktikum</h2>
@@ -12,13 +12,13 @@
                     </div>
 
                     @if($errors->any())
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <ul class="list-disc list-inside">
-                                @foreach($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <ul class="list-disc list-inside">
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
 
                     <form action="{{ route('admin.praktikum.update', $praktikum) }}" method="POST" class="space-y-6" id="praktikumForm">
@@ -32,13 +32,13 @@
                                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option value="">Pilih Kelas</option>
                                     @foreach($kelas_list as $kelas)
-                                        <option value="{{ $kelas->id }}" {{ old('kelas_id', $praktikum->kelas_id) == $kelas->id ? 'selected' : '' }}>
-                                            {{ $kelas->nama_kelas }} ({{ $kelas->kode }})
-                                        </option>
+                                    <option value="{{ $kelas->id }}" {{ old('kelas_id', $praktikum->kelas_id) == $kelas->id ? 'selected' : '' }}>
+                                        {{ $kelas->nama_kelas }} ({{ $kelas->kode }})
+                                    </option>
                                     @endforeach
                                 </select>
                                 @error('kelas_id')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -48,13 +48,13 @@
                                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                     <option value="">Pilih Dosen</option>
                                     @foreach($praktikum->kelas->dosen as $dosen)
-                                        <option value="{{ $dosen->id }}" {{ old('dosen_id', $dosen_id ?? '') == $dosen->id ? 'selected' : '' }}>
-                                            {{ $dosen->name }}
-                                        </option>
+                                    <option value="{{ $dosen->id }}" {{ old('dosen_id', $dosen_id ?? '') == $dosen->id ? 'selected' : '' }}>
+                                        {{ $dosen->name }}
+                                    </option>
                                     @endforeach
                                 </select>
                                 @error('dosen_id')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -64,7 +64,7 @@
                                     value="{{ old('judul', $praktikum->judul) }}"
                                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 @error('judul')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -74,7 +74,7 @@
                                     value="{{ old('deadline', $praktikum->deadline ? $praktikum->deadline->format('Y-m-d\TH:i') : '') }}"
                                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                                 @error('deadline')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                             <textarea id="deskripsi" name="deskripsi" rows="4" required
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('deskripsi', $praktikum->deskripsi) }}</textarea>
                             @error('deskripsi')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -138,4 +138,4 @@
             });
         });
     </script>
-</x-app-layout> 
+</x-app-layout>

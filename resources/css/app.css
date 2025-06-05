@@ -31,16 +31,16 @@ aside button {
 }
 
 .swal2-html-container {
-    font-size: 14px !important;
+    font-size: 16px !important;
 }
 
 .swal-text-custom {
-    font-size: 12px !important;
+    font-size: 14px !important;
 }
 
 .swal-confirm-custom,
 .swal-cancel-custom {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 500 !important;
 }
 
@@ -71,7 +71,7 @@ td {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 12px;
+    font-size: 14px;
     text-align: left;
 }
 
@@ -79,7 +79,7 @@ th {
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-style: normal;
-    font-size: 12px;
+    font-size: 14px;
     text-align: left;
 }
 
@@ -88,5 +88,5 @@ select {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 12px;
+    font-size: 14px;
 }

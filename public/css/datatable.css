@@ -383,8 +383,8 @@ table.dataTable tbody td.dt-body-nowrap {
 table.dataTable > tbody > tr > th,
 table.dataTable > tbody > tr > td {
     padding: 8px 8px;
-    /* border: 1px solid rgba(0, 0, 0, 0.15); */
-    /* border-bottom: 1px solid rgba(0, 0, 0, 0.15); */
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 /* border thead */
@@ -394,7 +394,7 @@ table.dataTable tfoot th {
     padding: 24px 40px;
     line-height: 2;
     height: 40px;
-    /* border: 1px solid rgb(201, 201, 201); */
+    border: 1px solid rgb(201, 201, 201);
 }
 
 /* border bottom */

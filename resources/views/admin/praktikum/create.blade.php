@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12">
         <div class="w-full mx-auto px-2">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Tambah Praktikum</h2>
@@ -16,7 +16,7 @@
                         <strong class="font-bold">Ada kesalahan!</strong>
                         <ul class="mt-2">
                             @foreach($errors->all() as $error)
-                            <li class="text-xs">{{ $error }}</li>
+                            <li class="text-sm">{{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -27,11 +27,11 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label for="kelas_id" class="block text-xs font-medium text-gray-700 mb-2">
+                                <label for="kelas_id" class="block text-sm font-medium text-gray-700 mb-2">
                                     Kelas <span class="text-red-500">*</span>
                                 </label>
                                 <select id="kelas_id" name="kelas_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('kelas_id') border-red-500 focus:ring-red-500 @enderror">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('kelas_id') border-red-500 focus:ring-red-500 @enderror">
                                     <option value="">Pilih Kelas</option>
                                     @foreach($kelas_list as $kelas)
                                     <option value="{{ $kelas->id }}" {{ old('kelas_id') == $kelas->id ? 'selected' : '' }}>
@@ -40,7 +40,7 @@
                                     @endforeach
                                 </select>
                                 @error('kelas_id')
-                                <p class="mt-1 text-xs text-red-500 flex items-center">
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     {{ $message }}
                                 </p>
@@ -48,15 +48,15 @@
                             </div>
 
                             <div>
-                                <label for="dosen_id" class="block text-xs font-medium text-gray-700 mb-2">
+                                <label for="dosen_id" class="block text-sm font-medium text-gray-700 mb-2">
                                     Dosen Pengajar <span class="text-red-500">*</span>
                                 </label>
                                 <select id="dosen_id" name="dosen_id" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('dosen_id') border-red-500 focus:ring-red-500 @enderror">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('dosen_id') border-red-500 focus:ring-red-500 @enderror">
                                     <option value="">Pilih Dosen</option>
                                 </select>
                                 @error('dosen_id')
-                                <p class="mt-1 text-xs text-red-500 flex items-center">
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     {{ $message }}
                                 </p>
@@ -64,14 +64,14 @@
                             </div>
 
                             <div>
-                                <label for="judul" class="block text-xs font-medium text-gray-700 mb-2">
+                                <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">
                                     Judul Praktikum <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="judul" id="judul" required value="{{ old('judul') }}"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('judul') border-red-500 focus:ring-red-500 @enderror"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('judul') border-red-500 focus:ring-red-500 @enderror"
                                     placeholder="Masukkan judul praktikum">
                                 @error('judul')
-                                <p class="mt-1 text-xs text-red-500 flex items-center">
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     {{ $message }}
                                 </p>
@@ -79,14 +79,14 @@
                             </div>
 
                             <div>
-                                <label for="deadline" class="block text-xs font-medium text-gray-700 mb-2">
+                                <label for="deadline" class="block text-sm font-medium text-gray-700 mb-2">
                                     Deadline <span class="text-red-500">*</span>
                                 </label>
                                 <input type="datetime-local" name="deadline" id="deadline" required
                                     value="{{ old('deadline') }}"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('deadline') border-red-500 focus:ring-red-500 @enderror">
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('deadline') border-red-500 focus:ring-red-500 @enderror">
                                 @error('deadline')
-                                <p class="mt-1 text-xs text-red-500 flex items-center">
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     {{ $message }}
                                 </p>
@@ -95,17 +95,17 @@
                         </div>
 
                         <div class="border-t border-gray-200 pt-6">
-                            <h3 class="text-xs font-medium text-gray-500 mb-4">Detail Praktikum</h3>
+                            <h3 class="text-sm font-medium text-gray-500 mb-4">Detail Praktikum</h3>
 
                             <div>
-                                <label for="deskripsi" class="block text-xs font-medium text-gray-700 mb-2">
+                                <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-2">
                                     Deskripsi <span class="text-red-500">*</span>
                                 </label>
                                 <textarea id="deskripsi" name="deskripsi" rows="4" required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('deskripsi') border-red-500 focus:ring-red-500 @enderror"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('deskripsi') border-red-500 focus:ring-red-500 @enderror"
                                     placeholder="Masukkan deskripsi praktikum">{{ old('deskripsi') }}</textarea>
                                 @error('deskripsi')
-                                <p class="mt-1 text-xs text-red-500 flex items-center">
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
                                     <i class="fas fa-exclamation-circle mr-1"></i>
                                     {{ $message }}
                                 </p>
@@ -115,12 +115,12 @@
 
                         <div class="flex flex-row items-center justify-end gap-3 pt-6 border-t border-gray-200">
                             <a href="{{ route('admin.praktikum.index') }}"
-                                class="flex items-center justify-center transition-all text-xs duration-300 border border-red-500 px-4 py-2 rounded-sm text-red-500 hover:bg-red-500 hover:text-white min-w-[120px]">
+                                class="flex items-center justify-center transition-all text-sm duration-300 border border-red-500 px-4 py-2 rounded-sm text-red-500 hover:bg-red-500 hover:text-white min-w-[120px]">
                                 <i class="fas fa-times mr-2 fa-xs"></i>
                                 Batal
                             </a>
                             <button type="submit" id="submitBtn"
-                                class="flex items-center justify-center transition-all text-xs cursor-pointer duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white min-w-[120px]">
+                                class="flex items-center justify-center transition-all text-sm cursor-pointer duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white min-w-[120px]">
                                 <i class="fas fa-save mr-2 fa-xs"></i>
                                 Simpan
                             </button>

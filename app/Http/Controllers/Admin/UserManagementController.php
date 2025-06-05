@@ -31,6 +31,7 @@ class UserManagementController extends Controller
             }
         }
 
+
         $users = $query->latest()->paginate(10);
 
         // Pass status data to view for cleaner blade template

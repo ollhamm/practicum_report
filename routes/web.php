@@ -16,12 +16,27 @@ use App\Http\Controllers\Mahasiswa\HasilNormalController;
 use App\Http\Controllers\Admin\KelasManagementController;
 use App\Http\Controllers\Admin\PraktikumManagementController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/', function () {
+    if (Auth::check()) {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->isDosen()) {
+            return redirect()->route('dosen.dashboard');
+        } elseif ($user->isMahasiswa()) {
+            return redirect()->route('mahasiswa.dashboard');
+        }
+    }
+
+    return redirect()->route('login');
+});
 
 // Public routes
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect()->route('login');
-    });
 
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
