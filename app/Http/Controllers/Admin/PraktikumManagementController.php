@@ -17,11 +17,7 @@ class PraktikumManagementController extends Controller
      */
     public function index()
     {
-        $praktikums = Praktikum::with(['kelas.dosen' => function ($query) {
-            $query->select('users.id', 'users.name');
-        }])->latest()->paginate(1000); // atau angka besar agar "terlihat seperti semua"
-
-
+        $praktikums = Praktikum::with(['kelas', 'dosen'])->latest()->paginate(1000);
         return view('admin.praktikum.index', compact('praktikums'));
     }
 
@@ -50,11 +46,12 @@ class PraktikumManagementController extends Controller
 
             DB::beginTransaction();
 
-            // Create praktikum
+            // Create praktikum with dosen_id
             $praktikum = Praktikum::create([
                 'judul' => $validated['judul'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
+                'dosen_id' => $validated['dosen_id'],
                 'deadline' => $validated['deadline'],
             ]);
 
@@ -79,7 +76,6 @@ class PraktikumManagementController extends Controller
             return redirect()
                 ->route('admin.praktikum.index')
                 ->with('success', 'Praktikum berhasil dibuat.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creating praktikum:', [
@@ -124,8 +120,8 @@ class PraktikumManagementController extends Controller
     public function show(Praktikum $praktikum)
     {
         $praktikum->load([
-            'kelas.dosen',
             'kelas.mahasiswa',
+            'dosen',
             'laporan_praktikum.mahasiswa',
         ]);
 
@@ -138,7 +134,7 @@ class PraktikumManagementController extends Controller
     public function edit(Praktikum $praktikum)
     {
         $kelas_list = Kelas::all();
-        $dosen_id = $praktikum->kelas->dosen->first()->id ?? null;
+        $dosen_id = $praktikum->dosen_id;
         
         return view('admin.praktikum.edit', compact('praktikum', 'kelas_list', 'dosen_id'));
     }
@@ -164,6 +160,7 @@ class PraktikumManagementController extends Controller
                 'judul' => $validated['judul'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
+                'dosen_id' => $validated['dosen_id'],
                 'deadline' => $validated['deadline'],
             ]);
 

@@ -144,9 +144,9 @@
                     <form method="POST" action="{{ route('logout') ?? '#' }}">
                         @csrf
                         <button type="submit"
-                            class="bg-red-100 cursor-pointer hover:bg-red-50 text-red-600 transition-all duration-300 font-medium py-2 px-4 rounded-md w-full text-xs">
+                            class="cursor-pointer border border-red-500 hover:bg-red-500 text-red-600 hover:text-white transition-all duration-300 font-medium py-2 px-4 rounded-md w-full text-xs">
                             <i class="fas fa-sign-out-alt mr-1"></i>
-                            Keluar
+                            Logout
                         </button>
                     </form>
                 </div>

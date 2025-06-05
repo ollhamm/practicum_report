@@ -14,6 +14,7 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->datetime('deadline');
             $table->foreignId('kelas_id')->constrained()->onDelete('cascade');
+            $table->foreignId('dosen_id')->constrained('users')->onDelete('cascade');
             $table->string('panduan_path')->nullable();
             $table->string('template_path')->nullable();
             $table->timestamps();

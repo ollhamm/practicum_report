@@ -87,19 +87,17 @@
                             <h3 class="text-sm font-semibold text-gray-800 mb-4">Dosen Pengajar</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-                                @forelse($praktikum->kelas->dosen as $dosen)
+                                @if($praktikum->dosen)
                                 <div class="bg-white gap-2 flex flex-row items-center p-4 rounded-sm border border-gray-200 shadow-sm">
                                     <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
                                         <i class="fas fa-user text-white"></i>
                                     </div>
                                     <div class="flex-col flex items-start text-start">
-                                        <p class="font-medium text-sm text-gray-900">{{ $dosen->name }}</p>
-                                        <p class="text-sm text-gray-500">NIP: {{ $dosen->nip }}</p>
+                                        <p class="font-medium text-sm text-gray-900">{{ $praktikum->dosen->name }}</p>
+                                        <p class="text-sm text-gray-500">NIP: {{ $praktikum->dosen->nip ?? '-' }}</p>
                                     </div>
                                 </div>
-                                @empty
-                                <p class="text-gray-500">Belum ada dosen yang ditugaskan</p>
-                                @endforelse
+                                @endif
                             </div>
                         </div>
                     </div>

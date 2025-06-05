@@ -180,7 +180,7 @@
                             <button type="submit"
                                 class="flex items-center justify-center transition-all text-sm cursor-pointer duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white min-w-[120px]">
                                 <i class="fas fa-save mr-2 fa-lg"></i>
-                                Update
+                                Simpan Perubahan
                             </button>
                         </div>
                     </form>

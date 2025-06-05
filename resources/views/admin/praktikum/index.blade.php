@@ -57,22 +57,23 @@
                                             {{ $praktikum->judul }}
                                         </span>
                                     </td>
-                                    <td class="py-4 whitespace-nowrap">
-                                        <div class="flex flex-col">
-                                            <span>{{ $praktikum->kelas->nama_kelas }}</span>
-                                            <span>{{ $praktikum->kelas->kode }}</span>
-                                        </div>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
+                                        <div class="text-sm text-gray-500">{{ $praktikum->kelas->kode }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex flex-col">
-                                            @if($praktikum->kelas->dosen->isNotEmpty())
-                                            @foreach($praktikum->kelas->dosen as $dosen)
-                                            <span class="text-gray-900">{{ $dosen->name }}</span>
-                                            @endforeach
-                                            @else
-                                            <span class=" text-gray-500">Belum ada dosen</span>
-                                            @endif
-                                        </div>
+                                        @if($praktikum->dosen)
+                                            <div class="text-sm text-gray-900">
+                                                {{ $praktikum->dosen->name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500">
+                                                {{ $praktikum->dosen->nip ?? '-' }}
+                                            </div>
+                                        @else
+                                            <div class="text-sm text-gray-500">
+                                                Dosen belum ditentukan
+                                            </div>
+                                        @endif
                                     </td>
                                     <td class="py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('l, d F Y H:i') }}

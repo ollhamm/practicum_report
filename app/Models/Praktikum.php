@@ -17,6 +17,7 @@ class Praktikum extends Model
         'judul',
         'deskripsi',
         'kelas_id',
+        'dosen_id',
         'deadline',
     ];
 
@@ -27,6 +28,11 @@ class Praktikum extends Model
     public function kelas(): BelongsTo
     {
         return $this->belongsTo(Kelas::class);
+    }
+
+    public function dosen(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'dosen_id');
     }
 
     public function laporan_praktikum(): HasMany
