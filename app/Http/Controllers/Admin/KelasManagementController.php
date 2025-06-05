@@ -21,18 +21,16 @@ class KelasManagementController extends Controller
         $dosen = User::where('role', 'dosen')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
             ->get();
-            
+
         $mahasiswa = User::where('role', 'mahasiswa')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
             ->get();
-            
+
         return view('admin.kelas.create', compact('dosen', 'mahasiswa'));
     }
 
     public function store(Request $request)
     {
-        \Log::info('Kelas store method called');
-        \Log::info('Request data:', $request->all());
 
         $request->validate([
             'nama_kelas' => ['required', 'string', 'max:255'],
@@ -48,23 +46,14 @@ class KelasManagementController extends Controller
 
         DB::beginTransaction();
         try {
-            \Log::info('Creating kelas with data:', [
-                'nama_kelas' => $request->nama_kelas,
-                'kode' => $request->kode,
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester,
-                'angkatan' => $request->angkatan,
-            ]);
-            
-            // Verify all selected users are approved
             $selectedDosen = User::whereIn('id', $request->dosen_ids)
                 ->where('approved_by_admin', '!=', User::APPROVAL_APPROVED)
                 ->exists();
-                
+
             $selectedMahasiswa = User::whereIn('id', $request->mahasiswa_ids)
                 ->where('approved_by_admin', '!=', User::APPROVAL_APPROVED)
                 ->exists();
-                
+
             if ($selectedDosen || $selectedMahasiswa) {
                 throw new \Exception('Hanya user yang sudah disetujui yang dapat ditambahkan ke kelas.');
             }
@@ -85,7 +74,6 @@ class KelasManagementController extends Controller
                 ->with('success', 'Kelas berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollback();
-            \Log::error('Error creating kelas: ' . $e->getMessage());
             return back()->with('error', $e->getMessage())
                 ->withInput();
         }
@@ -97,7 +85,7 @@ class KelasManagementController extends Controller
         $mahasiswa = User::where('role', 'mahasiswa')->where('approved_by_admin', true)->get();
         $selectedDosen = $kela->dosen->pluck('id')->toArray();
         $selectedMahasiswa = $kela->mahasiswa->pluck('id')->toArray();
-        
+
         return view('admin.kelas.edit', compact('kela', 'dosen', 'mahasiswa', 'selectedDosen', 'selectedMahasiswa'));
     }
 
@@ -158,4 +146,4 @@ class KelasManagementController extends Controller
         $kela->load(['dosen', 'mahasiswa']);
         return view('admin.kelas.show', compact('kela'));
     }
-} 
+}
