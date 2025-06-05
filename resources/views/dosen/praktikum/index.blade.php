@@ -15,7 +15,7 @@
                     </span>
                 </li>
                 <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
-                    <span>Manajemen Praktikum</span>
+                    <span>Daftar Praktikum Saya</span>
                 </li>
             </ol>
         </div>
@@ -23,7 +23,7 @@
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Manajemen Praktikum</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">Daftar Praktikum Saya</h2>
                         <a href="{{ route('dosen.praktikum.create') }}"
                             class=" hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
                             <i class="fas fa-plus fa-sm mr-1"></i>
