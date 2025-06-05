@@ -53,7 +53,7 @@
                             </div>
                             <div class="space-y-4">
                                 <div class="flex items-start space-x-3">
-                                    <i class="fas fa-m text-gray-400 mt-1 w-4"></i>
+                                    <i class="fas fa-user text-gray-400 mt-1 w-4"></i>
                                     <div class="flex-1">
                                         <label class="text-sm font-medium text-gray-500">Nama Lengkap</label>
                                         <p class="mt-1 text-gray-900 text-sm font-medium">{{ $dosen->name }}</p>
@@ -67,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class="flex items-start space-x-3">
-                                    <i class="fas fa-m-tag text-gray-400 mt-1 w-4"></i>
+                                    <i class="fas fa-user-tag text-gray-400 mt-1 w-4"></i>
                                     <div class="flex-1">
                                         <label class="text-sm font-medium text-gray-500">Role</label>
                                         <p class="mt-1 text-gray-900 text-sm capitalize">{{ $dosen->role }}</p>
