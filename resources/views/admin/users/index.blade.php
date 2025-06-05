@@ -152,7 +152,6 @@
                                                 </button>
                                             </form>
 
-
                                             <form action="{{ route('admin.users.reject', $user) }}" method="POST" class="inline">
                                                 @csrf
                                                 <button type="submit" class="text-red-500 transition-all duration-300 flex items-center justify-center w-8 h-8 border-red-500 border rounded-sm p-2 cursor-pointer hover:bg-red-500 hover:text-white">

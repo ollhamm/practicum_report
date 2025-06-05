@@ -60,4 +60,9 @@ class DosenManagementController extends Controller
         $dosen->delete();
         return back()->with('success', 'Data dosen berhasil dihapus.');
     }
+
+    public function show(User $dosen)
+    {
+        return view('admin.dosen.show', compact('dosen'));
+    }
 }

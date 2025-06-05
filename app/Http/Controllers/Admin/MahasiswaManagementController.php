@@ -77,4 +77,9 @@ class MahasiswaManagementController extends Controller
 
         return back()->with('success', 'Mahasiswa berhasil ditolak.');
     }
+
+    public function show(User $mahasiswa)
+    {
+        return view('admin.mahasiswa.show', compact('mahasiswa'));
+    }
 }

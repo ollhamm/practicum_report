@@ -67,6 +67,14 @@
                                                 <i class="fas fa-edit fa-md"></i>
                                             </a>
 
+                                            <form action="{{ route('admin.mahasiswa.show', $m) }}" method="GET">
+                                                @csrf
+                                                <button type="submit"
+                                                    class="text-purple-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-purple-500 border rounded-sm p-2 cursor-pointer hover:bg-purple-500 hover:text-white">
+                                                    <i class="fas fa-eye fa-md"></i>
+                                                </button>
+                                            </form>
+
                                             <form action="{{ route('admin.mahasiswa.destroy', $m) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
