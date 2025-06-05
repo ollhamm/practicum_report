@@ -30,7 +30,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Edit Data Mahasiswa</h2>
-                        <a href="{{ route('admin.dosen.index') }}"
+                        <a href="{{ route('admin.mahasiswa.index') }}"
                             class="flex items-center justify-center transition-all duration-300 border border-gray-400 p-2 rounded-sm text-gray-600 hover:bg-gray-500 hover:text-white w-8 h-8">
                             <i class="fas fa-arrow-left fa-sm"></i>
                         </a>

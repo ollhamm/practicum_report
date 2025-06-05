@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\User
@@ -90,6 +91,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function kelasAsMahasiswa()
     {
         return $this->belongsToMany(Kelas::class, 'kelas_mahasiswa', 'user_id', 'kelas_id');
+    }
+
+    /**
+     * Get the user's class based on their role
+     */
+    public function kelas(): BelongsToMany
+    {
+        if ($this->isDosen()) {
+            return $this->kelasAsDosen();
+        }
+        return $this->kelasAsMahasiswa();
     }
 
     public function praktikumAsDosen()

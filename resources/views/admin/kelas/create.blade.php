@@ -36,16 +36,6 @@
                         </a>
                     </div>
 
-                    @if($errors->any())
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-                        <strong class="font-bold">Ada kesalahan!</strong>
-                        <ul class="mt-2">
-                            @foreach($errors->all() as $error)
-                            <li class="text-sm">{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
 
                     <form action="{{ route('admin.kelas.store') }}" method="POST" class="space-y-6" id="kelasForm">
                         @csrf
@@ -176,13 +166,6 @@
                             </button>
                         </div>
                     </form>
-
-                    @if(session('error'))
-                    <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                        <strong class="font-bold">Error!</strong>
-                        <span class="block sm:inline text-sm">{{ session('error') }}</span>
-                    </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -354,7 +337,7 @@
         }
 
         function initializeMahasiswaTable() {
-            $("#customSearch").on("keyup", function() {
+            $("#customSearchMahasiswa").on("keyup", function() {
                 mahasiswaTable.search(this.value).draw();
             });
             mahasiswaTable = $('#mahasiswaTable').DataTable({
@@ -510,13 +493,31 @@
 
             if (selectedDosen.length === 0) {
                 e.preventDefault();
-                alert('Pilih minimal satu dosen pengajar');
+                Swal.fire({
+                    title: 'Warning!',
+                    icon: 'warning',
+                    html: 'Minimal pilih salah satu dosen pengajar untuk kelas ini.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                })
                 return false;
             }
 
             if (selectedMahasiswa.length === 0) {
                 e.preventDefault();
-                alert('Pilih minimal satu mahasiswa');
+                Swal.fire({
+                    title: 'Warning!',
+                    icon: 'warning',
+                    html: 'Minimal pilih salah satu mahasiswa untuk kelas ini.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                })
                 return false;
             }
 
@@ -623,6 +624,12 @@
             <div class="flex-1 p-6 overflow-hidden">
                 <div class="h-full flex flex-col">
                     <div class="flex-1 overflow-auto">
+                        <div class="relative max-w-xs mb-4">
+                            <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                            <input type="text" id="customSearchMahasiswa"
+                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
+                                placeholder="Search..." autocomplete="off" />
+                        </div>
                         <table id="mahasiswaTable" class="w-full">
                             <thead>
                                 <tr>
@@ -645,7 +652,7 @@
                     <span id="mahasiswaSelectionInfo" class="text-sm text-gray-600">0 mahasiswa dipilih</span>
                     <div class="space-x-3">
                         <button type="button" id="cancelMahasiswaSelection"
-                            class="px-4 text-sm py-2 border border-gray-300 text-gray-700 hover:text-white transition-all duration-300 rounded-sm hover:bg-gray-500">
+                            class="px-4 text-sm cursor-pointer py-2 border border-gray-300 text-gray-700 hover:text-white transition-all duration-300 rounded-sm hover:bg-gray-500">
                             Batal
                         </button>
                         <button type="button" id="confirmMahasiswaSelection"

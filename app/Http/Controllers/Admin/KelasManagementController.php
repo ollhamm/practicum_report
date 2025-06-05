@@ -22,8 +22,10 @@ class KelasManagementController extends Controller
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
             ->get();
 
+        // Get only students who are not in any class
         $mahasiswa = User::where('role', 'mahasiswa')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
+            ->whereDoesntHave('kelas')
             ->get();
 
         return view('admin.kelas.create', compact('dosen', 'mahasiswa'));
@@ -31,7 +33,6 @@ class KelasManagementController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate([
             'nama_kelas' => ['required', 'string', 'max:255'],
             'kode' => ['required', 'string', 'max:50', 'unique:kelas'],
@@ -46,6 +47,7 @@ class KelasManagementController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check if selected users are approved
             $selectedDosen = User::whereIn('id', $request->dosen_ids)
                 ->where('approved_by_admin', '!=', User::APPROVAL_APPROVED)
                 ->exists();
@@ -56,6 +58,16 @@ class KelasManagementController extends Controller
 
             if ($selectedDosen || $selectedMahasiswa) {
                 throw new \Exception('Hanya user yang sudah disetujui yang dapat ditambahkan ke kelas.');
+            }
+
+            // Check if any selected student is already in another class
+            $existingStudents = User::whereIn('id', $request->mahasiswa_ids)
+                ->whereHas('kelas')
+                ->get();
+
+            if ($existingStudents->isNotEmpty()) {
+                $studentNames = $existingStudents->pluck('name')->implode(', ');
+                throw new \Exception("Mahasiswa berikut sudah terdaftar di kelas lain: {$studentNames}");
             }
 
             $kelas = Kelas::create([
@@ -81,13 +93,34 @@ class KelasManagementController extends Controller
 
     public function edit(Kelas $kela)
     {
-        $dosen = User::where('role', 'dosen')->where('approved_by_admin', true)->get();
-        $mahasiswa = User::where('role', 'mahasiswa')->where('approved_by_admin', true)->get();
+        $dosen = User::where('role', 'dosen')
+            ->where('approved_by_admin', User::APPROVAL_APPROVED)
+            ->get();
+
+        // Ambil mahasiswa yang sudah terdaftar di kelas saat ini
+        $currentStudents = $kela->mahasiswa;
+
+        // Ambil mahasiswa yang belum memiliki kelas sama sekali
+        $availableStudents = User::where('role', 'mahasiswa')
+            ->where('approved_by_admin', User::APPROVAL_APPROVED)
+            ->whereDoesntHave('kelas')
+            ->get();
+
+        // Gabungkan mahasiswa yang saat ini dan yang belum punya kelas
+        $mahasiswa = $currentStudents->merge($availableStudents)->unique('id');
+
         $selectedDosen = $kela->dosen->pluck('id')->toArray();
         $selectedMahasiswa = $kela->mahasiswa->pluck('id')->toArray();
 
-        return view('admin.kelas.edit', compact('kela', 'dosen', 'mahasiswa', 'selectedDosen', 'selectedMahasiswa'));
+        return view('admin.kelas.edit', compact(
+            'kela',
+            'dosen',
+            'mahasiswa',
+            'selectedDosen',
+            'selectedMahasiswa'
+        ));
     }
+
 
     public function update(Request $request, Kelas $kela)
     {
@@ -105,6 +138,18 @@ class KelasManagementController extends Controller
 
         DB::beginTransaction();
         try {
+            // Check if any selected student is already in another class
+            $existingStudents = User::whereIn('id', $request->mahasiswa_ids)
+                ->whereHas('kelas', function ($query) use ($kela) {
+                    $query->where('kelas.id', '!=', $kela->id);
+                })
+                ->get();
+
+            if ($existingStudents->isNotEmpty()) {
+                $studentNames = $existingStudents->pluck('name')->implode(', ');
+                throw new \Exception("Mahasiswa berikut sudah terdaftar di kelas lain: {$studentNames}");
+            }
+
             $kela->update([
                 'nama_kelas' => $request->nama_kelas,
                 'kode' => $request->kode,
@@ -121,7 +166,7 @@ class KelasManagementController extends Controller
                 ->with('success', 'Kelas berhasil diupdate.');
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->with('error', 'Terjadi kesalahan saat mengupdate kelas.');
+            return back()->with('error', $e->getMessage());
         }
     }
 
