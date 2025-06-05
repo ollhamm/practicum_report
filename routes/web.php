@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\DosenManagementController;
 use App\Http\Controllers\Admin\MahasiswaManagementController;
+use App\Http\Controllers\Dosen\DashboardController;
 use App\Http\Controllers\Dosen\KelasController;
 use App\Http\Controllers\Dosen\PraktikumController;
 use App\Http\Controllers\Mahasiswa\LaporanController;
@@ -68,18 +69,16 @@ Route::middleware('auth')->group(function () {
     });
 
     // Dosen routes
-    Route::middleware(['approved', 'role:dosen'])->prefix('dosen')->name('dosen.')->group(function () {
-        Route::get('/dashboard', [KelasController::class, 'index'])->name('dashboard');
-        Route::resource('kelas', KelasController::class);
-        Route::get('praktikum', [PraktikumController::class, 'index'])->name('praktikum.index');
-        Route::get('praktikum/create', [PraktikumController::class, 'create'])->name('praktikum.create');
-        Route::post('praktikum', [PraktikumController::class, 'store'])->name('praktikum.store');
-        Route::get('praktikum/{praktikum}', [PraktikumController::class, 'show'])->name('praktikum.show');
-        Route::get('praktikum/{praktikum}/edit', [PraktikumController::class, 'edit'])->name('praktikum.edit');
-        Route::put('praktikum/{praktikum}', [PraktikumController::class, 'update'])->name('praktikum.update');
-        Route::delete('praktikum/{praktikum}', [PraktikumController::class, 'destroy'])->name('praktikum.destroy');
-        Route::get('praktikum/{praktikum}/download-panduan', [PraktikumController::class, 'downloadPanduan'])->name('praktikum.download-panduan');
-        Route::get('praktikum/{praktikum}/download-template', [PraktikumController::class, 'downloadTemplate'])->name('praktikum.download-template');
+    Route::middleware(['role:dosen'])->prefix('dosen')->name('dosen.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        // Kelas Routes (view only)
+        Route::resource('kelas', KelasController::class)->only(['index', 'show']);
+
+        // Praktikum Routes (full CRUD)
+        Route::resource('praktikum', App\Http\Controllers\Dosen\PraktikumController::class);
+        Route::get('praktikum/{praktikum}/download-panduan', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadPanduan'])->name('praktikum.download-panduan');
+        Route::get('praktikum/{praktikum}/download-template', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadTemplate'])->name('praktikum.download-template');
     });
 
     // Mahasiswa routes

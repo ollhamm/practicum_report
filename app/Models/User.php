@@ -99,7 +99,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function kelas(): BelongsToMany
     {
         if ($this->isDosen()) {
-            return $this->kelasAsDosen();
+            return $this->belongsToMany(Kelas::class, 'kelas_dosen', 'user_id', 'kelas_id');
         }
         return $this->kelasAsMahasiswa();
     }

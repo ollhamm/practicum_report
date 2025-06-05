@@ -4,7 +4,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Edit Kelas</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">Edit Data Kelas</h2>
                         <a href="{{ route('dosen.kelas.index') }}"
                             class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                             Back
@@ -20,7 +20,7 @@
                             <input type="text" name="nama" id="nama" value="{{ old('nama', $kelas->nama) }}" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('nama') border-red-500 @enderror">
                             @error('nama')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -29,7 +29,7 @@
                             <input type="text" name="kode" id="kode" value="{{ old('kode', $kelas->kode) }}" required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('kode') border-red-500 @enderror">
                             @error('kode')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -39,7 +39,7 @@
                                 placeholder="2023/2024"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('tahun_ajaran') border-red-500 @enderror">
                             @error('tahun_ajaran')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -52,7 +52,7 @@
                                 <option value="genap" {{ old('semester', $kelas->semester) === 'genap' ? 'selected' : '' }}>Genap</option>
                             </select>
                             @error('semester')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -61,16 +61,16 @@
                             <select name="mahasiswa[]" id="mahasiswa" multiple required
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('mahasiswa') border-red-500 @enderror">
                                 @foreach($mahasiswa as $mhs)
-                                    <option value="{{ $mhs->id }}" {{ in_array($mhs->id, old('mahasiswa', $selectedMahasiswa)) ? 'selected' : '' }}>
-                                        {{ $mhs->name }}
-                                    </option>
+                                <option value="{{ $mhs->id }}" {{ in_array($mhs->id, old('mahasiswa', $selectedMahasiswa)) ? 'selected' : '' }}>
+                                    {{ $mhs->name }}
+                                </option>
                                 @endforeach
                             </select>
                             @error('mahasiswa')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                             @error('mahasiswa.*')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -101,4 +101,4 @@
         }
     </script>
     @endpush
-</x-app-layout> 
+</x-app-layout>

@@ -56,6 +56,26 @@
                                     <label class="text-sm font-medium text-gray-500">Deskripsi</label>
                                     <p class="mt-1 text-gray-900 text-sm whitespace-pre-line">{{ $praktikum->deskripsi }}</p>
                                 </div>
+                                <div class="mt-2 space-y-2">
+                                    @if($praktikum->panduan_path)
+                                    <div>
+                                        <a href="{{ route('dosen.praktikum.download-panduan', $praktikum) }}"
+                                            class="inline-flex items-center text-blue-500 text-sm font-medium hover:text-blue-600">
+                                            <i class="fas fa-circle fa-xs mr-2"></i>
+                                            Unduh Panduan
+                                        </a>
+                                    </div>
+                                    @endif
+                                    @if($praktikum->template_path)
+                                    <div>
+                                        <a href="{{ route('dosen.praktikum.download-template', $praktikum) }}"
+                                            class="inline-flex items-center text-sm font-medium text-blue-500 hover:text-blue-600">
+                                            <i class="fas fa-circle fa-xs mr-2"></i>
+                                            Download Template
+                                        </a>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
 

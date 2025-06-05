@@ -1,76 +1,161 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="py-6">
+        <div class="px-2 mb-4">
+            <ol class="flex w-full flex-wrap items-center">
+                <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
+                    <a href="/dosen/dashboard">Dashboard</a>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
+                    <span>Praktikum</span>
+                    <span class="pointer-events-none mx-2 text-gray-600">
+                        /
+                    </span>
+                </li>
+                <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
+                    <span>Manajemen Praktikum</span>
+                </li>
+            </ol>
+        </div>
+        <div class="w-full mx-auto px-2">
+            <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Daftar Praktikum</h2>
+                        <h2 class="text-2xl font-semibold text-gray-800">Manajemen Praktikum</h2>
                         <a href="{{ route('dosen.praktikum.create') }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            class=" hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
+                            <i class="fas fa-plus fa-sm mr-1"></i>
                             Tambah Praktikum
                         </a>
                     </div>
 
-                    @if($praktikums->isEmpty())
-                    <p class="text-gray-500">Belum ada praktikum yang dibuat.</p>
-                    @else
+                    <!-- Praktikum DataTable -->
                     <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                        <div class="relative max-w-xs mb-4">
+                            <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                            <input type="text" id="customSearch"
+                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
+                                placeholder="Search..." autocomplete="off" />
+                        </div>
+                        <table id="praktikumTable" class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-200">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laporan</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th>Judul</th>
+                                    <th>Kelas</th>
+                                    <th>Deadline</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach($praktikums as $praktikum)
+                                @forelse($praktikums as $praktikum)
                                 <tr>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $praktikum->judul }}</div>
-                                        <div class="text-sm text-gray-500 line-clamp-1">{{ $praktikum->deskripsi }}</div>
+                                    <td class="py-4 whitespace-nowrap">
+                                        <span class="text-gray-950 font-medium">
+                                            {{ $praktikum->judul }}
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama }}</div>
+                                        <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
                                         <div class="text-sm text-gray-500">{{ $praktikum->kelas->kode }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                    {{ $praktikum->deadline < now() ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
-                                            {{ $praktikum->deadline->format('d M Y H:i') }}
-                                        </span>
+                                    <td class="py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">
+                                            {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('l, d F Y') }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('H:i') }}
+                                        </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                            {{ $praktikum->laporan_praktikum_count }} / {{ $praktikum->kelas->mahasiswa_count }}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        <a href="{{ route('dosen.praktikum.show', $praktikum) }}"
-                                            class="text-blue-600 hover:text-blue-900 mr-3">View</a>
-                                        <a href="{{ route('dosen.praktikum.edit', $praktikum) }}"
-                                            class="text-yellow-600 hover:text-yellow-900 mr-3">Edit</a>
-                                        <form action="{{ route('dosen.praktikum.destroy', $praktikum) }}" method="POST" class="inline"
-                                            onsubmit="return confirm('Are you sure you want to delete this practicum?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                                        </form>
+                                    <td class="py-4 whitespace-nowrap text-sm">
+                                        <div class="flex flex-row items-center justify-start gap-2">
+                                            <a href="{{ route('dosen.praktikum.edit', $praktikum) }}"
+                                                class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
+                                                <i class="fas fa-edit fa-md"></i>
+                                            </a>
+
+                                            <a href="{{ route('dosen.praktikum.show', $praktikum) }}"
+                                                class="flex items-center justify-center transition-all duration-300 border border-purple-500 p-2 rounded-sm text-purple-500 hover:bg-purple-500 hover:text-white w-8 h-8">
+                                                <i class="fas fa-eye fa-md"></i>
+                                            </a>
+
+                                            <form action="{{ route('dosen.praktikum.destroy', $praktikum) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="text-red-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-red-500 border rounded-sm p-2 cursor-pointer hover:bg-red-500 hover:text-white delete-btn"
+                                                    data-name="{{ $praktikum->judul }}">
+                                                    <i class="fas fa-trash-alt fa-md"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </tbody>
                         </table>
-                    </div>
 
-                    <div class="mt-4">
-                        {{ $praktikums->links() }}
+                        <div class="mt-4">
+                            {{ $praktikums->links() }}
+                        </div>
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#customSearch").on("keyup", function() {
+                praktikumTable.search(this.value).draw();
+            });
+            var praktikumTable = $("#praktikumTable").DataTable({
+                info: false,
+                responsive: true,
+                dom: "trip",
+                stripeClasses: [],
+                order: [
+                    [0, "asc"]
+                ],
+            });
+
+            // Delete confirmation
+            document.querySelectorAll('.delete-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    const name = this.dataset.name;
+
+                    Swal.fire({
+                        title: 'Apakah Anda yakin?',
+                        html: `Praktikum <span class="font-semibold">${name}</span> akan dihapus secara permanen!`,
+                        showCancelButton: true,
+                        confirmButtonColor: '#EF4444',
+                        cancelButtonColor: '#9e9e9e',
+                        cancelButtonText: 'Batal',
+                        confirmButtonText: 'Ya, hapus!',
+                        reverseButtons: true,
+                        position: 'top',
+                        customClass: {
+                            title: 'swal-title-custom',
+                            confirmButton: 'swal-confirm-custom',
+                            cancelButton: 'swal-cancel-custom',
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const loading = document.getElementById('loading-overlay');
+                            if (loading) {
+                                loading.classList.remove('hidden');
+                            }
+                            setTimeout(() => {
+                                form.submit();
+                            }, 100);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

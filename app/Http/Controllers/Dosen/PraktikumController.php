@@ -9,79 +9,118 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class PraktikumController extends Controller
 {
     public function index()
     {
-        $praktikums = Praktikum::whereHas('kelas', function($query) {
-            $query->whereExists(function($subquery) {
-                $subquery->select(DB::raw(1))
-                    ->from('kelas_dosen')
-                    ->whereColumn('kelas_dosen.kelas_id', 'kelas.id')
-                    ->where('kelas_dosen.user_id', Auth::id());
-            });
-        })->with('kelas')->latest()->paginate(10);
+        $praktikums = Praktikum::with(['kelas'])
+            ->where('dosen_id', Auth::id())
+            ->latest()
+            ->paginate(10);
 
         return view('dosen.praktikum.index', compact('praktikums'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $kelas = Kelas::whereExists(function($query) {
-            $query->select(DB::raw(1))
-                ->from('kelas_dosen')
-                ->whereColumn('kelas_dosen.kelas_id', 'kelas.id')
-                ->where('kelas_dosen.user_id', Auth::id());
-        })->get();
+        $kelas = null;
+        $kelas_list = Auth::user()->kelas;
+        
+        // Jika ada kelas_id dari request, load data kelas
+        if ($request->has('kelas_id')) {
+            $kelas = $kelas_list->find($request->kelas_id);
+            
+            // Jika kelas tidak ditemukan atau dosen tidak memiliki akses
+            if (!$kelas) {
+                return redirect()
+                    ->route('dosen.praktikum.create')
+                    ->with('error', 'Kelas tidak ditemukan atau Anda tidak memiliki akses.');
+            }
+        }
 
-        return view('dosen.praktikum.create', compact('kelas'));
+        return view('dosen.praktikum.create', compact('kelas_list', 'kelas'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'judul' => ['required', 'string', 'max:255'],
-            'deskripsi' => ['required', 'string'],
-            'kelas_id' => ['required', 'exists:kelas,id'],
-            'pertemuan' => ['required', 'integer', 'min:1'],
-            'deadline' => ['required', 'date'],
-        ]);
-
-        // Verify access to kelas
-        $hasAccess = DB::table('kelas_dosen')
-            ->where('kelas_id', $request->kelas_id)
-            ->where('user_id', Auth::id())
-            ->exists();
-
-        if (!$hasAccess) {
-            return back()->with('error', 'Anda tidak memiliki akses ke kelas ini.');
-        }
-
         try {
-            Praktikum::create([
-                'judul' => $request->judul,
-                'deskripsi' => $request->deskripsi,
-                'kelas_id' => $request->kelas_id,
-                'pertemuan' => $request->pertemuan,
-                'deadline' => $request->deadline,
+            $validated = $request->validate([
+                'judul' => ['required', 'string', 'max:255'],
+                'deskripsi' => ['required', 'string'],
+                'kelas_id' => ['required', 'exists:kelas,id'],
+                'deadline' => ['required', 'date'],
+                'panduan' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+                'template' => ['nullable', 'file', 'mimes:doc,docx,pdf', 'max:10240'],
             ]);
 
-            return redirect()->route('dosen.praktikum.index')
+            // Verify that the dosen is assigned to this kelas
+            if (!Auth::user()->kelas->contains('id', $validated['kelas_id'])) {
+                return back()
+                    ->withInput()
+                    ->with('error', 'Anda tidak memiliki akses ke kelas ini.');
+            }
+
+            DB::beginTransaction();
+
+            $praktikum = new Praktikum([
+                'judul' => $validated['judul'],
+                'deskripsi' => $validated['deskripsi'],
+                'kelas_id' => $validated['kelas_id'],
+                'dosen_id' => Auth::id(),
+                'deadline' => $validated['deadline'],
+            ]);
+
+            // Handle file uploads
+            if ($request->hasFile('panduan')) {
+                $path = $request->file('panduan')->store('panduan');
+                $praktikum->panduan_path = $path;
+            }
+
+            if ($request->hasFile('template')) {
+                $path = $request->file('template')->store('template');
+                $praktikum->template_path = $path;
+            }
+
+            $praktikum->save();
+
+            DB::commit();
+
+            // Redirect ke detail kelas jika pembuatan dari halaman kelas
+            if ($request->has('from_kelas')) {
+                return redirect()
+                    ->route('dosen.kelas.show', $validated['kelas_id'])
+                    ->with('success', 'Praktikum berhasil dibuat.');
+            }
+
+            return redirect()
+                ->route('dosen.praktikum.index')
                 ->with('success', 'Praktikum berhasil dibuat.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan saat membuat praktikum.');
+            DB::rollBack();
+            Log::error('Error creating praktikum:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat membuat praktikum: ' . $e->getMessage());
         }
     }
 
     public function show(Praktikum $praktikum)
     {
-        $this->authorize('view', $praktikum);
+        // Verify that the dosen owns this praktikum
+        if ($praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $praktikum->load([
             'kelas.mahasiswa',
             'laporan_praktikum.mahasiswa',
-            'laporan_praktikum.respon_praktikum',
         ]);
 
         return view('dosen.praktikum.show', compact('praktikum'));
@@ -89,73 +128,70 @@ class PraktikumController extends Controller
 
     public function edit(Praktikum $praktikum)
     {
-        // Verify access
-        $hasAccess = DB::table('kelas_dosen')
-            ->where('kelas_id', $praktikum->kelas_id)
-            ->where('user_id', Auth::id())
-            ->exists();
-
-        if (!$hasAccess) {
-            return redirect()->route('dosen.praktikum.index')
-                ->with('error', 'Anda tidak memiliki akses ke praktikum ini.');
+        // Verify that the dosen owns this praktikum
+        if ($praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
         }
 
-        $kelas = Kelas::whereExists(function($query) {
-            $query->select(DB::raw(1))
-                ->from('kelas_dosen')
-                ->whereColumn('kelas_dosen.kelas_id', 'kelas.id')
-                ->where('kelas_dosen.user_id', Auth::id());
-        })->get();
-
-        return view('dosen.praktikum.edit', compact('praktikum', 'kelas'));
+        $kelas_list = Auth::user()->kelas;
+        return view('dosen.praktikum.edit', compact('praktikum', 'kelas_list'));
     }
 
     public function update(Request $request, Praktikum $praktikum)
     {
-        $request->validate([
-            'judul' => ['required', 'string', 'max:255'],
-            'deskripsi' => ['required', 'string'],
-            'kelas_id' => ['required', 'exists:kelas,id'],
-            'pertemuan' => ['required', 'integer', 'min:1'],
-            'deadline' => ['required', 'date'],
-        ]);
-
-        // Verify access
-        $hasAccess = DB::table('kelas_dosen')
-            ->where('kelas_id', $request->kelas_id)
-            ->where('user_id', Auth::id())
-            ->exists();
-
-        if (!$hasAccess) {
-            return back()->with('error', 'Anda tidak memiliki akses ke kelas ini.');
+        // Verify that the dosen owns this praktikum
+        if ($praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
         }
 
         try {
-            $praktikum->update([
-                'judul' => $request->judul,
-                'deskripsi' => $request->deskripsi,
-                'kelas_id' => $request->kelas_id,
-                'pertemuan' => $request->pertemuan,
-                'deadline' => $request->deadline,
+            $validated = $request->validate([
+                'judul' => ['required', 'string', 'max:255'],
+                'deskripsi' => ['required', 'string'],
+                'kelas_id' => ['required', 'exists:kelas,id'],
+                'deadline' => ['required', 'date'],
             ]);
 
-            return redirect()->route('dosen.praktikum.index')
-                ->with('success', 'Praktikum berhasil diupdate.');
+            // Verify that the dosen is assigned to this kelas
+            if (!Auth::user()->kelas->contains('id', $validated['kelas_id'])) {
+                return back()
+                    ->withInput()
+                    ->with('error', 'Anda tidak memiliki akses ke kelas ini.');
+            }
+
+            DB::beginTransaction();
+
+            $praktikum->update([
+                'judul' => $validated['judul'],
+                'deskripsi' => $validated['deskripsi'],
+                'kelas_id' => $validated['kelas_id'],
+                'deadline' => $validated['deadline'],
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('dosen.praktikum.index')
+                ->with('success', 'Praktikum berhasil diperbarui.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan saat mengupdate praktikum.');
+            DB::rollBack();
+            Log::error('Error updating praktikum:', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request_data' => $request->all()
+            ]);
+
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat memperbarui praktikum: ' . $e->getMessage());
         }
     }
 
     public function destroy(Praktikum $praktikum)
     {
-        // Verify access
-        $hasAccess = DB::table('kelas_dosen')
-            ->where('kelas_id', $praktikum->kelas_id)
-            ->where('user_id', Auth::id())
-            ->exists();
-
-        if (!$hasAccess) {
-            return back()->with('error', 'Anda tidak memiliki akses ke praktikum ini.');
+        // Verify that the dosen owns this praktikum
+        if ($praktikum->dosen_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
         }
 
         try {

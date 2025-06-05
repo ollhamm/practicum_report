@@ -30,6 +30,7 @@ class Kelas extends Model
             ->where('role', 'dosen');
     }
 
+
     public function mahasiswa(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'kelas_mahasiswa', 'kelas_id', 'user_id')
