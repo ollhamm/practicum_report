@@ -1,9 +1,9 @@
 <x-maha-layout>
     <div class="py-6">
-        <div class="w-full mx-auto px-2">
+        <div class="w-full container-index mx-auto px-2">
             <!-- Header -->
-            <div class="mb-6">
-                <h2 class="text-2xl font-semibold text-gray-800">Daftar Praktikum</h2>
+            <div class="mb-6 sm:mb-8" data-aos="fade-down" data-aos-duration="400">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Daftar Praktikum Anda</h1>
                 <p class="text-gray-600 mt-1">Kelola dan submit laporan praktikum Anda</p>
             </div>
 
@@ -18,15 +18,15 @@
             </div>
             @else
             <!-- Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-duration="500">
                 @foreach($praktikums as $praktikum)
                 @php
                 $laporan = $praktikum->laporan_praktikum->first();
                 $isOverdue = $praktikum->deadline < now();
-                    $daysLeft=now()->diffInDays($praktikum->deadline, false);
+                    $daysLeft=round(now()->diffInDays($praktikum->deadline, false));
                     @endphp
 
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 flex flex-col h-full" data-aos="fade-up" data-aos-delay="200">
                         <!-- Card Header -->
                         <div class="p-6 border-b border-gray-100">
                             <div class="flex items-start justify-between">
@@ -43,13 +43,13 @@
                                 <!-- Status Badge -->
                                 <div class="ml-4">
                                     @if($praktikum->laporan_praktikum->isEmpty())
-                                    <span class="px-3 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-700">
                                         Belum Submit
                                     </span>
                                     @else
                                     @php $laporan = $praktikum->laporan_praktikum->first(); @endphp
-                                    <span class="px-3 py-1 text-xs font-medium rounded-full 
-                                                {{ $laporan->status === 'reviewed' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full 
+                                    {{ $laporan->status === 'reviewed' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-800' }}">
                                         {{ $laporan->status === 'reviewed' ? 'Selesai' : 'Submitted' }}
                                     </span>
                                     @endif
@@ -57,8 +57,8 @@
                             </div>
                         </div>
 
-                        <!-- Card Body -->
-                        <div class="p-6">
+                        <!-- Card Body - flex-grow untuk mengambil sisa ruang -->
+                        <div class="p-6 flex-grow" data-aos="fade-up" data-aos-duration="500">
                             <!-- Deadline Info -->
                             <div class="mb-4">
                                 <div class="flex items-center text-sm mb-2">
@@ -71,11 +71,11 @@
                                     </span>
                                     @if(!$isOverdue && $praktikum->laporan_praktikum->isEmpty())
                                     <span class="text-xs px-2 py-1 rounded-full 
-                                                {{ $daysLeft <= 1 ? 'bg-red-100 text-red-700' : ($daysLeft <= 3 ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700') }}">
+                                    {{ $daysLeft <= 1 ? 'bg-red-100 text-red-700' : ($daysLeft <= 3 ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700') }}">
                                         {{ $daysLeft > 0 ? $daysLeft . ' hari lagi' : 'Hari ini' }}
                                     </span>
                                     @elseif($isOverdue && $praktikum->laporan_praktikum->isEmpty())
-                                    <span class="text-xs px-2 py-1 rounded-full bg-red-100 text-red-700">
+                                    <span class="text-xs px-2 py-1 font-semibold rounded-full bg-red-100 text-red-700">
                                         Terlambat
                                     </span>
                                     @endif
@@ -95,12 +95,12 @@
                             @endif
                         </div>
 
-                        <!-- Card Footer/Actions -->
-                        <div class="px-6 pb-6">
+                        <!-- Card Footer/Actions - selalu di bawah -->
+                        <div class="px-6 pb-6 mt-auto">
                             @if($praktikum->laporan_praktikum->isEmpty())
                             <!-- Upload Action -->
                             <a href="{{ route('mahasiswa.laporan.create', ['praktikum_id' => $praktikum->id]) }}"
-                                class="w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                class="w-full inline-flex items-center justify-center px-4 py-3 bg-blue-50 hover:text-blue-800 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-100 border border-blue-200 transition-colors duration-200">
                                 <i class="fas fa-upload mr-2"></i>
                                 Upload Laporan
                             </a>
@@ -110,26 +110,17 @@
                                 @if($laporan->status === 'reviewed')
                                 <!-- View Correction -->
                                 <a href="{{ route('mahasiswa.laporan.koreksi', $laporan) }}"
-                                    class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200">
+                                    class="flex-1 inline-flex items-center justify-center px-4 py-3 bg-green-50 text-green-700 text-sm font-medium rounded-lg hover:bg-green-100 border border-green-300 hover:text-green-800 transition-all duration-300">
                                     <i class="fas fa-check-circle mr-2"></i>
                                     Lihat Koreksi
                                 </a>
                                 @else
                                 <!-- View Report -->
                                 <a href="{{ route('mahasiswa.laporan.show', $laporan) }}"
-                                    class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                                    class="flex-1 inline-flex items-center transition-all duration-300 justify-center px-3 py-2 bg-purple-50 text-purple-700 hover:text-purple-800 border border-purple-200 text-sm font-medium rounded-lg hover:bg-purple-100">
                                     <i class="fas fa-eye mr-2"></i>
                                     Lihat
                                 </a>
-
-                                <!-- Edit if not overdue -->
-                                @if($praktikum->deadline > now())
-                                <a href="{{ route('mahasiswa.laporan.edit', $laporan) }}"
-                                    class="flex-1 inline-flex items-center justify-center px-3 py-2 bg-yellow-600 text-white text-sm font-medium rounded-lg hover:bg-yellow-700 transition-colors duration-200">
-                                    <i class="fas fa-edit mr-2"></i>
-                                    Edit
-                                </a>
-                                @endif
                                 @endif
                             </div>
                             @endif
@@ -155,18 +146,6 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-
-        /* Hover effects for cards */
-        .bg-white:hover {
-            transform: translateY(-1px);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 640px) {
-            .grid-cols-1 {
-                gap: 1rem;
-            }
         }
     </style>
 </x-maha-layout>

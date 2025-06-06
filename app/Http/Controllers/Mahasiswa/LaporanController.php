@@ -7,6 +7,7 @@ use App\Models\LaporanPraktikum;
 use App\Models\Praktikum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
@@ -79,7 +80,6 @@ class LaporanController extends Controller
     {
         $this->authorize('view', $laporan);
 
-        $laporan->load(['praktikum.kelas']);
 
         return view('mahasiswa.laporan.show', compact('laporan'));
     }
@@ -136,6 +136,88 @@ class LaporanController extends Controller
             ->with('success', 'Laporan praktikum berhasil dihapus.');
     }
 
+    // file download and view panduan and template
+    // Ganti method downloadPanduan dan downloadTemplate dalam LaporanController
+
+    public function downloadPanduan(Praktikum $praktikum)
+    {
+        $this->authorize('view', $praktikum);
+
+        if (!$praktikum->panduan_path || !Storage::exists($praktikum->panduan_path)) {
+            abort(404, 'File panduan tidak ditemukan.');
+        }
+
+        return Storage::download($praktikum->panduan_path);
+    }
+
+    // view panduan
+    public function viewPanduan(Praktikum $praktikum)
+    {
+        // Verify mahasiswa is enrolled in the class untuk praktikum ini
+        $this->authorize('view', $praktikum);
+
+        if (!$praktikum) {
+            abort(403, 'Anda tidak memiliki akses ke praktikum ini.');
+        }
+        if (!$praktikum->panduan_path || !Storage::exists($praktikum->panduan_path)) {
+            abort(404, 'File panduan tidak ditemukan.');
+        }
+        $file = Storage::get($praktikum->panduan_path);
+        $type = Storage::mimeType($praktikum->panduan_path);
+        $filename = basename($praktikum->panduan_path);
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
+    public function downloadTemplate(Praktikum $praktikum)
+    {
+        // Verify mahasiswa is enrolled in the class untuk praktikum ini
+        $isEnrolled = $praktikum->whereHas('kelas.mahasiswa', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->exists();
+
+        if (!$isEnrolled) {
+            abort(403, 'Anda tidak memiliki akses ke praktikum ini.');
+        }
+
+        if (!$praktikum->template_path || !Storage::exists($praktikum->template_path)) {
+            abort(404, 'File template tidak ditemukan.');
+        }
+
+        return Storage::download($praktikum->template_path);
+    }
+
+    // view template
+    public function viewTemplate(Praktikum $praktikum)
+    {
+        // Verify mahasiswa is enrolled in the class untuk praktikum ini
+        $isEnrolled = $praktikum->whereHas('kelas.mahasiswa', function ($query) {
+            $query->where('users.id', Auth::id());
+        })->exists();
+        if (!$isEnrolled) {
+            abort(403, 'Anda tidak memiliki akses ke praktikum ini.');
+        }
+        if (!$praktikum->template_path || !Storage::exists($praktikum->template_path)) {
+            abort(404, 'File template tidak ditemukan.');
+        }
+        $file = Storage::get($praktikum->template_path);
+        $type = Storage::mimeType($praktikum->template_path);
+        $filename = basename($praktikum->template_path);
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
+
+
+
+
+
+    // file download and view methods
+    // These methods handle downloading and viewing files for the laporan praktikum
     public function download(LaporanPraktikum $laporan)
     {
         $this->authorize('view', $laporan);
@@ -160,22 +242,19 @@ class LaporanController extends Controller
 
     public function viewFile(LaporanPraktikum $laporan)
     {
-        // Otomatis aman karena scoped binding (lihat route di bawah)
-        // Tapi tetap cek tambahan untuk jaga-jaga
-        if ($laporan->mahasiswa_id !== Auth::id()) {
-            abort(403, 'Unauthorized access.');
-        }
+        $this->authorize('view', $laporan);
 
-        // Pastikan file ada
-        if (!Storage::disk('public')->exists($laporan->file_path)) {
+        if (!$laporan->file_path || !Storage::exists($laporan->file_path)) {
             abort(404, 'File laporan tidak ditemukan.');
         }
 
-        $filePath = Storage::disk('public')->path($laporan->file_path);
+        $file = Storage::get($laporan->file_path);
+        $type = Storage::mimeType($laporan->file_path);
+        $filename = basename($laporan->file_path);
 
-        return response()->file($filePath, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="laporan.pdf"'
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
         ]);
     }
 
@@ -187,6 +266,13 @@ class LaporanController extends Controller
             abort(404, 'File koreksi tidak ditemukan.');
         }
 
-        return response()->file(Storage::path($laporan->file_koreksi_path));
+        $file = Storage::get($laporan->file_koreksi_path);
+        $type = Storage::mimeType($laporan->file_koreksi_path);
+        $filename = basename($laporan->file_koreksi_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="koreksi_' . $filename . '"'
+        ]);
     }
 }

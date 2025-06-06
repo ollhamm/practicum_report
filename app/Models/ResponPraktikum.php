@@ -9,6 +9,8 @@ class ResponPraktikum extends Model
 {
     use HasFactory;
 
+    protected $table = 'respon_praktikum';
+
     protected $fillable = [
         'laporan_praktikum_id',
         'user_id',

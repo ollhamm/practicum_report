@@ -1,26 +1,26 @@
 <x-maha-layout>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6">
+        <div class="w-full mx-auto px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <div class="flex justify-between items-center mb-6">
+                    <div class="flex justify-between items-center mb-6" data-aos="fade-down" data-aos-duration="400">
                         <h2 class="text-2xl font-semibold text-gray-800">Detail Laporan Praktikum</h2>
-                        <div class="space-x-2">
+                        <div class="space-x-2 flex flex-row items-center">
                             @if($laporan->status !== 'reviewed')
                             <a href="{{ route('mahasiswa.laporan.edit', $laporan) }}"
-                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-                                Edit
+                                class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
+                                <i class="fas fa-edit fa-md"></i>
                             </a>
                             @endif
                             <a href="{{ route('mahasiswa.laporan.index') }}"
-                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                                Back
+                                class="flex items-center justify-center transition-all duration-300 border border-gray-400 p-2 rounded-sm text-gray-600 hover:bg-gray-500 hover:text-white w-8 h-8">
+                                <i class="fas fa-arrow-left fa-sm"></i>
                             </a>
                         </div>
                     </div>
 
                     <!-- Praktikum Info -->
-                    <div class="mb-6 bg-gray-50 p-4 rounded-lg">
+                    <div class="mb-6 bg-purple-50 border border-purple-200 p-4 rounded-lg" data-aos="fade-up" data-aos-duration="500">
                         <h3 class="text-lg font-medium text-gray-900 mb-2">Informasi Praktikum</h3>
                         <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -58,21 +58,12 @@
 
                         <div class="mt-4 space-y-2">
                             @if($laporan->praktikum->panduan_path)
-                            <a href="{{ route('dosen.praktikum.download-panduan', $laporan->praktikum) }}"
-                                class="inline-flex items-center text-blue-600 hover:text-blue-800">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
-                                </svg>
-                                Download Panduan
-                            </a>
-                            @endif
-                            @if($laporan->praktikum->template_path)
-                            <a href="{{ route('dosen.praktikum.download-template', $laporan->praktikum) }}"
-                                class="inline-flex items-center text-blue-600 hover:text-blue-800">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
-                                </svg>
-                                Download Template
+
+                            <a href="{{ route('mahasiswa.laporan.view-panduan', $laporan->praktikum) }}"
+                                target="_blank"
+                                class="text-purple-600 flex flex-row gap-2 items-center w-fit font-medium hover:text-purple-800 text-sm">
+                                <i class="fa-solid fa-eye"></i>
+                                <span>Panduan Praktikum</span>
                             </a>
                             @endif
                         </div>
@@ -81,16 +72,17 @@
                     <!-- Laporan Info -->
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Laporan</h3>
-
-                        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                        <div class="bg-white border border-gray-200 shadow overflow-hidden sm:rounded-lg">
                             <div class="px-4 py-5 sm:p-6">
                                 <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                                     <div>
-                                        <dt class="text-sm font-medium text-gray-500">File Laporan</dt>
+                                        <dt class="text-sm font-medium text-gray-500">File Laporan Praktikum Yang Di Unggah</dt>
                                         <dd class="mt-1">
-                                            <a href="{{ route('mahasiswa.laporan.download', $laporan) }}"
-                                                class="text-blue-600 hover:text-blue-800">
-                                                Download Laporan
+                                            <a href="{{ route('mahasiswa.laporan.view-file', $laporan) }}"
+                                                target="_blank"
+                                                class="text-purple-600 flex flex-row gap-2 items-center w-fit font-medium hover:text-purple-800 text-sm">
+                                                <i class="fa-solid fa-eye"></i>
+                                                <span>File Laporan Praktikum Anda </span>
                                             </a>
                                         </dd>
                                     </div>

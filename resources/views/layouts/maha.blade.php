@@ -26,6 +26,10 @@
     <!-- Sweet allert 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+    <!-- aos -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.css">
+
     <!-- Scripts and Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -64,7 +68,7 @@
     </nav>
 
     <!-- Main Content Container -->
-    <div class="pt-16 pb-20 md:pb-0 min-h-screen md:mb-24 mb-0">
+    <div class="pt-16 pb-24">
         <main id="main-content" class="px-4 py-4">
             <!-- Page Content -->
             {{ $slot }}
@@ -75,7 +79,7 @@
     <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-40 block ">
         <div class="flex justify-around items-center py-2">
             <!-- Home Menu -->
-            <a href="#" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="/mahasiswa/dashboard" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-home text-xl mb-1"></i>
                 <span class="text-xs font-medium">Home</span>
             </a>
@@ -87,13 +91,13 @@
             </a>
 
             <!-- Kelas Menu -->
-            <a href="#" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('kelas.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
-                <i class="fas fa-users text-xl mb-1"></i>
+            <a href="/mahasiswa/kelas" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('kelas.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+                <i class="fas fa-door-open mb-1 text-xl"></i>
                 <span class="text-xs font-medium">Kelas</span>
             </a>
 
             <!-- Profile Menu -->
-            <a href="#" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('profile.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="{{ route('mahasiswa.profile.index') }}" class=" footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('profile.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-user text-xl mb-1"></i>
                 <span class="text-xs font-medium">Profile</span>
             </a>
@@ -196,6 +200,18 @@
             }
         });
     </script>
+
+    <script>
+        // Initialize AOS when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                easing: 'ease-out-cubic'
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.min.js"></script>
 </body>
 
 </html>

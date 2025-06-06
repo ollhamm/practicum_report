@@ -16,6 +16,7 @@ use App\Http\Controllers\Mahasiswa\LaporanController;
 use App\Http\Controllers\Mahasiswa\HasilNormalController;
 use App\Http\Controllers\Admin\KelasManagementController;
 use App\Http\Controllers\Admin\PraktikumManagementController;
+use App\Http\Controllers\Mahasiswa\KelasController as MahasiswaKelasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -110,14 +111,27 @@ Route::middleware('auth')->group(function () {
         ->name('mahasiswa.')
         ->group(function () {
             Route::scopeBindings()->group(function () {
-                Route::get('/dashboard', [LaporanController::class, 'index'])->name('dashboard');
+                Route::get('/dashboard', [\App\Http\Controllers\Mahasiswa\DashboardController::class, 'index'])->name('dashboard');
                 Route::resource('laporan', LaporanController::class);
+                Route::resource('kelas', MahasiswaKelasController::class)->only(['index', 'show']);
+
+                // File Download Routes
+                Route::get('laporan/{praktikum}/download-panduan', [LaporanController::class, 'downloadPanduan'])->name('laporan.download-panduan');
+                Route::get('laporan/{praktikum}/download-template', [LaporanController::class, 'downloadTemplate'])->name('laporan.download-template');
+                // File View Routes
+                Route::get('laporan/{praktikum}/view-panduan', [LaporanController::class, 'viewPanduan'])->name('laporan.view-panduan');
+                Route::get('laporan/{praktikum}/view-template', [LaporanController::class, 'viewTemplate'])->name('laporan.view-template');
+
+                // File Download Routes
                 Route::get('laporan/{laporan}/download', [LaporanController::class, 'download'])->name('laporan.download');
                 Route::get('laporan/{laporan}/download-koreksi', [LaporanController::class, 'downloadKoreksi'])->name('laporan.download-koreksi');
                 Route::get('laporan/{laporan}/koreksi', [LaporanController::class, 'viewKoreksi'])->name('laporan.koreksi');
                 Route::get('laporan/{laporan}/view-file', [LaporanController::class, 'viewFile'])->name('laporan.view-file');
                 Route::get('laporan/{laporan}/view-koreksi-file', [LaporanController::class, 'viewKoreksiFile'])->name('laporan.view-koreksi-file');
                 Route::get('/hasil-normal', [HasilNormalController::class, 'index'])->name('hasil-normal.index');
+
+                // profile
+                Route::get('/profile', [\App\Http\Controllers\Mahasiswa\ProfileController::class, 'index'])->name('profile.index');
             });
         });
 });
