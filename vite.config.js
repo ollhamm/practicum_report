@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
@@ -13,6 +13,13 @@ export default defineConfig({
     resolve: {
         alias: {
             '@': '/resources/js',
+        },
+    },
+    server: {
+        host: true, // penting agar Vite bisa diakses dari luar
+        hmr: {
+            host: 'localhost', // atau bisa juga gunakan IP lokal kamu
+            protocol: 'ws',
         },
     },
 });

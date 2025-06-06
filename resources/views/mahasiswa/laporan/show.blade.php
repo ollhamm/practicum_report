@@ -1,7 +1,7 @@
 <x-maha-layout>
     <div class="py-6">
         <div class="w-full mx-auto px-2">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6" data-aos="fade-down" data-aos-duration="400">
                         <h2 class="text-2xl font-semibold text-gray-800">Detail Laporan Praktikum</h2>
@@ -55,6 +55,10 @@
                                 </dd>
                             </div>
                         </dl>
+                        <div class="mt-4">
+                            <dt class="text-sm font-medium text-gray-500">Deskripsi</dt>
+                            <dd class="text-sm text-gray-900">{{ $laporan->praktikum->deskripsi }}</dd>
+                        </div>
 
                         <div class="mt-4 space-y-2">
                             @if($laporan->praktikum->panduan_path)

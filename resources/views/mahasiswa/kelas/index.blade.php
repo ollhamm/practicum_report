@@ -25,7 +25,7 @@
                 </div>
 
                 <!-- Card Body -->
-                <div class="p-6">
+                <div class="p-6" data-aos="fade-up" data-aos-duration="500">
                     <!-- Statistics -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <!-- Students Count -->

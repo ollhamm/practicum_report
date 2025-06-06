@@ -32,6 +32,10 @@
                                     </span>
                                 </dd>
                             </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Deskripsi</dt>
+                                <dd class="text-sm text-gray-900">{{ $praktikum->deskripsi }}</dd>
+                            </div>
                         </dl>
 
                         <div class="mt-4 space-x-4 space-y-2">

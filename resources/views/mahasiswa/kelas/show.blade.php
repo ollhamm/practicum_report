@@ -2,7 +2,7 @@
     <div class="py-6">
         <div class="w-full mx-auto px-2">
             <!-- Header -->
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div data-aos="fade-down" data-aos-duration="400" class="mb-6 flex flex-row justify-between gap-4">
                 <div>
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Detail Data Kelas</h1>
                     <p class="text-gray-600 mt-1">Informasi lengkap kelas</p>
@@ -14,7 +14,7 @@
             </div>
 
             <!-- Class Information Cards -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6" data-aos="fade-up" data-aos-duration="500">
                 <!-- Class Info Card -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="p-6 border-b border-gray-100">
@@ -84,21 +84,4 @@
         </div>
     </div>
 
-    <style>
-        /* Hover effects for cards */
-        .bg-white:hover {
-            transform: translateY(-1px);
-        }
-
-        /* Responsive table improvements */
-        @media (max-width: 768px) {
-            .flex-col {
-                align-items: flex-start;
-            }
-
-            .sm\:flex-row .sm\:justify-between {
-                align-items: flex-start;
-            }
-        }
-    </style>
 </x-maha-layout>

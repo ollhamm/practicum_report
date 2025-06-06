@@ -2,7 +2,7 @@
     <div class="py-6">
         <div class="w-full mx-auto px-2">
             <!-- Header -->
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" data-aos="fade-down" data-aos-duration="400">
                 <div>
                     <h1 class="text-xl sm:text-2xl font-bold text-gray-900">Biodata Mahasiswa</h1>
                     <p class="text-gray-600 mt-1">Informasi profil pengguna</p>
@@ -12,8 +12,8 @@
             <!-- Profile Cards -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Profile Picture Card -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-lg relative h-full shadow-sm border border-gray-200">
+                <div class="lg:col-span-1" data-aos="fade-up" data-aos-duration="500">
+                    <div class="bg-white rounded-lg h-full shadow-sm border border-gray-200">
                         <div class="p-6 text-center">
                             <div class="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 @if($user->foto_profile)
@@ -33,7 +33,7 @@
                 </div>
 
                 <!-- Personal Information Card -->
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-2" data-aos="fade-down" data-aos-duration="600">
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                         <div class="p-6 border-b border-gray-100">
                             <div class="flex items-center">
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Address Information Card -->
-            <div class="mt-6">
+            <div class="mt-6" data-aos="fade-down" data-aos-duration="700">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center">
@@ -104,7 +104,7 @@
                             <h3 class="text-lg font-semibold text-gray-900">Alamat</h3>
                         </div>
                     </div>
-                    <div class="p-6">
+                    <div class="p-6" data-aos="fade-down" data-aos-delay="200">
                         <div class="bg-gray-50 rounded-lg p-4">
                             <p class="text-sm text-gray-900">
                                 {{ $user->alamat_ktp ?? 'Alamat belum diisi. Silakan lengkapi profil Anda.' }}
@@ -115,7 +115,7 @@
             </div>
 
             <!-- Account Information Card -->
-            <div class="mt-6">
+            <div class="mt-6" data-aos="fade-down" data-aos-duration="800">
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="p-6 border-b border-gray-100">
                         <div class="flex items-center">
@@ -167,7 +167,7 @@
                         <form method="POST" action="{{ route('logout') ?? '#' }}">
                             @csrf
                             <button type="submit"
-                                class="cursor-pointer border mt-4 bg-red-100 border-red-500 hover:bg-red-500 text-red-600 hover:text-white transition-all duration-300 font-medium py-2 px-4 rounded-md w-fit text-xs">
+                                class="cursor-pointer border mt-8 bg-red-100 border-red-500 hover:bg-red-500 text-red-600 hover:text-white transition-all duration-300 font-medium py-2 px-4 rounded-md w-fit text-xs">
                                 <i class="fas fa-sign-out-alt mr-1"></i>
                                 Logout
                             </button>
