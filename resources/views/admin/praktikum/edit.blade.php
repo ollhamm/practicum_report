@@ -133,7 +133,12 @@
                                     @if($praktikum->panduan_path)
                                     <div class="mb-2 flex items-center space-x-2">
                                         <span class="text-sm text-gray-500">File saat ini:</span>
-                                        <a href="{{ route('dosen.praktikum.download-panduan', $praktikum) }}"
+                                        <a href="{{ route('admin.praktikum.view-panduan', $praktikum) }}"
+                                            target="_blank"
+                                            class="text-purple-600 hover:text-purple-800 text-sm">
+                                            Lihat Panduan
+                                        </a>
+                                        <a href="{{ route('admin.praktikum.download-panduan', $praktikum) }}"
                                             class="text-blue-600 hover:text-blue-800 text-sm">
                                             Download Panduan
                                         </a>
@@ -152,7 +157,12 @@
                                     @if($praktikum->template_path)
                                     <div class="mb-2 flex items-center space-x-2">
                                         <span class="text-sm text-gray-500">File saat ini:</span>
-                                        <a href="{{ route('dosen.praktikum.download-template', $praktikum) }}"
+                                        <a href="{{ route('admin.praktikum.view-template', $praktikum) }}"
+                                            target="_blank"
+                                            class="text-purple-600 hover:text-purple-800 text-sm">
+                                            Lihat Template
+                                        </a>
+                                        <a href="{{ route('admin.praktikum.download-template', $praktikum) }}"
                                             class="text-blue-600 hover:text-blue-800 text-sm">
                                             Download Template
                                         </a>

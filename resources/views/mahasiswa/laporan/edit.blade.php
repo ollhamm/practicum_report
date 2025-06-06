@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-maha-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -36,22 +36,22 @@
 
                         <div class="mt-4 space-y-2">
                             @if($laporan->praktikum->panduan_path)
-                                <a href="{{ route('dosen.praktikum.download-panduan', $laporan->praktikum) }}"
-                                    class="inline-flex items-center text-blue-600 hover:text-blue-800">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
-                                    </svg>
-                                    Download Panduan
-                                </a>
+                            <a href="{{ route('dosen.praktikum.download-panduan', $laporan->praktikum) }}"
+                                class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
+                                </svg>
+                                Download Panduan
+                            </a>
                             @endif
                             @if($laporan->praktikum->template_path)
-                                <a href="{{ route('dosen.praktikum.download-template', $laporan->praktikum) }}"
-                                    class="inline-flex items-center text-blue-600 hover:text-blue-800">
-                                    <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
-                                    </svg>
-                                    Download Template
-                                </a>
+                            <a href="{{ route('dosen.praktikum.download-template', $laporan->praktikum) }}"
+                                class="inline-flex items-center text-blue-600 hover:text-blue-800">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4.586l-2.293-2.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l4-4a1 1 0 00-1.414-1.414L11 11.586V7z"></path>
+                                </svg>
+                                Download Template
+                            </a>
                             @endif
                         </div>
                     </div>
@@ -64,7 +64,7 @@
                             <label for="file" class="block text-sm font-medium text-gray-700">File Laporan (PDF)</label>
                             <div class="mt-2 flex items-center space-x-2">
                                 <span class="text-sm text-gray-500">File saat ini:</span>
-                                <a href="{{ route('mahasiswa.laporan.download', $laporan) }}" 
+                                <a href="{{ route('mahasiswa.laporan.download', $laporan) }}"
                                     class="text-blue-600 hover:text-blue-800 text-sm">
                                     Download Laporan
                                 </a>
@@ -73,7 +73,7 @@
                                 class="mt-1 block w-full @error('file') border-red-500 @enderror">
                             <p class="mt-1 text-sm text-gray-500">Max. 10MB</p>
                             @error('file')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -82,7 +82,7 @@
                             <textarea name="catatan" id="catatan" rows="3"
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 @error('catatan') border-red-500 @enderror">{{ old('catatan', $laporan->catatan) }}</textarea>
                             @error('catatan')
-                                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -97,4 +97,4 @@
             </div>
         </div>
     </div>
-</x-app-layout> 
+</x-maha-layout>

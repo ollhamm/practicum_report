@@ -66,6 +66,18 @@ Route::middleware('auth')->group(function () {
         Route::resource('kelas', KelasManagementController::class);
         Route::get('kelas/{kelas}/dosen', [PraktikumManagementController::class, 'getDosenByKelas'])->name('kelas.dosen');
         Route::resource('praktikum', PraktikumManagementController::class);
+
+        // File Download Routes (NEW)
+        Route::get('praktikum/{praktikum}/download-panduan', [PraktikumManagementController::class, 'downloadPanduan'])->name('praktikum.download-panduan');
+        Route::get('praktikum/{praktikum}/download-template', [PraktikumManagementController::class, 'downloadTemplate'])->name('praktikum.download-template');
+
+        // File View Routes (NEW)
+        Route::get('praktikum/{praktikum}/view-panduan', [PraktikumManagementController::class, 'viewPanduan'])->name('praktikum.view-panduan');
+        Route::get('praktikum/{praktikum}/view-template', [PraktikumManagementController::class, 'viewTemplate'])->name('praktikum.view-template');
+
+        // Laporan Routes (NEW)
+        Route::get('praktikum/laporan/{laporan}/view', [PraktikumManagementController::class, 'viewLaporan'])->name('praktikum.view-laporan');
+        Route::get('praktikum/laporan/{laporan}/download-koreksi', [PraktikumManagementController::class, 'downloadKoreksi'])->name('praktikum.download-koreksi');
     });
 
     // Dosen routes
@@ -77,8 +89,14 @@ Route::middleware('auth')->group(function () {
 
         // Praktikum Routes (full CRUD)
         Route::resource('praktikum', App\Http\Controllers\Dosen\PraktikumController::class);
+
+        // File Download Routes
         Route::get('praktikum/{praktikum}/download-panduan', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadPanduan'])->name('praktikum.download-panduan');
         Route::get('praktikum/{praktikum}/download-template', [App\Http\Controllers\Dosen\PraktikumController::class, 'downloadTemplate'])->name('praktikum.download-template');
+
+        // File View Routes (NEW)
+        Route::get('praktikum/{praktikum}/view-panduan', [App\Http\Controllers\Dosen\PraktikumController::class, 'viewPanduan'])->name('praktikum.view-panduan');
+        Route::get('praktikum/{praktikum}/view-template', [App\Http\Controllers\Dosen\PraktikumController::class, 'viewTemplate'])->name('praktikum.view-template');
 
         // Penilaian Routes
         Route::get('praktikum/{praktikum}/penilaian/{mahasiswa}', [App\Http\Controllers\Dosen\PraktikumController::class, 'penilaian'])->name('praktikum.penilaian');

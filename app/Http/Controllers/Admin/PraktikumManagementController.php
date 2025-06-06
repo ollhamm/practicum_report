@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Praktikum;
 use App\Models\Kelas;
 use App\Models\User;
+use App\Models\LaporanPraktikum;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Log;
 
 class PraktikumManagementController extends Controller
@@ -103,7 +106,7 @@ class PraktikumManagementController extends Controller
         $file = new \SplFileObject($logFile, 'r');
         $file->seek(PHP_INT_MAX);
         $lastLine = $file->key();
-        
+
         $lines = new \LimitIterator($file, max(0, $lastLine - 50), $lastLine);
         foreach ($lines as $line) {
             if (trim($line)) {
@@ -135,7 +138,7 @@ class PraktikumManagementController extends Controller
     {
         $kelas_list = Kelas::all();
         $dosen_id = $praktikum->dosen_id;
-        
+
         return view('admin.praktikum.edit', compact('praktikum', 'kelas_list', 'dosen_id'));
     }
 
@@ -224,5 +227,82 @@ class PraktikumManagementController extends Controller
             Log::error('Error getting dosen by kelas: ' . $e->getMessage());
             return response()->json(['error' => 'Terjadi kesalahan saat mengambil data dosen'], 500);
         }
+    }
+
+
+    // Tambahkan method ini ke dalam PraktikumManagementController
+
+    public function downloadPanduan(Praktikum $praktikum)
+    {
+        if (!$praktikum->panduan_path || !Storage::exists($praktikum->panduan_path)) {
+            abort(404, 'File panduan tidak ditemukan.');
+        }
+
+        return Storage::download($praktikum->panduan_path);
+    }
+
+    public function downloadTemplate(Praktikum $praktikum)
+    {
+        if (!$praktikum->template_path || !Storage::exists($praktikum->template_path)) {
+            abort(404, 'File template tidak ditemukan.');
+        }
+
+        return Storage::download($praktikum->template_path);
+    }
+
+    public function viewPanduan(Praktikum $praktikum)
+    {
+        if (!$praktikum->panduan_path || !Storage::exists($praktikum->panduan_path)) {
+            abort(404, 'File panduan tidak ditemukan.');
+        }
+
+        $file = Storage::get($praktikum->panduan_path);
+        $type = Storage::mimeType($praktikum->panduan_path);
+        $filename = basename($praktikum->panduan_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
+    public function viewTemplate(Praktikum $praktikum)
+    {
+        if (!$praktikum->template_path || !Storage::exists($praktikum->template_path)) {
+            abort(404, 'File template tidak ditemukan.');
+        }
+
+        $file = Storage::get($praktikum->template_path);
+        $type = Storage::mimeType($praktikum->template_path);
+        $filename = basename($praktikum->template_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
+    public function viewLaporan(LaporanPraktikum $laporan)
+    {
+        if (!Storage::exists($laporan->file_path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        $file = Storage::get($laporan->file_path);
+        $type = Storage::mimeType($laporan->file_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="laporan.pdf"'
+        ]);
+    }
+
+    public function downloadKoreksi(LaporanPraktikum $laporan)
+    {
+        if (!$laporan->file_koreksi_path || !Storage::exists($laporan->file_koreksi_path)) {
+            abort(404, 'File koreksi tidak ditemukan.');
+        }
+
+        return Storage::download($laporan->file_koreksi_path, 'koreksi.pdf');
     }
 }

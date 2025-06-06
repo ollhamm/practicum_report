@@ -30,11 +30,11 @@ class PraktikumController extends Controller
     {
         $kelas = null;
         $kelas_list = Auth::user()->kelas;
-        
+
         // Jika ada kelas_id dari request, load data kelas
         if ($request->has('kelas_id')) {
             $kelas = $kelas_list->find($request->kelas_id);
-            
+
             // Jika kelas tidak ditemukan atau dosen tidak memiliki akses
             if (!$kelas) {
                 return redirect()
@@ -227,6 +227,45 @@ class PraktikumController extends Controller
         return Storage::download($praktikum->template_path);
     }
 
+
+    // Tambahkan method ini ke dalam PraktikumController
+
+    public function viewPanduan(Praktikum $praktikum)
+    {
+        $this->authorize('view', $praktikum);
+
+        if (!$praktikum->panduan_path || !Storage::exists($praktikum->panduan_path)) {
+            abort(404, 'File panduan tidak ditemukan.');
+        }
+
+        $file = Storage::get($praktikum->panduan_path);
+        $type = Storage::mimeType($praktikum->panduan_path);
+        $filename = basename($praktikum->panduan_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
+    public function viewTemplate(Praktikum $praktikum)
+    {
+        $this->authorize('view', $praktikum);
+
+        if (!$praktikum->template_path || !Storage::exists($praktikum->template_path)) {
+            abort(404, 'File template tidak ditemukan.');
+        }
+
+        $file = Storage::get($praktikum->template_path);
+        $type = Storage::mimeType($praktikum->template_path);
+        $filename = basename($praktikum->template_path);
+
+        return Response::make($file, 200, [
+            'Content-Type' => $type,
+            'Content-Disposition' => 'inline; filename="' . $filename . '"'
+        ]);
+    }
+
     public function penilaian(Praktikum $praktikum, User $mahasiswa)
     {
         // Verify that the dosen owns this praktikum
@@ -278,7 +317,7 @@ class PraktikumController extends Controller
                 if ($laporan->file_koreksi_path) {
                     Storage::delete($laporan->file_koreksi_path);
                 }
-                
+
                 $path = $request->file('file_koreksi')->store('koreksi');
                 $laporan->file_koreksi_path = $path;
                 Log::info('File uploaded to: ' . $path);
