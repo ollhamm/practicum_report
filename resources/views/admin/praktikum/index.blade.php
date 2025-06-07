@@ -44,6 +44,7 @@
                                 <tr>
                                     <th>Judul</th>
                                     <th>Kelas</th>
+                                    <th>Mata Kuliah</th>
                                     <th>Dosen</th>
                                     <th>Deadline</th>
                                     <th>Aksi</th>
@@ -61,18 +62,24 @@
                                         <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
                                         <div class="text-sm text-gray-500">{{ $praktikum->kelas->kode }}</div>
                                     </td>
+                                    <td class="py-4 whitespace-nowrap">
+                                        <span class="text-gray-900">
+                                            {{ !empty($praktikum->matakuliah) ? $praktikum->matakuliah : '-' }}
+                                        </span>
+
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($praktikum->dosen)
-                                            <div class="text-sm text-gray-900">
-                                                {{ $praktikum->dosen->name }}
-                                            </div>
-                                            <div class="text-sm text-gray-500">
-                                                {{ $praktikum->dosen->nip ?? '-' }}
-                                            </div>
+                                        <div class="text-sm text-gray-900">
+                                            {{ $praktikum->dosen->name }}
+                                        </div>
+                                        <div class="text-sm text-gray-500">
+                                            {{ $praktikum->dosen->nip ?? '-' }}
+                                        </div>
                                         @else
-                                            <div class="text-sm text-gray-500">
-                                                Dosen belum ditentukan
-                                            </div>
+                                        <div class="text-sm text-gray-500">
+                                            Dosen belum ditentukan
+                                        </div>
                                         @endif
                                     </td>
                                     <td class="py-4 whitespace-nowrap">

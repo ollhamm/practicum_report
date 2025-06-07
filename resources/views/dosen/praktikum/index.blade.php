@@ -43,18 +43,31 @@
                             <thead class="bg-gray-200">
                                 <tr>
                                     <th>Judul</th>
+                                    <th>Mata Kuliah</th>
                                     <th>Kelas</th>
                                     <th>Deadline</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($praktikums as $praktikum)
-                                <tr>
+                                <tr class="{{ $praktikum->laporan_praktikum->count() > 0 ? 'bg-red-50 border-l-4 border-red-400' : '' }}">
                                     <td class="py-4 whitespace-nowrap">
-                                        <span class="text-gray-950 font-medium">
-                                            {{ $praktikum->judul }}
-                                        </span>
+                                        <div class="flex items-center">
+                                            <span class="text-gray-950 font-medium">
+                                                {{ $praktikum->judul }}
+                                            </span>
+                                            {{-- Indikator badge untuk laporan yang perlu direview --}}
+                                            @if($praktikum->laporan_praktikum->count() > 0)
+                                            <span class="ml-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                                                {{ $praktikum->laporan_praktikum->count() }} Perlu Review
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ !empty($praktikum->matakuliah) ? $praktikum->matakuliah : '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
@@ -68,6 +81,23 @@
                                             {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('H:i') }}
                                         </div>
                                     </td>
+                                    <td class="py-4 whitespace-nowrap">
+                                        @if($praktikum->laporan_praktikum->count() > 0)
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                            <svg class="w-2 h-2 mr-1 fill-current" viewBox="0 0 8 8">
+                                                <circle cx="4" cy="4" r="3" />
+                                            </svg>
+                                            Ada Laporan Baru
+                                        </span>
+                                        @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            <svg class="w-2 h-2 mr-1 fill-current" viewBox="0 0 8 8">
+                                                <circle cx="4" cy="4" r="3" />
+                                            </svg>
+                                            Tidak Ada Laporan
+                                        </span>
+                                        @endif
+                                    </td>
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
                                             <a href="{{ route('dosen.praktikum.edit', $praktikum) }}"
@@ -76,8 +106,14 @@
                                             </a>
 
                                             <a href="{{ route('dosen.praktikum.show', $praktikum) }}"
-                                                class="flex items-center justify-center transition-all duration-300 border border-purple-500 p-2 rounded-sm text-purple-500 hover:bg-purple-500 hover:text-white w-8 h-8">
+                                                class="flex items-center justify-center transition-all duration-300 border border-purple-500 p-2 rounded-sm text-purple-500 hover:bg-purple-500 hover:text-white w-8 h-8 relative">
                                                 <i class="fas fa-eye fa-md"></i>
+                                                {{-- Badge notification pada tombol detail --}}
+                                                @if($praktikum->laporan_praktikum->count() > 0)
+                                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                                    {{ $praktikum->laporan_praktikum->count() }}
+                                                </span>
+                                                @endif
                                             </a>
 
                                             <form action="{{ route('dosen.praktikum.destroy', $praktikum) }}" method="POST">

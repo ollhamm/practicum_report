@@ -67,6 +67,120 @@
                             </div>
 
                             <div>
+                                <label for="matakuliah" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Mata Kuliah <span class="text-red-500">*</span>
+                                </label>
+                                <select name="matakuliah" id="matakuliah" required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('matakuliah') border-red-500 focus:ring-red-500 @enderror">
+                                    <option value="">Pilih Mata Kuliah</option>
+
+                                    <!-- Mata Kuliah Dasar Umum -->
+                                    <optgroup label="Mata Kuliah Dasar Umum">
+                                        <option value="Pancasila" {{ old('matakuliah') == 'Pancasila' ? 'selected' : '' }}>Pancasila</option>
+                                        <option value="Pendidikan Kewarganegaraan" {{ old('matakuliah') == 'Pendidikan Kewarganegaraan' ? 'selected' : '' }}>Pendidikan Kewarganegaraan</option>
+                                        <option value="Bahasa Indonesia" {{ old('matakuliah') == 'Bahasa Indonesia' ? 'selected' : '' }}>Bahasa Indonesia</option>
+                                        <option value="Bahasa Inggris" {{ old('matakuliah') == 'Bahasa Inggris' ? 'selected' : '' }}>Bahasa Inggris</option>
+                                        <option value="Agama Islam" {{ old('matakuliah') == 'Agama Islam' ? 'selected' : '' }}>Agama Islam</option>
+                                        <option value="Agama Kristen" {{ old('matakuliah') == 'Agama Kristen' ? 'selected' : '' }}>Agama Kristen</option>
+                                        <option value="Agama Katolik" {{ old('matakuliah') == 'Agama Katolik' ? 'selected' : '' }}>Agama Katolik</option>
+                                        <option value="Agama Hindu" {{ old('matakuliah') == 'Agama Hindu' ? 'selected' : '' }}>Agama Hindu</option>
+                                        <option value="Agama Buddha" {{ old('matakuliah') == 'Agama Buddha' ? 'selected' : '' }}>Agama Buddha</option>
+                                        <option value="Agama Khonghucu" {{ old('matakuliah') == 'Agama Khonghucu' ? 'selected' : '' }}>Agama Khonghucu</option>
+                                    </optgroup>
+
+                                    <!-- Matematika dan Sains -->
+                                    <optgroup label="Matematika dan Sains">
+                                        <option value="Matematika Dasar" {{ old('matakuliah') == 'Matematika Dasar' ? 'selected' : '' }}>Matematika Dasar</option>
+                                        <option value="Kalkulus" {{ old('matakuliah') == 'Kalkulus' ? 'selected' : '' }}>Kalkulus</option>
+                                        <option value="Aljabar Linear" {{ old('matakuliah') == 'Aljabar Linear' ? 'selected' : '' }}>Aljabar Linear</option>
+                                        <option value="Statistika" {{ old('matakuliah') == 'Statistika' ? 'selected' : '' }}>Statistika</option>
+                                        <option value="Fisika Dasar" {{ old('matakuliah') == 'Fisika Dasar' ? 'selected' : '' }}>Fisika Dasar</option>
+                                        <option value="Kimia Dasar" {{ old('matakuliah') == 'Kimia Dasar' ? 'selected' : '' }}>Kimia Dasar</option>
+                                        <option value="Biologi Dasar" {{ old('matakuliah') == 'Biologi Dasar' ? 'selected' : '' }}>Biologi Dasar</option>
+                                    </optgroup>
+
+                                    <!-- Teknologi Informasi -->
+                                    <optgroup label="Teknologi Informasi">
+                                        <option value="Algoritma dan Pemrograman" {{ old('matakuliah') == 'Algoritma dan Pemrograman' ? 'selected' : '' }}>Algoritma dan Pemrograman</option>
+                                        <option value="Struktur Data" {{ old('matakuliah') == 'Struktur Data' ? 'selected' : '' }}>Struktur Data</option>
+                                        <option value="Basis Data" {{ old('matakuliah') == 'Basis Data' ? 'selected' : '' }}>Basis Data</option>
+                                        <option value="Jaringan Komputer" {{ old('matakuliah') == 'Jaringan Komputer' ? 'selected' : '' }}>Jaringan Komputer</option>
+                                        <option value="Pemrograman Web" {{ old('matakuliah') == 'Pemrograman Web' ? 'selected' : '' }}>Pemrograman Web</option>
+                                        <option value="Pemrograman Mobile" {{ old('matakuliah') == 'Pemrograman Mobile' ? 'selected' : '' }}>Pemrograman Mobile</option>
+                                        <option value="Sistem Operasi" {{ old('matakuliah') == 'Sistem Operasi' ? 'selected' : '' }}>Sistem Operasi</option>
+                                        <option value="Rekayasa Perangkat Lunak" {{ old('matakuliah') == 'Rekayasa Perangkat Lunak' ? 'selected' : '' }}>Rekayasa Perangkat Lunak</option>
+                                        <option value="Kecerdasan Buatan" {{ old('matakuliah') == 'Kecerdasan Buatan' ? 'selected' : '' }}>Kecerdasan Buatan</option>
+                                        <option value="Machine Learning" {{ old('matakuliah') == 'Machine Learning' ? 'selected' : '' }}>Machine Learning</option>
+                                        <option value="Data Mining" {{ old('matakuliah') == 'Data Mining' ? 'selected' : '' }}>Data Mining</option>
+                                        <option value="Cyber Security" {{ old('matakuliah') == 'Cyber Security' ? 'selected' : '' }}>Cyber Security</option>
+                                    </optgroup>
+
+                                    <!-- Ekonomi dan Bisnis -->
+                                    <optgroup label="Ekonomi dan Bisnis">
+                                        <option value="Pengantar Ekonomi" {{ old('matakuliah') == 'Pengantar Ekonomi' ? 'selected' : '' }}>Pengantar Ekonomi</option>
+                                        <option value="Akuntansi Dasar" {{ old('matakuliah') == 'Akuntansi Dasar' ? 'selected' : '' }}>Akuntansi Dasar</option>
+                                        <option value="Manajemen" {{ old('matakuliah') == 'Manajemen' ? 'selected' : '' }}>Manajemen</option>
+                                        <option value="Pemasaran" {{ old('matakuliah') == 'Pemasaran' ? 'selected' : '' }}>Pemasaran</option>
+                                        <option value="Keuangan" {{ old('matakuliah') == 'Keuangan' ? 'selected' : '' }}>Keuangan</option>
+                                        <option value="Sumber Daya Manusia" {{ old('matakuliah') == 'Sumber Daya Manusia' ? 'selected' : '' }}>Sumber Daya Manusia</option>
+                                        <option value="Entrepreneurship" {{ old('matakuliah') == 'Entrepreneurship' ? 'selected' : '' }}>Entrepreneurship</option>
+                                    </optgroup>
+
+                                    <!-- Teknik -->
+                                    <optgroup label="Teknik">
+                                        <option value="Gambar Teknik" {{ old('matakuliah') == 'Gambar Teknik' ? 'selected' : '' }}>Gambar Teknik</option>
+                                        <option value="Mekanika Teknik" {{ old('matakuliah') == 'Mekanika Teknik' ? 'selected' : '' }}>Mekanika Teknik</option>
+                                        <option value="Elektronika Dasar" {{ old('matakuliah') == 'Elektronika Dasar' ? 'selected' : '' }}>Elektronika Dasar</option>
+                                        <option value="Rangkaian Listrik" {{ old('matakuliah') == 'Rangkaian Listrik' ? 'selected' : '' }}>Rangkaian Listrik</option>
+                                        <option value="Termodinamika" {{ old('matakuliah') == 'Termodinamika' ? 'selected' : '' }}>Termodinamika</option>
+                                        <option value="Mesin-Mesin Listrik" {{ old('matakuliah') == 'Mesin-Mesin Listrik' ? 'selected' : '' }}>Mesin-Mesin Listrik</option>
+                                        <option value="Teknik Digital" {{ old('matakuliah') == 'Teknik Digital' ? 'selected' : '' }}>Teknik Digital</option>
+                                    </optgroup>
+
+                                    <!-- Sosial dan Humaniora -->
+                                    <optgroup label="Sosial dan Humaniora">
+                                        <option value="Sosiologi" {{ old('matakuliah') == 'Sosiologi' ? 'selected' : '' }}>Sosiologi</option>
+                                        <option value="Psikologi" {{ old('matakuliah') == 'Psikologi' ? 'selected' : '' }}>Psikologi</option>
+                                        <option value="Antropologi" {{ old('matakuliah') == 'Antropologi' ? 'selected' : '' }}>Antropologi</option>
+                                        <option value="Sejarah" {{ old('matakuliah') == 'Sejarah' ? 'selected' : '' }}>Sejarah</option>
+                                        <option value="Filsafat" {{ old('matakuliah') == 'Filsafat' ? 'selected' : '' }}>Filsafat</option>
+                                        <option value="Komunikasi" {{ old('matakuliah') == 'Komunikasi' ? 'selected' : '' }}>Komunikasi</option>
+                                    </optgroup>
+
+                                    <!-- Kesehatan -->
+                                    <optgroup label="Kesehatan">
+                                        <option value="Anatomi" {{ old('matakuliah') == 'Anatomi' ? 'selected' : '' }}>Anatomi</option>
+                                        <option value="Fisiologi" {{ old('matakuliah') == 'Fisiologi' ? 'selected' : '' }}>Fisiologi</option>
+                                        <option value="Farmakologi" {{ old('matakuliah') == 'Farmakologi' ? 'selected' : '' }}>Farmakologi</option>
+                                        <option value="Kesehatan Masyarakat" {{ old('matakuliah') == 'Kesehatan Masyarakat' ? 'selected' : '' }}>Kesehatan Masyarakat</option>
+                                        <option value="Gizi" {{ old('matakuliah') == 'Gizi' ? 'selected' : '' }}>Gizi</option>
+                                    </optgroup>
+
+                                    <!-- Pertanian -->
+                                    <optgroup label="Pertanian">
+                                        <option value="Ilmu Tanah" {{ old('matakuliah') == 'Ilmu Tanah' ? 'selected' : '' }}>Ilmu Tanah</option>
+                                        <option value="Budidaya Tanaman" {{ old('matakuliah') == 'Budidaya Tanaman' ? 'selected' : '' }}>Budidaya Tanaman</option>
+                                        <option value="Hama dan Penyakit" {{ old('matakuliah') == 'Hama dan Penyakit' ? 'selected' : '' }}>Hama dan Penyakit</option>
+                                        <option value="Agronomi" {{ old('matakuliah') == 'Agronomi' ? 'selected' : '' }}>Agronomi</option>
+                                    </optgroup>
+
+                                    <!-- Pendidikan -->
+                                    <optgroup label="Pendidikan">
+                                        <option value="Kurikulum dan Pembelajaran" {{ old('matakuliah') == 'Kurikulum dan Pembelajaran' ? 'selected' : '' }}>Kurikulum dan Pembelajaran</option>
+                                        <option value="Psikologi Pendidikan" {{ old('matakuliah') == 'Psikologi Pendidikan' ? 'selected' : '' }}>Psikologi Pendidikan</option>
+                                        <option value="Metodologi Penelitian" {{ old('matakuliah') == 'Metodologi Penelitian' ? 'selected' : '' }}>Metodologi Penelitian</option>
+                                        <option value="Evaluasi Pembelajaran" {{ old('matakuliah') == 'Evaluasi Pembelajaran' ? 'selected' : '' }}>Evaluasi Pembelajaran</option>
+                                    </optgroup>
+                                </select>
+                                @error('matakuliah')
+                                <p class="mt-1 text-sm text-red-500 flex items-center">
+                                    <i class="fas fa-exclamation-circle mr-1"></i>
+                                    {{ $message }}
+                                </p>
+                                @enderror
+                            </div>
+
+                            <div>
                                 <label for="deadline" class="block text-sm font-medium text-gray-700 mb-2">Deadline <span class="text-red-500">*</span></label>
                                 <input type="datetime-local" name="deadline" id="deadline" value="{{ old('deadline') }}" required
                                     class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-transparent @error('deadline') border-red-500 @enderror">

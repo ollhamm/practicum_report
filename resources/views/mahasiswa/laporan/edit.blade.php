@@ -21,6 +21,10 @@
                                 <dd class="text-sm text-gray-900">{{ $laporan->praktikum->judul }}</dd>
                             </div>
                             <div>
+                                <dt class="text-sm font-medium text-gray-500">Dosen Pengajar</dt>
+                                <dd class="text-sm text-gray-900">{{ $laporan->praktikum->dosen->name }}</dd>
+                            </div>
+                            <div>
                                 <dt class="text-sm font-medium text-gray-500">Kelas</dt>
                                 <dd class="text-sm text-gray-900">{{ $laporan->praktikum->kelas->nama }} ({{ $laporan->praktikum->kelas->kode }})</dd>
                             </div>

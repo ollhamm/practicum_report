@@ -79,25 +79,25 @@
     <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-40 block ">
         <div class="flex justify-around items-center py-2">
             <!-- Home Menu -->
-            <a href="/mahasiswa/dashboard" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('dashboard') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="/mahasiswa/dashboard" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->is('mahasiswa/dashboard') || request()->is('mahasiswa/dashboard*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-home text-xl mb-1"></i>
                 <span class="text-xs font-medium">Home</span>
             </a>
 
             <!-- Praktikum Menu -->
-            <a href="/mahasiswa/laporan" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('praktikum.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="/mahasiswa/laporan" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->is('mahasiswa/laporan') || request()->is('mahasiswa/laporan*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-flask text-xl mb-1"></i>
                 <span class="text-xs font-medium">Praktikum</span>
             </a>
 
             <!-- Kelas Menu -->
-            <a href="/mahasiswa/kelas" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('kelas.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="/mahasiswa/kelas" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->is('mahasiswa/kelas') || request()->is('mahasiswa/kelas*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-door-open mb-1 text-xl"></i>
                 <span class="text-xs font-medium">Kelas</span>
             </a>
 
             <!-- Profile Menu -->
-            <a href="{{ route('mahasiswa.profile.index') }}" class=" footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->routeIs('profile.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
+            <a href="{{ route('mahasiswa.profile.index') }}" class="footer-menu-item flex flex-col items-center py-2 px-3 rounded-lg transition-all duration-200 {{ request()->is('mahasiswa/profile') || request()->is('mahasiswa/profile*') ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50' }}">
                 <i class="fas fa-user text-xl mb-1"></i>
                 <span class="text-xs font-medium">Profile</span>
             </a>

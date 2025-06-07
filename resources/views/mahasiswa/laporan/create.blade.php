@@ -16,8 +16,13 @@
                         <h3 class="text-lg font-medium text-gray-900 mb-2">Informasi Praktikum</h3>
                         <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <dt class="text-sm font-medium text-gray-500">Judul</dt>
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Judul</dt>
                                 <dd class="text-sm text-gray-900">{{ $praktikum->judul }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">Dosen Pengajar</dt>
+                                <dd class="text-sm text-gray-900">{{ $praktikum->dosen->name }}</dd>
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-gray-500">Kelas</dt>

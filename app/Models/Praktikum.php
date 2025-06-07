@@ -15,6 +15,7 @@ class Praktikum extends Model
 
     protected $fillable = [
         'judul',
+        'matakuliah',
         'deskripsi',
         'kelas_id',
         'dosen_id',

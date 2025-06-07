@@ -55,19 +55,23 @@
                             </a>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
+                            <table id="praktikumTable" class="min-w-full">
+                                <thead class="bg-gray-200">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
+                                        <th>Judul</th>
+                                        <th>Mata Kuliah</th>
+                                        <th>Kelas</th>
+                                        <th>Deadline</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @forelse($recent_praktikum as $praktikum)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">{{ $praktikum->judul }}</div>
+                                            <div class="text-sm font-medium text-gray-950">{{ $praktikum->judul }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-900">{{ $praktikum->matakuliah }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
@@ -98,4 +102,18 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            var kelasTable = $("#praktikumTable").DataTable({
+                info: false,
+                responsive: true,
+                dom: "trip",
+                stripeClasses: [],
+                order: [
+                    [0, "asc"]
+                ],
+            });
+        });
+    </script>
 </x-app-layout>

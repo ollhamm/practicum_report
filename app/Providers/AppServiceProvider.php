@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+use App\Models\LaporanPraktikum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,9 +23,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Force HTTPS untuk semua URL
         // if (config('app.env') === 'production' || request()->header('x-forwarded-proto') === 'https') {
         //     URL::forceScheme('https');
         // }
+
+        // Share notification count untuk dosen
+        View::composer('*', function ($view) {
+            if (Auth::check() && Auth::user()->role === 'dosen') {
+                $unreviewedCount = LaporanPraktikum::whereHas('praktikum', function ($query) {
+                    $query->where('dosen_id', Auth::id());
+                })
+                    ->where('status', 'submitted')
+                    ->count();
+
+                $view->with('unreviewedReportsCount', $unreviewedCount);
+            }
+        });
     }
 }

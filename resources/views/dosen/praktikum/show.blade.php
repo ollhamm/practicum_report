@@ -129,12 +129,12 @@
                                 <table id="daftar-siswa" class="min-w-full divide-y divide-gray-200">
                                     <thead class="bg-gray-200">
                                         <tr>
-                                            <th class="uppercase tracking-wider">No</th>
-                                            <th class="uppercase tracking-wider">Nama</th>
-                                            <th class="uppercase tracking-wider">NIM</th>
-                                            <th class="uppercase tracking-wider">Status</th>
-                                            <th class="uppercase tracking-wider">Nilai</th>
-                                            <th class="uppercase tracking-wider">Aksi</th>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>NIM</th>
+                                            <th>Status</th>
+                                            <th>Nilai</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">

@@ -11,12 +11,6 @@
                         </a>
                     </div>
 
-                    <!-- Praktikum Info -->
-                    <div class="mb-6">
-                        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ $laporan->praktikum->judul }}</h3>
-                        <p class="text-sm text-gray-600">{{ $laporan->praktikum->kelas->nama_kelas }}</p>
-                    </div>
-
                     <!-- Assessment Details -->
                     <div class="bg-green-50 border border-green-300 p-4 rounded-lg mb-6" data-aos="fade-up" data-aos-duration="500">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -25,6 +19,24 @@
                                 <p class="text-base font-medium {{ $laporan->status === 'reviewed' ? 'text-green-600' : 'text-yellow-600' }}">
                                     {{ ucfirst($laporan->status) }}
                                 </p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                                    Judul
+                                </h4>
+                                <p class="text-base text-gray-900">{{ $laporan->praktikum->judul }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                                    Dosen Pengajar
+                                </h4>
+                                <p class="text-base text-gray-900">{{ $laporan->praktikum->dosen->name }}</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500 mb-1">
+                                    Kelas
+                                </h4>
+                                <p class="text-base text-gray-900">{{ $laporan->praktikum->kelas->nama_kelas }}</p>
                             </div>
                             @if($laporan->nilai)
                             <div>

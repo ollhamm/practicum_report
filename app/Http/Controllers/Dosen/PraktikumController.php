@@ -18,7 +18,12 @@ class PraktikumController extends Controller
 {
     public function index()
     {
-        $praktikums = Praktikum::with(['kelas'])
+        $praktikums = Praktikum::with([
+            'kelas',
+            'laporan_praktikum' => function ($query) {
+                $query->where('status', 'submitted');
+            }
+        ])
             ->where('dosen_id', Auth::id())
             ->latest()
             ->paginate(10);
@@ -51,6 +56,7 @@ class PraktikumController extends Controller
         try {
             $validated = $request->validate([
                 'judul' => ['required', 'string', 'max:255'],
+                'matakuliah' => ['required', 'string', 'max:255'],
                 'deskripsi' => ['required', 'string'],
                 'kelas_id' => ['required', 'exists:kelas,id'],
                 'deadline' => ['required', 'date'],
@@ -69,6 +75,7 @@ class PraktikumController extends Controller
 
             $praktikum = new Praktikum([
                 'judul' => $validated['judul'],
+                'matakuliah' => $validated['matakuliah'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
                 'dosen_id' => Auth::id(),
@@ -150,6 +157,7 @@ class PraktikumController extends Controller
         try {
             $validated = $request->validate([
                 'judul' => ['required', 'string', 'max:255'],
+                'matakuliah' => ['required', 'string', 'max:255'],
                 'deskripsi' => ['required', 'string'],
                 'kelas_id' => ['required', 'exists:kelas,id'],
                 'deadline' => ['required', 'date'],
@@ -166,6 +174,7 @@ class PraktikumController extends Controller
 
             $praktikum->update([
                 'judul' => $validated['judul'],
+                'matakuliah' => $validated['matakuliah'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
                 'deadline' => $validated['deadline'],

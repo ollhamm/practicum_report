@@ -62,7 +62,7 @@
                             <!-- Deadline Info -->
                             <div class="mb-4">
                                 <div class="flex items-center text-sm mb-2">
-                                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                                    <i class="fa-regular fa-calendar-minus mr-2"></i>
                                     <span class="text-gray-600">Deadline</span>
                                 </div>
                                 <div class="flex items-center justify-between">

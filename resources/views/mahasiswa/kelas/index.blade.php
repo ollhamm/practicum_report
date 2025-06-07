@@ -18,7 +18,7 @@
                                 {{ $kelas->nama_kelas }}
                             </h3>
                             <div class="flex items-center text-sm text-gray-600 mb-2">
-                                {{ $kelas->kode }}
+                                <i class="fa-solid fa-file-code mr-2"></i> {{ $kelas->kode }}
                             </div>
                         </div>
                     </div>

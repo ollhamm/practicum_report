@@ -41,6 +41,7 @@ class PraktikumManagementController extends Controller
         try {
             $validated = $request->validate([
                 'judul' => ['required', 'string', 'max:255'],
+                'matakuliah' => ['required', 'string', 'max:255'],
                 'deskripsi' => ['required', 'string'],
                 'kelas_id' => ['required', 'exists:kelas,id'],
                 'dosen_id' => ['required', 'exists:users,id'],
@@ -52,6 +53,7 @@ class PraktikumManagementController extends Controller
             // Create praktikum with dosen_id
             $praktikum = Praktikum::create([
                 'judul' => $validated['judul'],
+                'matakuliah' => $validated['matakuliah'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
                 'dosen_id' => $validated['dosen_id'],
@@ -149,6 +151,7 @@ class PraktikumManagementController extends Controller
     {
         $validated = $request->validate([
             'judul' => ['required', 'string', 'max:255'],
+            'matakuliah' => ['required', 'string', 'max:255'],
             'deskripsi' => ['required', 'string'],
             'kelas_id' => ['required', 'exists:kelas,id'],
             'dosen_id' => ['required', 'exists:users,id'],
@@ -161,6 +164,7 @@ class PraktikumManagementController extends Controller
             // Update praktikum
             $praktikum->update([
                 'judul' => $validated['judul'],
+                'matakuliah' => $validated['matakuliah'],
                 'deskripsi' => $validated['deskripsi'],
                 'kelas_id' => $validated['kelas_id'],
                 'dosen_id' => $validated['dosen_id'],
