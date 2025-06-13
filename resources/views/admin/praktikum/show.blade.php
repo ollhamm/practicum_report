@@ -121,79 +121,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="mt-6">
-                        <div class="bg-gray-50 border border-gray-200 rounded-sm p-6">
-                            <h3 class="text-sm font-semibold text-gray-800 mb-4">Daftar Mahasiswa</h3>
-                            <div class="overflow-x-auto">
-                                <table id="daftar-siswa" class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-200">
-                                        <tr>
-                                            <th class="uppercase tracking-wider">No</th>
-                                            <th class="uppercase tracking-wider">Nama</th>
-                                            <th class="uppercase tracking-wider">NIM</th>
-                                            <th class="uppercase tracking-wider">Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        @forelse($praktikum->kelas->mahasiswa as $index => $mahasiswa)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-gray-500">
-                                                {{ $index + 1 }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="text-gray-950 font-medium">
-                                                    {{ $mahasiswa->name }}
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap ">
-                                                {{ $mahasiswa->nip }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                @php
-                                                $laporan = $praktikum->laporan_praktikum->where('mahasiswa_id', $mahasiswa->id)->first();
-                                                @endphp
-                                                @if($laporan)
-                                                <span class="p-1 inline-flex text-xs leading-5 rounded-sm 
-                                                            {{ $laporan->status === 'reviewed' ? 'bg-green-600 text-white' : 'bg-yellow-600 text-white' }}">
-                                                    {{ $laporan->status === 'reviewed' ? 'Sudah Dinilai' : 'Belum Dinilai' }}
-                                                </span>
-                                                @else
-                                                <span class="p-1 inline-flex text-xs leading-5 rounded-sm bg-red-500 text-white">
-                                                    Belum Mengumpulkan
-                                                </span>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                        @empty
-                                        <tr>
-                                            <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                                                Belum ada mahasiswa yang terdaftar
-                                            </td>
-                                        </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            $("#customSearch").on("keyup", function() {
-                daftarSiswa.search(this.value).draw();
-            });
-            var daftarSiswa = $("#daftar-siswa").DataTable({
-                info: false,
-                responsive: true,
-                dom: "trip",
-                stripeClasses: [],
-                ordering: false
-            });
-        });
-    </script>
 </x-app-layout>

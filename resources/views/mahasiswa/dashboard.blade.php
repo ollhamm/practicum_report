@@ -63,6 +63,75 @@
             </div>
             @endif
 
+            <!-- Nilai Normal Table Section -->
+            <div class="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-200 mb-6 sm:mb-8" data-aos="fade-up" data-aos-duration="500">
+                <div class="p-4 sm:p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-base sm:text-lg font-semibold text-gray-800">Referensi Nilai Normal</h2>
+                        <span class="text-xs sm:text-sm text-gray-600">{{ $nilaiNormals->count() }} data</span>
+                    </div>
+                    <div class="overflow-x-auto md:py-0 py-4">
+                        <div class="relative max-w-xs mb-4">
+                            <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                            <input type="text" id="customSearch"
+                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
+                                placeholder="Search..." autocomplete="off" />
+                        </div>
+                        <table id="nilaiNormalTable" class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-blue-50">
+                                <tr>
+                                    <th>Test</th>
+                                    <th>Parameter</th>
+                                    <th>Unit</th>
+                                    <th>Min</th>
+                                    <th>Max</th>
+                                    <th>Gender</th>
+                                    <th>Usia</th>
+                                    <th>Referensi</th>
+                                    <th>Catatan</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach($nilaiNormals as $nilai)
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">{{ $nilai->test_name }}</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $nilai->parameter }}</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $nilai->unit }}</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $nilai->normal_min }}</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $nilai->normal_max }}</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        {{ $nilai->gender }}
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ $nilai->age_min }} - {{ $nilai->age_max }}</div>
+                                        <div class="text-xs text-gray-500">tahun</div>
+                                    </td>
+                                    <td class="px-3 py-2 whitespace-nowrap">
+                                        <div class="text-sm text-gray-900">{{ Str::limit($nilai->referensi, 20) }}</div>
+                                    </td>
+                                    <td class="px-3 py-2">
+                                        <div class="text-sm text-gray-900 max-w-xs">
+                                            {{ $nilai->notes ? Str::limit($nilai->notes, 50) : '-' }}
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- Content Grid -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
                 <!-- Kelas yang Diikuti -->
@@ -172,4 +241,20 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            $("#customSearch").on("keyup", function() {
+                nilaiNormalTable.search(this.value).draw();
+            });
+            var nilaiNormalTable = $("#nilaiNormalTable").DataTable({
+                info: false,
+                responsive: true,
+                dom: "trip",
+                stripeClasses: [],
+                order: [
+                    [0, "asc"]
+                ],
+            });
+        });
+    </script>
 </x-maha-layout>

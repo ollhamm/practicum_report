@@ -49,7 +49,7 @@
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-lg font-semibold text-gray-800">Praktikum Terbaru</h3>
-                            <a href="{{ route('dosen.praktikum.index') }}" class="text-sm text-blue-500 hover:text-blue-600">
+                            <a href="{{ route('dosen.praktikum.index') }}" class="text-sm text-[#6010FF] hover:text-[#560ee5]">
                                 Lihat Semua
                                 <i class="fas fa-arrow-right ml-1"></i>
                             </a>

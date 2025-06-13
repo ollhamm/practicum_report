@@ -5,12 +5,9 @@
             <div class="flex flex-row items-center justify-center mb-8">
                 <div class="flex items-center">
                     <div class="flex items-center justify-center">
-                        <div class="flex items-center justify-center">
-                            <i class="fas fa-graduation-cap text-gray-600 fa-xl"></i>
+                        <div class=" flex items-center justify-center">
+                            <img src="{{ asset('images/Logo.svg') }}" alt="Logo" class="h-10 w-full object-cover">
                         </div>
-                    </div>
-                    <div class="ml-1 flex flex-row items-center">
-                        <span class="text-lg font-semibold text-gray-600">Praktikum</span>
                     </div>
                 </div>
             </div>
@@ -18,7 +15,7 @@
             <!-- Progress Indicator -->
             <div class="mb-6">
                 <div class="flex items-center justify-center space-x-2 mb-2">
-                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-[#6010FF] rounded-full"></div>
                     <div class="w-8 h-1 bg-gray-200 rounded"></div>
                     <div class="w-3 h-3 bg-gray-200 rounded-full"></div>
                     <div class="w-8 h-1 bg-gray-200 rounded"></div>
@@ -65,7 +62,7 @@
                     </div>
 
                     <button type="button" onclick="nextStep()"
-                        class="bg-blue-500 text-white cursor-pointer hover:bg-blue-600 font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full mb-4">
+                        class="bg-[#6010FF] text-white cursor-pointer hover:bg-[#560ee5] font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full mb-4">
                         Continue
                     </button>
                 </div>
@@ -156,7 +153,7 @@
                             Back
                         </button>
                         <button type="button" onclick="nextStep()"
-                            class="bg-blue-500 text-white cursor-pointer hover:bg-blue-600 font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full">
+                            class="bg-[#6010FF] text-white cursor-pointer hover:bg-[#560ee5] font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full">
                             Continue
                         </button>
                     </div>
@@ -219,7 +216,7 @@
                 <div class="mt-6">
                     <p class="text-center text-gray-600 text-sm">
                         Already have an account?
-                        <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-800">Login</a>
+                        <a href="{{ route('login') }}" class="text-[#6010FF] hover:text-[#560ee5]">Login</a>
                     </p>
                 </div>
             </form>
@@ -239,7 +236,7 @@
                 if (index % 2 === 0) { // Only dots (every other element)
                     const dotIndex = Math.floor(index / 2) + 1;
                     if (dotIndex <= currentStep) {
-                        dot.className = 'w-3 h-3 bg-blue-500 rounded-full';
+                        dot.className = 'w-3 h-3 bg-[#6010FF] rounded-full';
                     } else {
                         dot.className = 'w-3 h-3 bg-gray-200 rounded-full';
                     }
@@ -248,7 +245,7 @@
 
             progressBars.forEach((bar, index) => {
                 if (index + 1 < currentStep) {
-                    bar.className = 'w-8 h-1 bg-blue-500 rounded';
+                    bar.className = 'w-8 h-1 bg-[#6010FF] rounded';
                 } else {
                     bar.className = 'w-8 h-1 bg-gray-200 rounded';
                 }

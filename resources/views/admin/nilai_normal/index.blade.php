@@ -3,19 +3,19 @@
         <div class="px-2 mb-4">
             <ol class="flex w-full flex-wrap items-center">
                 <li class="flex cursor-pointer items-center text-sm text-gray-600 transition-colors duration-300 hover:text-gray-400">
-                    <a href="/dosen/dashboard">Dashboard</a>
+                    <a href="/admin/dashboard">Dashboard</a>
                     <span class="pointer-events-none mx-2 text-gray-600">
                         /
                     </span>
                 </li>
                 <li class="flex active items-center text-sm text-gray-500 transition-colors duration-300 ">
-                    <span>Praktikum</span>
+                    <span>Laporan</span>
                     <span class="pointer-events-none mx-2 text-gray-600">
                         /
                     </span>
                 </li>
                 <li class="flex items-center text-sm text-gray-700 transition-colors duration-300">
-                    <span>Daftar Praktikum Saya</span>
+                    <span>Nilai Normal</span>
                 </li>
             </ol>
         </div>
@@ -23,15 +23,15 @@
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-semibold text-gray-800">Daftar Praktikum Saya</h2>
-                        <a href="{{ route('dosen.praktikum.create') }}"
+                        <h2 class="text-2xl font-semibold text-gray-800">Manajemen Nilai Normal</h2>
+                        <a href="{{ route('admin.nilai-normal.create') }}"
                             class=" hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
                             <i class="fas fa-plus fa-sm mr-1"></i>
-                            Tambah Praktikum
+                            Tambah Nilai Normal
                         </a>
                     </div>
 
-                    <!-- Praktikum DataTable -->
+                    <!-- Nilai Normal DataTable -->
                     <div class="overflow-x-auto">
                         <div class="relative max-w-xs mb-4">
                             <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
@@ -39,71 +39,89 @@
                                 class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
                                 placeholder="Search..." autocomplete="off" />
                         </div>
-                        <table id="praktikumTable" class="min-w-full divide-y divide-gray-200">
+                        <table id="nilaiNormalTable" class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-200">
                                 <tr>
-                                    <th>Judul</th>
-                                    <th>Mata Kuliah</th>
-                                    <th>Kelas</th>
-                                    <th>Deadline</th>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Parameter</th>
+                                    <th>Unit</th>
+                                    <th>Normal Min</th>
+                                    <th>Normal Max</th>
+                                    <th>Gender</th>
+                                    <th>Umur</th>
+                                    <th>Notes</th>
+                                    <th>Referensi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @forelse($praktikums as $praktikum)
-                                <tr class="{{ $praktikum->laporan_praktikum->count() > 0 ? 'bg-red-50 border-l-4 border-red-400' : '' }}">
-                                    <td class="py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <span class="text-gray-950 font-medium">
-                                                {{ $praktikum->judul }}
-                                            </span>
-                                            {{-- Indikator badge untuk laporan yang perlu direview --}}
-                                            @if($praktikum->laporan_praktikum->count() > 0)
-                                            <span class="ml-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                                                {{ $praktikum->laporan_praktikum->count() }} Perlu Review
-                                            </span>
-                                            @endif
-                                        </div>
-                                    </td>
-                                    <td class="py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ !empty($praktikum->matakuliah) ? $praktikum->matakuliah : '-' }}
+                                @forelse($nilaiNormals as $index => $nilaiNormal)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $loop->iteration + ($nilaiNormals->currentPage() - 1) * $nilaiNormals->perPage() }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">{{ $praktikum->kelas->nama_kelas }}</div>
-                                        <div class="text-sm text-gray-500">{{ $praktikum->kelas->kode }}</div>
+                                        <span class="text-sm text-gray-900 font-medium">
+                                            {{ $nilaiNormal->test_name }}
+                                        </span>
                                     </td>
-                                    <td class="py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-900">
-                                            {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('l, d F Y') }}
-                                        </div>
-                                        <div class="text-sm text-gray-500">
-                                            {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('H:i') }}
-                                        </div>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->parameter }}
+                                        </span>
                                     </td>
-                                    <td class="py-4 whitespace-nowrap text-sm">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->unit }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->normal_min ?? '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->normal_max ?? '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ $nilaiNormal->gender ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->age_min }} - {{ $nilaiNormal->age_max }} tahun
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->notes ? Str::limit($nilaiNormal->notes, 50) : '-' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-900">
+                                            {{ $nilaiNormal->referensi }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
-                                            <a href="{{ route('dosen.praktikum.edit', $praktikum) }}"
+                                            <a href="{{ route('admin.nilai-normal.edit', $nilaiNormal) }}"
                                                 class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
                                                 <i class="fas fa-edit fa-md"></i>
                                             </a>
 
-                                            <a href="{{ route('dosen.praktikum.show', $praktikum) }}"
-                                                class="flex items-center justify-center transition-all duration-300 border border-purple-500 p-2 rounded-sm text-purple-500 hover:bg-purple-500 hover:text-white w-8 h-8 relative">
+                                            <a href="{{ route('admin.nilai-normal.show', $nilaiNormal) }}"
+                                                class="flex items-center justify-center transition-all duration-300 border border-purple-500 p-2 rounded-sm text-purple-500 hover:bg-purple-500 hover:text-white w-8 h-8">
                                                 <i class="fas fa-eye fa-md"></i>
-                                                {{-- Badge notification pada tombol detail --}}
-                                                @if($praktikum->laporan_praktikum->count() > 0)
-                                                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                                                    {{ $praktikum->laporan_praktikum->count() }}
-                                                </span>
-                                                @endif
                                             </a>
 
-                                            <form action="{{ route('dosen.praktikum.destroy', $praktikum) }}" method="POST">
+                                            <form action="{{ route('admin.nilai-normal.destroy', $nilaiNormal) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button"
                                                     class="text-red-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-red-500 border rounded-sm p-2 cursor-pointer hover:bg-red-500 hover:text-white delete-btn"
-                                                    data-name="{{ $praktikum->judul }}">
+                                                    data-name="{{ $nilaiNormal->test_name }} - {{ $nilaiNormal->parameter }}">
                                                     <i class="fas fa-trash-alt fa-md"></i>
                                                 </button>
                                             </form>
@@ -116,7 +134,7 @@
                         </table>
 
                         <div class="mt-4">
-                            {{ $praktikums->links() }}
+                            {{ $nilaiNormals->links() }}
                         </div>
                     </div>
                 </div>
@@ -127,9 +145,9 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             $("#customSearch").on("keyup", function() {
-                praktikumTable.search(this.value).draw();
+                nilaiNormalTable.search(this.value).draw();
             });
-            var praktikumTable = $("#praktikumTable").DataTable({
+            var nilaiNormalTable = $("#nilaiNormalTable").DataTable({
                 info: false,
                 responsive: true,
                 dom: "trip",
@@ -148,7 +166,7 @@
 
                     Swal.fire({
                         title: 'Apakah Anda yakin?',
-                        html: `Praktikum <span class="font-semibold">${name}</span> akan dihapus secara permanen!`,
+                        html: `Nilai Normal <span class="font-semibold">${name}</span> akan dihapus secara permanen!`,
                         showCancelButton: true,
                         confirmButtonColor: '#EF4444',
                         cancelButtonColor: '#9e9e9e',

@@ -13,12 +13,7 @@ $role = $user->role;
     <div class="flex flex-row items-center gap-2">
         <div class="flex items-center">
             <div class="flex items-center justify-center">
-                <div class="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-graduation-cap text-white fa-sm"></i>
-                </div>
-            </div>
-            <div class="ml-3 flex flex-row items-center">
-                <span class="text-lg font-semibold text-gray-600">Praktikum</span>
+                <img src="{{ asset('images/Logo.svg') }}" alt="Logo" class="h-10 w-full object-cover">
             </div>
         </div>
     </div>
@@ -92,8 +87,8 @@ $role = $user->role;
                     <span class="mx-2 text-sm">Laporan</span>
                 </a>
                 <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('laporan*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                    href="#">
+                        {{ request()->is('admin/nilai-normal*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
+                    href="{{ route('admin.nilai-normal.index') }}">
                     <i class="fa-solid fa-table-list text-gray-600 font-medium w-5"></i>
                     <span class="mx-2 text-sm">Nilai Normal</span>
                 </a>

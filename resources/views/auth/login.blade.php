@@ -5,11 +5,8 @@
                 <div class="flex items-center">
                     <div class="flex items-center justify-center">
                         <div class=" flex items-center justify-center">
-                            <i class="fas fa-graduation-cap text-gray-600 fa-xl"></i>
+                            <img src="{{ asset('images/Logo.svg') }}" alt="Logo" class="h-10 w-full object-cover">
                         </div>
-                    </div>
-                    <div class="ml-1 flex flex-row items-center">
-                        <span class="text-lg font-semibold text-gray-600">Praktikum</span>
                     </div>
                 </div>
             </div>
@@ -42,13 +39,13 @@
 
                 <div class="flex flex-col space-y-4">
                     <button type="submit"
-                        class="bg-blue-500 text-white cursor-pointer hover:bg-blue-600 font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full">
+                        class="bg-[#6010FF] text-white cursor-pointer hover:bg-[#560ee5] font-medium transition-all duration-300 text-sm py-2 px-2 rounded focus:outline-none focus:shadow-outline w-full">
                         Login
                     </button>
 
                     <p class="text-center text-gray-600 text-sm">
                         Don't have an account?
-                        <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-800">Register</a>
+                        <a href="{{ route('register') }}" class="text-[#6010FF] hover:text-[#560ee5]">Register</a>
                     </p>
                 </div>
             </form>

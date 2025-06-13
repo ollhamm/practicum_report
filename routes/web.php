@@ -79,6 +79,10 @@ Route::middleware('auth')->group(function () {
         // Laporan Routes (NEW)
         Route::get('praktikum/laporan/{laporan}/view', [PraktikumManagementController::class, 'viewLaporan'])->name('praktikum.view-laporan');
         Route::get('praktikum/laporan/{laporan}/download-koreksi', [PraktikumManagementController::class, 'downloadKoreksi'])->name('praktikum.download-koreksi');
+
+
+        // Nilai Normal Routes
+        Route::resource('nilai-normal', \App\Http\Controllers\Admin\NilaiNormalManagementController::class);
     });
 
     // Dosen routes

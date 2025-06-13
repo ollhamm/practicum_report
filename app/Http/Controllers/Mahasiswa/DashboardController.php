@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\Praktikum;
 use App\Models\LaporanPraktikum;
+use App\Models\NilaiNormal; // Import model NilaiNormal
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,6 +51,9 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('mahasiswa.dashboard', compact('stats', 'kelasDiikuti', 'praktikumTerbaru'));
+        // Ambil semua data nilai normal tanpa user id
+        $nilaiNormals = NilaiNormal::latest()->get();
+
+        return view('mahasiswa.dashboard', compact('stats', 'kelasDiikuti', 'praktikumTerbaru', 'nilaiNormals'));
     }
 }

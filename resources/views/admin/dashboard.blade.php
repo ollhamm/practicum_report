@@ -98,7 +98,7 @@
                     @endif
 
                     <div class="mt-4">
-                        <a href="{{ route('admin.users.index') }}" class="text-blue-600 text-xs font-medium hover:text-blue-900">Lihat semua pengguna →</a>
+                        <a href="{{ route('admin.users.index') }}" class="text-[#6010FF] text-xs font-medium hover:text-[#560ee5]">Lihat semua pengguna →</a>
                     </div>
                 </div>
             </div>
