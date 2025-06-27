@@ -130,11 +130,7 @@
             </div>
 
             <!-- Pagination -->
-            @if($praktikums->hasPages())
-            <div class="mt-8">
-                {{ $praktikums->links() }}
-            </div>
-            @endif
+            {{-- {{ $praktikums->links() }} --}}
             @endif
         </div>
     </div>

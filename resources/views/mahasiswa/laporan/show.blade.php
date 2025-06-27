@@ -66,13 +66,20 @@
 
                         <div class="mt-4 space-y-2">
                             @if($laporan->praktikum->panduan_path)
-
-                            <a href="{{ route('mahasiswa.laporan.view-panduan', $laporan->praktikum) }}"
-                                target="_blank"
-                                class="text-purple-600 flex flex-row gap-2 items-center w-fit font-medium hover:text-purple-800 text-sm">
-                                <i class="fa-solid fa-eye"></i>
-                                <span>Panduan Praktikum</span>
-                            </a>
+                                <a href="{{ route('mahasiswa.laporan.view-panduan', $laporan->praktikum) }}"
+                                    target="_blank"
+                                    class="text-purple-600 flex flex-row gap-2 items-center w-fit font-medium hover:text-purple-800 text-sm">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>Panduan Praktikum</span>
+                                </a>
+                            @endif
+                            @if($laporan->praktikum->template_path)
+                                <a href="{{ route('mahasiswa.laporan.view-template', $laporan->praktikum) }}"
+                                    target="_blank"
+                                    class="text-blue-600 flex flex-row gap-2 items-center w-fit font-medium hover:text-blue-800 text-sm">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span>Template Praktikum</span>
+                                </a>
                             @endif
                         </div>
                     </div>

@@ -26,7 +26,7 @@ class PraktikumController extends Controller
         ])
             ->where('dosen_id', Auth::id())
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('dosen.praktikum.index', compact('praktikums'));
     }

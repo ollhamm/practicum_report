@@ -12,7 +12,7 @@ class KelasManagementController extends Controller
 {
     public function index()
     {
-        $kelas = Kelas::with(['dosen', 'mahasiswa'])->latest()->paginate(10);
+        $kelas = Kelas::with(['dosen', 'mahasiswa'])->latest()->get();
         return view('admin.kelas.index', compact('kelas'));
     }
 

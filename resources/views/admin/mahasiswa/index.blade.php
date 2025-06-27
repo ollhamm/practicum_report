@@ -91,9 +91,7 @@
                             </tbody>
                         </table>
 
-                        <div class="mt-4">
-                            {{ $mahasiswa->links() }}
-                        </div>
+                        {{-- {{ $mahasiswa->links() }} --}}
                     </div>
                 </div>
             </div>

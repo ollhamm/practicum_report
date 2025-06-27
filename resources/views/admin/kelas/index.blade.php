@@ -94,9 +94,7 @@
                             </tbody>
                         </table>
 
-                        <div class="mt-4">
-                            {{ $kelas->links() }}
-                        </div>
+                        {{-- {{ $kelas->links() }} --}}
                     </div>
                 </div>
             </div>

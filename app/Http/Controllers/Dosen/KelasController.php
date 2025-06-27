@@ -17,7 +17,7 @@ class KelasController extends Controller
         $kelas_list = $user->kelas()
             ->withCount(['mahasiswa', 'praktikum'])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('dosen.kelas.index', compact('kelas_list'));
     }

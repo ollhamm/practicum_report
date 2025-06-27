@@ -21,7 +21,7 @@ class LaporanController extends Controller
                 $query->where('mahasiswa_id', Auth::id());
             }])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('mahasiswa.laporan.index', compact('praktikums'));
     }

@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserManagementController::class);
         Route::post('/users/{user}/approve', [UserManagementController::class, 'approve'])->name('users.approve');
         Route::post('/users/{user}/reject', [UserManagementController::class, 'reject'])->name('users.reject');
+        Route::post('users/import', [UserManagementController::class, 'import'])->name('users.import');
         Route::resource('dosen', DosenManagementController::class)->except(['create', 'store']);
         Route::resource('mahasiswa', MahasiswaManagementController::class)->except(['create', 'store']);
         Route::resource('kelas', KelasManagementController::class);

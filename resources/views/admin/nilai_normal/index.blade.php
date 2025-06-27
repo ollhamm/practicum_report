@@ -46,8 +46,8 @@
                                     <th>Nama</th>
                                     <th>Parameter</th>
                                     <th>Unit</th>
-                                    <th>Normal Min</th>
-                                    <th>Normal Max</th>
+                                    <th>Min</th>
+                                    <th>Max</th>
                                     <th>Gender</th>
                                     <th>Umur</th>
                                     <th>Notes</th>
@@ -59,7 +59,7 @@
                                 @forelse($nilaiNormals as $index => $nilaiNormal)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $loop->iteration + ($nilaiNormals->currentPage() - 1) * $nilaiNormals->perPage() }}
+                                        {{ $loop->iteration }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-sm text-gray-900 font-medium">
@@ -133,9 +133,7 @@
                             </tbody>
                         </table>
 
-                        <div class="mt-4">
-                            {{ $nilaiNormals->links() }}
-                        </div>
+                        {{-- {{ $nilaiNormals->links() }} --}}
                     </div>
                 </div>
             </div>

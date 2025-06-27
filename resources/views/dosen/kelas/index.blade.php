@@ -69,18 +69,11 @@
                                     </td>
                                 </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
-                                        Tidak ada kelas yang ditugaskan
-                                    </td>
-                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
 
-                        <div class="mt-4">
-                            {{ $kelas_list->links() }}
-                        </div>
+                        {{-- {{ $kelas_list->links() }} --}}
                     </div>
                 </div>
             </div>

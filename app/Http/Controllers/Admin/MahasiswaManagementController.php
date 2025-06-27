@@ -16,7 +16,7 @@ class MahasiswaManagementController extends Controller
         $mahasiswa = User::where('role', 'mahasiswa')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
             ->latest()
-            ->paginate(perPage: 1000);
+            ->get();
         return view('admin.mahasiswa.index', compact('mahasiswa'));
     }
     public function edit(User $mahasiswa)

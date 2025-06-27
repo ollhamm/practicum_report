@@ -115,9 +115,7 @@
                             </tbody>
                         </table>
 
-                        <div class="mt-4">
-                            {{ $praktikums->links() }}
-                        </div>
+                        {{-- {{ $praktikums->links() }} --}}
                     </div>
                 </div>
             </div>

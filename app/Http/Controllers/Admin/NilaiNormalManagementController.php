@@ -10,7 +10,7 @@ class NilaiNormalManagementController extends Controller
 {
     public function index()
     {
-        $nilaiNormals = NilaiNormal::latest()->paginate(10);
+        $nilaiNormals = NilaiNormal::latest()->get();
         return view('admin.nilai_normal.index', compact('nilaiNormals'));
     }
 

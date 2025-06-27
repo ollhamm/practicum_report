@@ -79,13 +79,6 @@ $role = $user->role;
             <!-- Reports Section -->
             <div class="space-y-3">
                 <label class="px-3 text-xs text-gray-400 uppercase">Laporan</label>
-
-                <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('laporan*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                    href="#">
-                    <i class="fas fa-file-alt text-gray-600 font-medium w-5"></i>
-                    <span class="mx-2 text-sm">Laporan</span>
-                </a>
                 <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
                         {{ request()->is('admin/nilai-normal*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
                     href="{{ route('admin.nilai-normal.index') }}">
@@ -127,18 +120,6 @@ $role = $user->role;
                         {{ $unreviewedReportsCount }}
                     </span>
                     @endif
-                </a>
-            </div>
-
-            <!-- Reports Section -->
-            <div class="space-y-3">
-                <label class="px-3 text-xs text-gray-400 uppercase">Laporan</label>
-
-                <a class="flex items-center px-3 py-2 transition-colors duration-300 transform rounded-sm text-gray-800 font-medium
-                        {{ request()->is('dosen/laporan*') ? 'bg-gray-200 text-gray-600' : 'hover:bg-gray-200' }}"
-                    href="#">
-                    <i class="fas fa-file-alt text-gray-600 font-medium w-5"></i>
-                    <span class="mx-2 text-sm">Laporan</span>
                 </a>
             </div>
             @endif
