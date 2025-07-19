@@ -171,47 +171,62 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const selectedDosenContainer = document.getElementById('selectedDosenContainer');
-            const selectedMahasiswaContainer = document.getElementById('selectedMahasiswaContainer');
-            const form = document.getElementById('kelasForm');
+    <!-- Modal Mahasiswa -->
+    <div id="mahasiswaModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="w-screen h-screen flex items-center justify-center p-4">
+            <div class="bg-white w-full h-full rounded-sm flex flex-col">
+                <div class="flex items-center justify-between p-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Pilih Mahasiswa</h3>
+                    <button type="button" id="closeMahasiswaModal" class="text-gray-400 transition-all duration-300 cursor-pointer hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
 
-            // Hidden inputs for storing selected IDs
-            const dosenIdsInput = document.createElement('input');
-            dosenIdsInput.type = 'hidden';
-            dosenIdsInput.name = 'dosen_ids[]';
-            form.appendChild(dosenIdsInput);
+                <div class="flex-1 p-6 overflow-hidden">
+                    <div class="h-full flex flex-col">
+                        <div class="flex-1 overflow-auto">
+                            <div class="relative max-w-xs mb-4">
+                                <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                                <input type="text" id="customSearchMahasiswa"
+                                    class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
+                                    placeholder="Search..." autocomplete="off" />
+                            </div>
+                            <table id="mahasiswaTable" class="w-full">
+                                <thead>
+                                    <tr>
+                                        <th class="w-12">
+                                            <input type="checkbox" id="selectAllMahasiswa" class="rounded">
+                                        </th>
+                                        <th>Nama</th>
+                                        <th>NIM</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-            const mahasiswaIdsInput = document.createElement('input');
-            mahasiswaIdsInput.type = 'hidden';
-            mahasiswaIdsInput.name = 'mahasiswa_ids[]';
-            form.appendChild(mahasiswaIdsInput);
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <span id="mahasiswaSelectionInfo" class="text-sm text-gray-600">0 mahasiswa dipilih</span>
+                        <div class="space-x-3">
+                            <button type="button" id="cancelMahasiswaSelection"
+                                class="px-4 text-sm cursor-pointer py-2 border border-gray-300 text-gray-700 hover:text-white transition-all duration-300 rounded-sm hover:bg-gray-500">
+                                Batal
+                            </button>
+                            <button type="button" id="confirmMahasiswaSelection"
+                                class="px-4 py-2 text-sm transition-all duration-300 cursor-pointer bg-green-500 text-white rounded-sm hover:bg-green-600">
+                                Pilih Mahasiswa (<span id="mahasiswaSelectedCount">0</span>)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // Listen for dosen selection events
-            window.addEventListener('users-selected', function(event) {
-                if (event.detail.role === 'dosen') {
-                    dosenIdsInput.value = event.detail.users.join(',');
-                    updateSelectedUsers(event.detail.users, event.detail.names, selectedDosenContainer);
-                } else if (event.detail.role === 'mahasiswa') {
-                    mahasiswaIdsInput.value = event.detail.users.join(',');
-                    updateSelectedUsers(event.detail.users, event.detail.names, selectedMahasiswaContainer);
-                }
-            });
-
-            function updateSelectedUsers(ids, names, container) {
-                container.innerHTML = '';
-                names.forEach(name => {
-                    const tag = document.createElement('div');
-                    tag.className = 'inline-flex items-center bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded-sm';
-                    tag.textContent = name;
-                    container.appendChild(tag);
-                });
-            }
-        });
-    </script>
-    @endpush
     <script>
         // Data dari controller - akan diisi melalui Blade template
         let dosenData = @json($dosen ?? []);
@@ -288,7 +303,6 @@
                 dosenTable.search(this.value).draw();
             });
             dosenTable = $('#dosenTable').DataTable({
-
                 info: false,
                 responsive: true,
                 dom: "trip",
@@ -321,7 +335,6 @@
                         title: 'Email'
                     },
                 ],
-
                 drawCallback: function() {
                     // Re-apply selections after table redraw
                     selectedDosen.forEach(id => {
@@ -329,7 +342,6 @@
                     });
                 }
             });
-
             // Handle individual checkbox changes
             $('#dosenTable tbody').on('change', 'input[type="checkbox"]', function() {
                 updateDosenSelection();
@@ -373,7 +385,6 @@
                         title: 'Email'
                     },
                 ],
-
                 drawCallback: function() {
                     // Re-apply selections after table redraw
                     selectedMahasiswa.forEach(id => {
@@ -381,7 +392,6 @@
                     });
                 }
             });
-
             // Handle individual checkbox changes
             $('#mahasiswaTable tbody').on('change', 'input[type="checkbox"]', function() {
                 updateMahasiswaSelection();
@@ -389,10 +399,19 @@
         }
 
         function updateDosenSelection() {
-            selectedDosen = [];
-            $('#dosenTable tbody input[type="checkbox"]:checked').each(function() {
-                selectedDosen.push(parseInt($(this).data('id')));
+            // Perbaiki: gunakan array sementara
+            let tempSelectedDosen = [...selectedDosen];
+            $('#dosenTable tbody input[type="checkbox"]').each(function() {
+                const id = parseInt($(this).data('id'));
+                if ($(this).is(':checked')) {
+                    if (!tempSelectedDosen.includes(id)) {
+                        tempSelectedDosen.push(id);
+                    }
+                } else {
+                    tempSelectedDosen = tempSelectedDosen.filter(item => item !== id);
+                }
             });
+            selectedDosen = tempSelectedDosen;
 
             $('#dosenSelectionInfo').text(`${selectedDosen.length} dosen dipilih`);
             $('#dosenSelectedCount').text(selectedDosen.length);
@@ -411,10 +430,19 @@
         }
 
         function updateMahasiswaSelection() {
-            selectedMahasiswa = [];
-            $('#mahasiswaTable tbody input[type="checkbox"]:checked').each(function() {
-                selectedMahasiswa.push(parseInt($(this).data('id')));
+            // Perbaiki: gunakan array sementara
+            let tempSelectedMahasiswa = [...selectedMahasiswa];
+            $('#mahasiswaTable tbody input[type="checkbox"]').each(function() {
+                const id = parseInt($(this).data('id'));
+                if ($(this).is(':checked')) {
+                    if (!tempSelectedMahasiswa.includes(id)) {
+                        tempSelectedMahasiswa.push(id);
+                    }
+                } else {
+                    tempSelectedMahasiswa = tempSelectedMahasiswa.filter(item => item !== id);
+                }
             });
+            selectedMahasiswa = tempSelectedMahasiswa;
 
             $('#mahasiswaSelectionInfo').text(`${selectedMahasiswa.length} mahasiswa dipilih`);
             $('#mahasiswaSelectedCount').text(selectedMahasiswa.length);
@@ -435,13 +463,11 @@
         function updateSelectedDosenDisplay() {
             const count = selectedDosen.length;
             $('#selectedDosenCount').text(`${count} dosen dipilih`);
-
             if (count > 0) {
                 const names = selectedDosen.map(id => {
                     const dosen = dosenData.find(d => d.id === id);
                     return dosen ? dosen.name : '';
                 }).filter(name => name).slice(0, 3);
-
                 let displayText = names.join(', ');
                 if (count > 3) {
                     displayText += ` dan ${count - 3} lainnya`;
@@ -455,13 +481,11 @@
         function updateSelectedMahasiswaDisplay() {
             const count = selectedMahasiswa.length;
             $('#selectedMahasiswaCount').text(`${count} mahasiswa dipilih`);
-
             if (count > 0) {
                 const names = selectedMahasiswa.map(id => {
                     const mahasiswa = mahasiswaData.find(m => m.id === id);
                     return mahasiswa ? mahasiswa.name : '';
                 }).filter(name => name).slice(0, 3);
-
                 let displayText = names.join(', ');
                 if (count > 3) {
                     displayText += ` dan ${count - 3} lainnya`;
@@ -475,12 +499,10 @@
         function updateHiddenInputs() {
             const hiddenInputsContainer = $('#hiddenInputs');
             hiddenInputsContainer.empty();
-
             // Add hidden inputs for dosen
             selectedDosen.forEach(id => {
                 hiddenInputsContainer.append(`<input type="hidden" name="dosen_ids[]" value="${id}">`);
             });
-
             // Add hidden inputs for mahasiswa
             selectedMahasiswa.forEach(id => {
                 hiddenInputsContainer.append(`<input type="hidden" name="mahasiswa_ids[]" value="${id}">`);
@@ -490,7 +512,6 @@
         // Form submission
         $('#kelasForm').submit(function(e) {
             // Don't prevent default - let Laravel handle the form submission
-
             if (selectedDosen.length === 0) {
                 e.preventDefault();
                 Swal.fire({
@@ -505,7 +526,6 @@
                 })
                 return false;
             }
-
             if (selectedMahasiswa.length === 0) {
                 e.preventDefault();
                 Swal.fire({
@@ -520,10 +540,8 @@
                 })
                 return false;
             }
-
             // Update hidden inputs before submission
             updateHiddenInputs();
-
             // Form will be submitted normally to Laravel controller
             return true;
         });
@@ -532,7 +550,6 @@
         function refreshData(newDosenData, newMahasiswaData) {
             dosenData = newDosenData;
             mahasiswaData = newMahasiswaData;
-
             dosenTable.clear().rows.add(dosenData).draw();
             mahasiswaTable.clear().rows.add(mahasiswaData).draw();
         }
@@ -544,7 +561,6 @@
             updateSelectedDosenDisplay();
             updateSelectedMahasiswaDisplay();
             updateHiddenInputs();
-
             if (dosenTable) {
                 dosenTable.draw();
             }
@@ -602,62 +618,6 @@
                         <button type="button" id="confirmDosenSelection"
                             class="px-4 py-2 text-sm transition-all duration-300 cursor-pointer bg-blue-500 text-white rounded-sm hover:bg-blue-600">
                             Pilih Dosen (<span id="dosenSelectedCount">0</span>)
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Mahasiswa -->
-<div id="mahasiswaModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
-    <div class="w-screen h-screen flex items-center justify-center p-4">
-        <div class="bg-white w-full h-full rounded-sm flex flex-col">
-            <div class="flex items-center justify-between p-6">
-                <h3 class="text-xl font-semibold text-gray-800">Pilih Mahasiswa</h3>
-                <button type="button" id="closeMahasiswaModal" class="text-gray-400 transition-all duration-300 cursor-pointer hover:text-gray-600">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-
-            <div class="flex-1 p-6 overflow-hidden">
-                <div class="h-full flex flex-col">
-                    <div class="flex-1 overflow-auto">
-                        <div class="relative max-w-xs mb-4">
-                            <i class="fas fa-search fa-sm text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
-                            <input type="text" id="customSearchMahasiswa"
-                                class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:border-gray-400"
-                                placeholder="Search..." autocomplete="off" />
-                        </div>
-                        <table id="mahasiswaTable" class="w-full">
-                            <thead>
-                                <tr>
-                                    <th class="w-12">
-                                        <input type="checkbox" id="selectAllMahasiswa" class="rounded">
-                                    </th>
-                                    <th>Nama</th>
-                                    <th>NIM</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-6">
-                <div class="flex justify-between items-center">
-                    <span id="mahasiswaSelectionInfo" class="text-sm text-gray-600">0 mahasiswa dipilih</span>
-                    <div class="space-x-3">
-                        <button type="button" id="cancelMahasiswaSelection"
-                            class="px-4 text-sm cursor-pointer py-2 border border-gray-300 text-gray-700 hover:text-white transition-all duration-300 rounded-sm hover:bg-gray-500">
-                            Batal
-                        </button>
-                        <button type="button" id="confirmMahasiswaSelection"
-                            class="px-4 py-2 text-sm transition-all duration-300 cursor-pointer bg-green-500 text-white rounded-sm hover:bg-green-600">
-                            Pilih Mahasiswa (<span id="mahasiswaSelectedCount">0</span>)
                         </button>
                     </div>
                 </div>

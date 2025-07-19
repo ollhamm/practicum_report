@@ -20,64 +20,10 @@
             </ol>
         </div>
         <div class="w-full mx-auto px-2">
-            @if(session('error'))
-                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    {!! session('error') !!}
-                </div>
-            @endif
-            @if(session('success'))
-                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    {{ session('success') }}
-                </div>
-            @endif
-
             <div class="bg-white overflow-hidden shadow-sm rounded-sm">
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Manajemen Pengguna</h2>
-                        <!-- add button import -->
-                        <div class="flex justify-end gap-3">
-                            <a href="#" id="openImportModal"
-                                class="hover:bg-green-500 border border-green-500 text-green-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
-                                <i class="fas fa-file-import"></i>
-                                Import
-                            </a>
-                            <a href="{{ route('admin.users.create') }}"
-                                class="hover:bg-blue-500 border border-blue-500 text-blue-500 hover:text-white text-sm px-4 py-2 rounded-sm transition-all duration-300">
-                                <i class="fas fa-plus"></i>
-                                Tambah Pengguna
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Import Modal -->
-                    <div id="importModal" class="fixed inset-0 z-50 flex items-center justify-center bg-white backdrop-blur-2xl bg-opacity-10 hidden">
-                        <div class="bg-white rounded-md shadow-lg w-full max-w-md p-6 relative">
-                            <button id="closeImportModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                            <h3 class="text-lg font-semibold mb-4">Import Pengguna dari Excel</h3>
-                            <form action="{{ route('admin.users.import') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="mb-4">
-                                    <label for="file" class="block text-sm font-medium text-gray-700 mb-2">Pilih File Excel (.xlsx, .xls)</label>
-                                    <input type="file" name="file" id="file" accept=".xlsx,.xls" required class="block w-full border border-gray-300 rounded-sm px-3 py-2">
-                                </div>
-                                <div class="flex justify-end gap-2">
-                                    <button type="button" id="cancelImportModal" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-sm text-sm">Batal</button>
-                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-sm text-sm">Import</button>
-                                </div>
-                                <div class="mt-4 text-xs text-gray-500">
-                                    <b>Format kolom:</b> Nama, Email, NIM/NIP, Role<br>
-                                    Semua pengguna akan otomatis <b>Approved</b>.<br>
-                                    Email & NIM/NIP tidak boleh sama (baik di file maupun database).<br>
-                                    Password default: <b>password123</b><br>
-                                    <a href="{{ asset('template_import_pengguna.xlsx') }}" class="text-blue-600 underline mt-2 inline-block">Download template Excel</a>
-                                </div>
-                            </form>
-                        </div>
                     </div>
 
                     <!-- Custom Filters (Optional - can be removed if using DataTables built-in search) -->
@@ -304,17 +250,4 @@
             });
         });
     });
-</script>
-
-<script>
-    document.getElementById('openImportModal').onclick = function(e) {
-        e.preventDefault();
-        document.getElementById('importModal').classList.remove('hidden');
-    };
-    document.getElementById('closeImportModal').onclick = function() {
-        document.getElementById('importModal').classList.add('hidden');
-    };
-    document.getElementById('cancelImportModal').onclick = function() {
-        document.getElementById('importModal').classList.add('hidden');
-    };
 </script>

@@ -457,10 +457,18 @@
         }
 
         function updateDosenSelection() {
-            selectedDosen = [];
-            $('#dosenTable tbody input[type="checkbox"]:checked').each(function() {
-                selectedDosen.push(parseInt($(this).data('id')));
+            let tempSelectedDosen = [...selectedDosen];
+            $('#dosenTable tbody input[type="checkbox"]').each(function() {
+                const id = parseInt($(this).data('id'));
+                if ($(this).is(':checked')) {
+                    if (!tempSelectedDosen.includes(id)) {
+                        tempSelectedDosen.push(id);
+                    }
+                } else {
+                    tempSelectedDosen = tempSelectedDosen.filter(item => item !== id);
+                }
             });
+            selectedDosen = tempSelectedDosen;
 
             $('#dosenSelectionInfo').text(`${selectedDosen.length} dosen dipilih`);
             $('#dosenSelectedCount').text(selectedDosen.length);
@@ -479,10 +487,18 @@
         }
 
         function updateMahasiswaSelection() {
-            selectedMahasiswa = [];
-            $('#mahasiswaTable tbody input[type="checkbox"]:checked').each(function() {
-                selectedMahasiswa.push(parseInt($(this).data('id')));
+            let tempSelectedMahasiswa = [...selectedMahasiswa];
+            $('#mahasiswaTable tbody input[type="checkbox"]').each(function() {
+                const id = parseInt($(this).data('id'));
+                if ($(this).is(':checked')) {
+                    if (!tempSelectedMahasiswa.includes(id)) {
+                        tempSelectedMahasiswa.push(id);
+                    }
+                } else {
+                    tempSelectedMahasiswa = tempSelectedMahasiswa.filter(item => item !== id);
+                }
             });
+            selectedMahasiswa = tempSelectedMahasiswa;
 
             $('#mahasiswaSelectionInfo').text(`${selectedMahasiswa.length} mahasiswa dipilih`);
             $('#mahasiswaSelectedCount').text(selectedMahasiswa.length);
