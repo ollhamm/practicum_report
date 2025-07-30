@@ -47,6 +47,7 @@
                                     <th>Mata Kuliah</th>
                                     <th>Dosen</th>
                                     <th>Deadline</th>
+                                    <th>Updated At</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -85,6 +86,9 @@
                                     <td class="py-4 whitespace-nowrap">
                                         {{ \Carbon\Carbon::parse($praktikum->deadline)->locale('id')->translatedFormat('l, d F Y H:i') }}
                                     </td>
+                                    <td class="py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $praktikum->updated_at ? $praktikum->updated_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') : '-' }}
+                                    </td>
 
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
@@ -114,10 +118,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-
-                        <div class="mt-4">
-                            {{ $praktikums->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -135,8 +135,8 @@
                 dom: "trip",
                 stripeClasses: [],
                 order: [
-                    [0, "asc"]
-                ],
+                    [5, 'desc']
+                ], // Sort by updated_at column (index 5) descending
             });
 
             // Delete confirmation

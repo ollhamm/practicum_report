@@ -40,6 +40,7 @@
                                     <th>Email</th>
                                     <th>NIP/NIM</th>
                                     <th>Status</th>
+                                    <th>Updated At</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -58,6 +59,9 @@
                                                 {{ $d->approved_by_admin ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
                                             {{ $d->approved_by_admin ? 'Approved' : 'Pending' }}
                                         </span>
+                                    </td>
+                                    <td class="py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $d->updated_at ? $d->updated_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') : '-' }}
                                     </td>
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
@@ -89,9 +93,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class="mt-4">
-                            {{ $dosen->links() }}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -107,10 +108,6 @@
                 info: false,
                 responsive: true,
                 dom: "trip",
-                stripeClasses: [],
-                order: [
-                    [0, "dsc"]
-                ],
             });
 
             // Delete confirmation

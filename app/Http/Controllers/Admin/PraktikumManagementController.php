@@ -20,7 +20,10 @@ class PraktikumManagementController extends Controller
      */
     public function index()
     {
-        $praktikums = Praktikum::with(['kelas', 'dosen'])->latest()->paginate(1000);
+        $praktikums = Praktikum::with(['kelas', 'dosen'])
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.praktikum.index', compact('praktikums'));
     }
 

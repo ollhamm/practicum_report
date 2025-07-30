@@ -62,16 +62,22 @@
 
                                     <!-- Email (Readonly) -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Email<span class="text-red-500">*</span> </label>
-                                        <input type="text" value="{{ $mahasiswa->email }}" disabled readonly
-                                            class="w-full px-3 py-2 border bg-gray-100 border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        <label for="email" class="block text-sm font-medium text-gray-700">Email<span class="text-red-500">*</span> </label>
+                                        <input type="email" name="email" id="email" value="{{ old('email', $mahasiswa->email) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('email')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <!-- NIP (Readonly) -->
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">NIP <span class="text-red-500">*</span></label>
-                                        <input type="text" value="{{ $mahasiswa->nip }}" disabled readonly
-                                            class="w-full px-3 py-2 border bg-gray-100 border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        <label for="nip" class="block text-sm font-medium text-gray-700">NIM <span class="text-red-500">*</span></label>
+                                        <input type="text" name="nip" id="nip" value="{{ old('nip', $mahasiswa->nip) }}" required
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500">
+                                        @error('nip')
+                                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                        @enderror
                                     </div>
 
                                     <!-- Password -->

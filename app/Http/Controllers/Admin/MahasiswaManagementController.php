@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class MahasiswaManagementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $mahasiswa = User::where('role', 'mahasiswa')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
-            ->latest()
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
         return view('admin.mahasiswa.index', compact('mahasiswa'));
     }
@@ -28,16 +29,21 @@ class MahasiswaManagementController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($mahasiswa->id)],
+            'nip' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($mahasiswa->id)],
             'tempat_lahir' => ['required', 'string', 'max:255'],
             'tanggal_lahir' => ['required', 'date'],
             'jenis_kelamin' => ['required', 'in:L,P'],
             'agama' => ['required', 'string', 'max:255'],
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'alamat_ktp' => ['required', 'string'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
         $mahasiswa->update([
             'name' => $request->name,
+            'email' => $request->email,
+            'nip' => $request->nip,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -46,11 +52,8 @@ class MahasiswaManagementController extends Controller
             'alamat_ktp' => $request->alamat_ktp,
         ]);
 
+        // Update password if provided
         if ($request->has('password') && $request->password) {
-            $request->validate([
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-            ]);
-
             $mahasiswa->update([
                 'password' => Hash::make($request->password),
             ]);

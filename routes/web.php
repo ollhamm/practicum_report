@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function () {
 
                 // profile
                 Route::get('/profile', [\App\Http\Controllers\Mahasiswa\ProfileController::class, 'index'])->name('profile.index');
+                Route::get('/profile/edit', [\App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit'])->name('profile.edit');
+                Route::put('/profile/update', [\App\Http\Controllers\Mahasiswa\ProfileController::class, 'update'])->name('profile.update');
             });
         });
 });

@@ -10,7 +10,9 @@ class NilaiNormalManagementController extends Controller
 {
     public function index()
     {
-        $nilaiNormals = NilaiNormal::latest()->get();
+        $nilaiNormals = NilaiNormal::orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.nilai_normal.index', compact('nilaiNormals'));
     }
 

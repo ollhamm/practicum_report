@@ -24,7 +24,23 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-semibold text-gray-800">Manajemen Pengguna</h2>
+                        <div class="flex items-center gap-3">
+                            <!-- Import Button -->
+                            <button type="button" id="importBtn"
+                                class="flex items-center justify-center transition-all duration-300 border border-green-500 px-4 py-2 rounded-sm text-green-500 hover:bg-green-500 hover:text-white text-sm">
+                                <i class="fas fa-file-import mr-2"></i>
+                                Import Pengguna
+                            </button>
+
+                            <!-- Create Button -->
+                            <a href="{{ route('admin.users.create') }}"
+                                class="flex items-center justify-center transition-all duration-300 border border-blue-500 px-4 py-2 rounded-sm text-blue-500 hover:bg-blue-500 hover:text-white text-sm">
+                                <i class="fas fa-plus mr-2"></i>
+                                Tambah Pengguna
+                            </a>
+                        </div>
                     </div>
+
 
                     <!-- Custom Filters (Optional - can be removed if using DataTables built-in search) -->
                     <div class="mb-4 bg-gray-50 rounded-md">
@@ -83,6 +99,7 @@
                                     <th>NIP/NIM</th>
                                     <th>Role</th>
                                     <th>Status</th>
+                                    <th>Created At</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -112,6 +129,9 @@
                                             {{ $statusData[$currentStatus]['text'] }}
                                         </span>
                                     </td>
+                                    <td class="py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $user->created_at ? $user->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y H:i') : '-' }}
+                                    </td>
                                     <td class="py-4 whitespace-nowrap text-sm">
                                         <div class="flex flex-row items-center justify-start gap-2">
                                             <form action="{{ route('admin.users.show', $user) }}" method="GET">
@@ -121,8 +141,12 @@
                                                     <i class="fas fa-eye fa-md"></i>
                                                 </button>
                                             </form>
-                                            @if($user->isApproved())
-                                            {{-- Tampilkan hanya tombol Delete jika sudah disetujui --}}
+
+                                            <a href="{{ route('admin.users.edit', $user) }}"
+                                                class="flex items-center justify-center transition-all duration-300 border border-yellow-500 p-2 rounded-sm text-yellow-500 hover:bg-yellow-500 hover:text-white w-8 h-8">
+                                                <i class="fas fa-edit fa-md"></i>
+                                            </a>
+
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
@@ -132,19 +156,8 @@
                                                     <i class="fas fa-trash-alt fa-md"></i>
                                                 </button>
                                             </form>
-                                            @elseif($user->isRejected())
-                                            {{-- Tampilkan hanya tombol Delete jika ditolak --}}
-                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button"
-                                                    class="text-red-500 flex transition-all duration-300 items-center justify-center w-8 h-8 border-red-500 border rounded-sm p-2 cursor-pointer hover:bg-red-500 hover:text-white delete-btn"
-                                                    data-name="{{ $user->name }}">
-                                                    <i class="fas fa-trash-alt fa-md"></i>
-                                                </button>
-                                            </form>
-                                            @elseif($user->isPending())
-                                            {{-- Tampilkan Approve & Reject untuk status pending --}}
+
+                                            @if($user->approved_by_admin == false)
                                             <form action="{{ route('admin.users.approve', $user) }}" method="POST" class="inline">
                                                 @csrf
                                                 <button type="submit" class="text-green-500 transition-all duration-300 flex items-center justify-center w-8 h-8 border-green-500 border rounded-sm p-2 cursor-pointer hover:bg-green-500 hover:text-white">
@@ -170,6 +183,62 @@
             </div>
         </div>
     </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-sm shadow-lg max-w-md w-full">
+                <div class="flex items-center justify-between p-6 border-b">
+                    <h3 class="text-lg font-semibold text-gray-800">Import Pengguna</h3>
+                    <button type="button" id="closeImportModal" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form action="{{ route('admin.users.import') }}" method="POST" enctype="multipart/form-data" class="p-6">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="import_file" class="block text-sm font-medium text-gray-700 mb-2">
+                            Pilih File Excel (.xlsx, .xls)
+                        </label>
+                        <input type="file" name="file" id="import_file" accept=".xlsx,.xls" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-sm text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div class="mb-4 p-3 bg-blue-50 rounded-sm">
+                        <h4 class="text-sm font-medium text-blue-800 mb-2">Format File Excel:</h4>
+                        <ul class="text-xs text-blue-700 space-y-1">
+                            <li>• Kolom A: Nama</li>
+                            <li>• Kolom B: Email</li>
+                            <li>• Kolom C: NIM/NIP</li>
+                            <li>• Kolom D: Role (admin/dosen/mahasiswa)</li>
+                            <li>• Baris pertama adalah header</li>
+                        </ul>
+                        <div class="mt-3">
+                            <a href="{{ asset('template_import_pengguna.xlsx') }}"
+                                class="inline-flex items-center text-xs text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-download mr-1"></i>
+                                Download Template Excel
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" id="cancelImport"
+                            class="px-4 py-2 text-sm border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-500 hover:text-white transition-all duration-300">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 text-sm bg-blue-500 text-white rounded-sm hover:bg-blue-600 transition-all duration-300">
+                            <i class="fas fa-upload mr-2"></i>
+                            Import
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </x-app-layout>
 
 @if(session('error'))
@@ -205,9 +274,8 @@
             dom: "trip",
             stripeClasses: [],
             order: [
-                [4, 'desc'],
-                [1, 'asc']
-            ]
+                [5, 'desc']
+            ], // Sort by created_at column (index 5) descending
         });
     });
 </script>
@@ -248,6 +316,43 @@
                     }
                 });
             });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Import modal functionality
+        const importBtn = document.getElementById('importBtn');
+        const importModal = document.getElementById('importModal');
+        const closeImportModal = document.getElementById('closeImportModal');
+        const cancelImport = document.getElementById('cancelImport');
+
+        // Open import modal
+        importBtn.addEventListener('click', function() {
+            importModal.classList.remove('hidden');
+        });
+
+        // Close import modal
+        function closeModal() {
+            importModal.classList.add('hidden');
+        }
+
+        closeImportModal.addEventListener('click', closeModal);
+        cancelImport.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        importModal.addEventListener('click', function(e) {
+            if (e.target === importModal) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !importModal.classList.contains('hidden')) {
+                closeModal();
+            }
         });
     });
 </script>

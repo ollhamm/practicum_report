@@ -15,7 +15,7 @@
                 @csrf
 
                 <div class="mb-6">
-                    <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="off"
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required
                         class="w-full px-3 py-2 border border-gray-300 rounded-sm  text-sm transition-all duration-300 focus:outline-none focus:ring-1 focus:ring-gray-500 focus:shadow-outline @error('email') border-red-500 @enderror" placeholder="Email">
                     @error('email')
                     <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>

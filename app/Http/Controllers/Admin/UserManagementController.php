@@ -33,8 +33,7 @@ class UserManagementController extends Controller
             }
         }
 
-
-        $users = $query->latest()->get();
+        $users = $query->orderBy('created_at', 'desc')->get();
 
         // Pass status data to view for cleaner blade template
         $statusData = [

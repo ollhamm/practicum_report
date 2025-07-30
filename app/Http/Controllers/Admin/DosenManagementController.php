@@ -15,8 +15,9 @@ class DosenManagementController extends Controller
     {
         $dosen = User::where('role', 'dosen')
             ->where('approved_by_admin', User::APPROVAL_APPROVED)
-            ->latest()
-            ->paginate(1000);
+            ->orderBy('updated_at', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.dosen.index', compact('dosen'));
     }
 
